@@ -8,6 +8,7 @@ import 'package:virtual_keyboard/common/PageFileGraphics.dart';
 import 'package:virtual_keyboard/services/RESTVirtualKeyboard.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:virtual_keyboard/main.dart';
 
 class GraphicsPage extends StatelessWidget {
   GraphicsPage();
@@ -23,7 +24,7 @@ class GraphicsPage extends StatelessWidget {
           title: Text("Graphics"),
         ),
         body:MyGraphicsPage(
-          channel: IOWebSocketChannel.connect('ws://${Configuration.getServerIP()}:${Configuration.getServerPort()}/acc/graphics'),
+          channel: IOWebSocketChannel.connect('ws://${conf.serverIP}:${conf.serverPort}/acc/graphics'),
         )
     );
   }
@@ -41,10 +42,18 @@ class MyGraphicsPage extends StatefulWidget {
 
 class _MyGraphicsPageState extends State<MyGraphicsPage> {
 
+  Color getLightColor(PageFileGraphics pg){
+    switch (pg.lightsStage){
+      case 0: return Colors.grey;
+      case 1: return Colors.lightGreenAccent;
+      case 2: return Colors.cyanAccent;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Colors.black,
       body: StreamBuilder(
         stream: widget.channel.stream,
         builder: (context, snapshot) {
@@ -65,7 +74,8 @@ class _MyGraphicsPageState extends State<MyGraphicsPage> {
                         child: Icon(
                           Icons.lightbulb_outline_rounded,
                           size: 100.0,
-                          color: pg.rainLights == 0 ? Colors.black: Colors.yellow,),
+                          color: getLightColor(pg)
+                        ),
                       ),
                     ],
                   ),

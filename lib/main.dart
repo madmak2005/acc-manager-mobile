@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:virtual_keyboard/common/Configuration.dart';
-import 'package:virtual_keyboard/pages/home.page.dart';
+import 'package:virtual_keyboard/pages/login.page.dart';
+
+Configuration conf =  new Configuration();
 
 void main() {
-
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(context),
+      home: LoginPage(),
     );
   }
 }

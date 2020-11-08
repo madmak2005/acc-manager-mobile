@@ -8,6 +8,7 @@ import 'package:virtual_keyboard/common/PageFilePhysics.dart';
 import 'package:virtual_keyboard/services/RESTVirtualKeyboard.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:virtual_keyboard/main.dart';
 
 class PhysicsPage extends StatelessWidget {
   PhysicsPage();
@@ -23,7 +24,7 @@ class PhysicsPage extends StatelessWidget {
           title: Text("Physics"),
 
         ),
-        body: MyPhysicsPage(channel: IOWebSocketChannel.connect('ws://${Configuration.getServerIP()}:${Configuration.getServerPort()}/acc/physics'),));
+        body: MyPhysicsPage(channel: IOWebSocketChannel.connect('ws://${conf.serverIP}:${conf.serverPort}/acc/physics'),));
   }
 }
 

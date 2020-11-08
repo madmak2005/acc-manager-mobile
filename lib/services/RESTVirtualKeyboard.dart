@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 import 'package:virtual_keyboard/common/Configuration.dart';
+import 'package:virtual_keyboard/main.dart';
 
 class RESTVirtualKeyboard {
   static void sendkey(String key) async {
@@ -18,7 +19,7 @@ class RESTVirtualKeyboard {
       queryParameters = {'string': key, };
     }
 
-    var address = Configuration.getServerIP()+":"+Configuration.getServerPort();
+    var address = conf.serverIP+":"+conf.serverPort;
     var uri = Uri.http('$address', "/send", queryParameters);
     http.get(uri, headers: headers);
   }
