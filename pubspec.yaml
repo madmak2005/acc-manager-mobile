@@ -21,7 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  localstorage: ^3.0.0
+  shared_preferences: ^0.5.12+4
   web_socket_channel: ^1.1.0
   google_fonts: ^1.1.1
   http: ^0.12.2
@@ -53,6 +53,9 @@ flutter:
   assets:
     - lib/assets/engine.png
     - lib/assets/tc.png
+    - lib/assets/acc_1.jpg
+    - lib/assets/acc_2.jpg
+    - lib/assets/acc_3.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

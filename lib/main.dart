@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:virtual_keyboard/common/Configuration.dart';
 import 'package:virtual_keyboard/pages/login.page.dart';
 
