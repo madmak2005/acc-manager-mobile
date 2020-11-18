@@ -9,20 +9,14 @@ import 'package:virtual_keyboard/pages/graphics.page.dart';
 import 'KeySettings.dart';
 
 
-final Set<String> allowedKeys = {'LIGHTS','MAP+','MAP-'};
+final Set<String> allowedKeys = {'LIGHTS','MAP+','MAP-','MFD','TC+','TC-','ABS+','ABS-','WIPERS'};
 
 class Configuration {
   String _serverIP;
   String _serverPort;
   Future<Map<String, KeySettings>> _keys;
 
-//  get keys => _keys;
-// set keys(value) {
-//    _keys = value;
-//  }
-
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   Future<SharedPreferences> get prefs => _prefs;
 
   Configuration() {
@@ -58,7 +52,6 @@ class Configuration {
     allowedKeys.forEach((key) async {
       KeySettings _ks = await getKeyFromStore(key);
       if (_ks != null) {
-
         allKeys.putIfAbsent(_ks.name, () => _ks);
       } else{
         KeySettings _defaultKeySettings;
@@ -72,6 +65,24 @@ class Configuration {
                   'L');
             }
             break;
+          case 'MFD':
+            {
+              _defaultKeySettings = new KeySettings(
+                  Icons.storage.codePoint,
+                  'MaterialIcons',
+                  'MFD',
+                  'INSERT');
+            }
+            break;
+          case 'WIPERS':
+            {
+              _defaultKeySettings = new KeySettings(
+                  Icons.beach_access.codePoint,
+                  'MaterialIcons',
+                  'WIPERS',
+                  'w');
+            }
+            break;
           case 'MAP+':
             {
               _defaultKeySettings = new KeySettings(Icons.arrow_circle_up.codePoint,
@@ -82,6 +93,30 @@ class Configuration {
             {
               _defaultKeySettings = new KeySettings(Icons.arrow_circle_down.codePoint,
                   'MaterialIcons', 'MAP-', 'k');
+            }
+            break;
+          case 'TC+':
+            {
+              _defaultKeySettings = new KeySettings(Icons.arrow_circle_up.codePoint,
+                  'MaterialIcons', 'TC+', 'u');
+            }
+            break;
+          case 'TC-':
+            {
+              _defaultKeySettings = new KeySettings(Icons.arrow_circle_down.codePoint,
+                  'MaterialIcons', 'TC-', 'j');
+            }
+            break;
+          case 'ABS+':
+            {
+              _defaultKeySettings = new KeySettings(Icons.arrow_circle_up.codePoint,
+                  'MaterialIcons', 'ABS+', 'y');
+            }
+            break;
+          case 'ABS-':
+            {
+              _defaultKeySettings = new KeySettings(Icons.arrow_circle_down.codePoint,
+                  'MaterialIcons', 'ABS-', 'h');
             }
             break;
         }
@@ -110,52 +145,6 @@ class Configuration {
       log('RETURN: ${value[key].key}');
       return value[key];
     });
-    //return null;
-    //SharedPreferences prefs = await _prefs;
-    /*
-    if (keys.containsKey(key)) {
-      var dbKey = prefs.getString(key);
-      if (dbKey != null) {
-        log(dbKey);
-        Map keyMap = jsonDecode(dbKey);
-        KeySettings keySettings = new KeySettings.fromJson(keyMap);
-        keys.putIfAbsent(
-            keySettings.name, () => jsonEncode(keySettings.toJson()));
-        keys[keySettings.name] = jsonEncode(keySettings.toJson());
-      }
-    }
-    */
-
-/*
-    if (key == 'LIGHTS') {
-      bool _hasLights = false;
-      var lights = prefs.getString('LIGHTS');
-      if (lights != null) {
-        Map lightsMap = jsonDecode(lights);
-        KeySettings keyLight = new KeySettings.fromJson(lightsMap);
-        keys.putIfAbsent(keyLight.name, () => jsonEncode(keyLight.toJson()));
-        keys[keyLight.name] = jsonEncode(keyLight.toJson());
-        _hasLights = true;
-      };
-*/
-/*
-      if (!_hasKey) {
-        log("No key: $key");
-
-        _prefs.then((SharedPreferences s) {
-          var json = jsonEncode(keySettings.toJson());
-          log(json);
-          s.setString(keySettings.name, json);
-          keys.putIfAbsent(keySettings.name, () => keySetting);
-          save(keySettings.name, json);
-        });
-      }
-*/
-    /*
-      String keyString = keys[key];
-     */
-      //return new KeySettings.fromJson(jsonDecode(keyString));
-    //return null;
   }
 
   Future<String> getServerSetting(String key) async {
