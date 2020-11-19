@@ -55,7 +55,8 @@ class _MyGraphicsPageState extends State<MyGraphicsPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 PageFileGraphics pg =
-                    PageFileGraphics.fromJson(json.decode(snapshot.data));
+                PageFileGraphics.fromJson(json.decode(snapshot.data));
+
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24.0),
                   child: Column(
@@ -65,7 +66,7 @@ class _MyGraphicsPageState extends State<MyGraphicsPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Lights(pg),
-                            PlusMinus(pg.tc+1,'M A P', Colors.yellow, keySetting['MAP+'],keySetting['MAP-']),
+                            PlusMinus(pg.engineMap+1,'M A P', Colors.yellow, keySetting['MAP+'],keySetting['MAP-']),
                           ],
                         ),
                       ),
@@ -83,12 +84,16 @@ class _MyGraphicsPageState extends State<MyGraphicsPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Wipers(pg),
-                            PlusMinus(pg.abs,'A B S', Colors.lightGreenAccent, keySetting['ABS+'],keySetting['ABS-']),
+                            new PlusMinus(pg.abs,'A B S', Colors.lightGreenAccent, keySetting['ABS+'],keySetting['ABS-']),
                           ],
                         ),
                       ),
+                    Text((pg.normalizedCarPosition * 100).toStringAsFixed(3) + ' %',
+                        style: TextStyle(color: Colors.white, fontSize: 24.0)),
+                      Text((pg.lastSectorTime/1000).toString(),
+                          style: TextStyle(color: Colors.white, fontSize: 24.0)),
                     ],
-                  ),
+                  )
                 );
               } else {
                 return const CircularProgressIndicator();
