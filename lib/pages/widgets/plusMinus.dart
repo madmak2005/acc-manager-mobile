@@ -1,10 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:virtual_keyboard/common/KeySettings.dart';
 import 'package:virtual_keyboard/common/PageFileGraphics.dart';
 import 'package:virtual_keyboard/services/RESTVirtualKeyboard.dart';
-
-
+import 'package:flutter_icons/flutter_icons.dart';
 
 class PlusMinus extends StatelessWidget {
   int value;
@@ -54,6 +55,11 @@ class _PlusMinusState extends State<PlusMinusWidget> {
     this.color = color;
     this.keySettingsPlus = keySettingsPlus;
     this.keySettingsMinus = keySettingsMinus;
+    var ico  = Icon(Ionicons.ios_search);
+    log('Codepoint:  ${ico.icon.codePoint.toString()}');
+    log(ico.icon.fontFamily);
+    log(ico.icon.fontPackage);
+
   }
   @override
   Widget build(BuildContext context) {
@@ -65,29 +71,31 @@ class _PlusMinusState extends State<PlusMinusWidget> {
             style: TextStyle(color: Colors.white, fontSize: 24.0),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
                 onTap: () {
                   RESTVirtualKeyboard.sendkey(widget.keySettingsPlus.key);
                 },
                 child: Icon(
-                    IconData(widget.keySettingsPlus.codePoint,
-                        fontFamily: 'MaterialIcons'),
-                    size: 90.0,
+                    widget.keySettingsPlus.toIconData(),
+                    size: 70.0,
                     color: widget.color),
               ),
-              Text(
-                widget.value.toString(),
-                style: TextStyle(color: Colors.white, fontSize: 48.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 0.0),
+                child: Text(
+                  widget.value.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 32.0),
+                ),
               ),
               GestureDetector(
                 onTap: () {
                   RESTVirtualKeyboard.sendkey(widget.keySettingsMinus.key);
                 },
                 child: Icon(
-                    IconData(widget.keySettingsMinus.codePoint,
-                        fontFamily: 'MaterialIcons'),
-                    size: 90.0,
+                    widget.keySettingsMinus.toIconData(),
+                    size: 70.0,
                     color: widget.color),
               ),
             ],

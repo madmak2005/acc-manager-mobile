@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_icons: ^1.1.0
   shared_preferences: ^0.5.12+4
   web_socket_channel: ^1.1.0
   google_fonts: ^1.1.1

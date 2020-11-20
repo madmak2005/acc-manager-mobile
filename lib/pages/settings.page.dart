@@ -64,6 +64,8 @@ class _MySettingsPageState extends State<MySettingsPage> {
                             var keyABSP = all['ABS+'];
                             var keyABSM = all['ABS-'];
                             var keyWipers = all['WIPERS'];
+                            var keyBBP = all['BB+'];
+                            var keyBBM = all['BB-'];
                             return Column(
                               children: [
                                 Container(
@@ -116,6 +118,24 @@ class _MySettingsPageState extends State<MySettingsPage> {
                                       Expanded(
                                         flex:1,
                                         child: new KeyConfig(keyABSM),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: new KeyConfig(keyBBP),
+                                      ),
+                                      Expanded(
+                                        flex:1,
+                                        child: new KeyConfig(keyBBM),
+                                      ),
+                                      Expanded(
+                                        flex:1,
+                                        child: Container(),
                                       ),
                                     ],
                                   ),

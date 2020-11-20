@@ -73,7 +73,7 @@ class _KeyConfigState extends State<KeyConfig> {
                 }
               },
               child: Icon(
-                IconData(localKey.codePoint, fontFamily: 'MaterialIcons'),
+                localKey.toIconData(),
                 color: _savedCheck ? Colors.greenAccent : Colors.yellowAccent,
               ),
             ),
@@ -85,7 +85,7 @@ class _KeyConfigState extends State<KeyConfig> {
             controller: myController,
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please a letter';
+                return 'Please enter a letter';
               } else {
                 setState(() {
                   _savedCheck = checkSaveNeed(localKey);

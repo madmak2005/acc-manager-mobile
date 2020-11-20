@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 //import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:virtual_keyboard/pages/graphics.page.dart';
 import 'KeySettings.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
-
-final Set<String> allowedKeys = {'LIGHTS','MAP+','MAP-','MFD','TC+','TC-','ABS+','ABS-','WIPERS'};
+final Set<String> allowedKeys = {'LIGHTS','MAP+','MAP-','MFD','TC+','TC-','ABS+','ABS-','WIPERS','BB+','BB-'};
 
 class Configuration {
   String _serverIP;
@@ -58,65 +59,82 @@ class Configuration {
         switch (key) {
           case 'LIGHTS':
             {
-              _defaultKeySettings = new KeySettings(
-                  Icons.lightbulb_outline_rounded.codePoint,
-                  'MaterialIcons',
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  Icons.lightbulb_outline_rounded,
                   'LIGHTS',
                   'L');
             }
             break;
           case 'MFD':
             {
-              _defaultKeySettings = new KeySettings(
-                  Icons.storage.codePoint,
-                  'MaterialIcons',
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  Icons.storage,
                   'MFD',
                   'INSERT');
             }
             break;
           case 'WIPERS':
             {
-              _defaultKeySettings = new KeySettings(
-                  Icons.beach_access.codePoint,
-                  'MaterialIcons',
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  WeatherIcons.wi_storm_showers,
                   'WIPERS',
                   'w');
             }
             break;
           case 'MAP+':
             {
-              _defaultKeySettings = new KeySettings(Icons.arrow_circle_up.codePoint,
-                  'MaterialIcons', 'MAP+', 'P');
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.plus,
+                  'MAP+', 'P');
             }
             break;
           case 'MAP-':
             {
-              _defaultKeySettings = new KeySettings(Icons.arrow_circle_down.codePoint,
-                  'MaterialIcons', 'MAP-', 'k');
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.minus,
+                  'MAP-', 'k');
             }
             break;
           case 'TC+':
             {
-              _defaultKeySettings = new KeySettings(Icons.arrow_circle_up.codePoint,
-                  'MaterialIcons', 'TC+', 'u');
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.plus,
+                  'TC+', 'u');
             }
             break;
           case 'TC-':
             {
-              _defaultKeySettings = new KeySettings(Icons.arrow_circle_down.codePoint,
-                  'MaterialIcons', 'TC-', 'j');
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.minus,
+                  'TC-', 'j');
             }
             break;
           case 'ABS+':
             {
-              _defaultKeySettings = new KeySettings(Icons.arrow_circle_up.codePoint,
-                  'MaterialIcons', 'ABS+', 'y');
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.plus,
+                  'ABS+', 'y');
             }
             break;
           case 'ABS-':
             {
-              _defaultKeySettings = new KeySettings(Icons.arrow_circle_down.codePoint,
-                  'MaterialIcons', 'ABS-', 'h');
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.minus,
+                  'ABS-', 'h');
+            }
+            break;
+          case 'BB+':
+            {
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.plus,
+                  'BB+', 't');
+            }
+            break;
+          case 'BB-':
+            {
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.minus,
+                  'BB-', 'g');
             }
             break;
         }
