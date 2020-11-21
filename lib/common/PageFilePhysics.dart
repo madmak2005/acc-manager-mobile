@@ -89,27 +89,27 @@ class PageFilePhysics {
     rpms = json['rpms'];
     steerAngle = json['steerAngle'];
     speedKmh = json['speedKmh'];
-    velocity = json['velocity'].cast<double>();
-    accG = json['accG'].cast<double>();
-    wheelSlip = json['wheelSlip'].cast<double>();
-    wheelsPressure = json['wheelsPressure'].cast<double>();
-    wheelAngularSpeed = json['wheelAngularSpeed'].cast<double>();
-    tyreCoreTemperature = json['tyreCoreTemperature'].cast<double>();
-    suspensionTravel = json['suspensionTravel'].cast<double>();
+    velocity = json['velocity'] != null ? json['velocity'].cast<double>() : new List<double>();
+    accG =  json['accG'] != null ? json['accG'].cast<double>() : new List<double>();
+    wheelSlip = json['wheelSlip'] != null ? json['wheelSlip'].cast<double>() : new List<double>();
+    wheelsPressure = json['wheelsPressure'] != null ? json['wheelsPressure'].cast<double>() : new List<double>();
+    wheelAngularSpeed = json['wheelAngularSpeed'] != null ? json['wheelAngularSpeed'].cast<double>() : new List<double>();
+    tyreCoreTemperature = json['tyreCoreTemperature'] != null ? json['tyreCoreTemperature'].cast<double>() : new List<double>();
+    suspensionTravel = json['suspensionTravel'] != null ? json['suspensionTravel'].cast<double>() : new List<double>();
     tc = json['tc'];
     heading = json['heading'];
     pitch = json['pitch'];
     roll = json['roll'];
-    carDamage = json['carDamage'].cast<double>();
+    carDamage = json['carDamage'] != null ? json['carDamage'].cast<double>() : new List<double>();
     pitLimiterOn = json['pitLimiterOn'];
     abs = json['abs'];
     autoShifterOn = json['autoShifterOn'];
     turboBoost = json['turboBoost'];
     airTemp = json['airTemp'];
     roadTemp = json['roadTemp'];
-    localAngularVel = json['localAngularVel'].cast<double>();
+    localAngularVel = json['localAngularVel'] != null ? json['localAngularVel'].cast<double>() : new List<double>();
     finalFF = json['finalFF'];
-    brakeTemp = json['brakeTemp'].cast<double>();
+    brakeTemp = json['brakeTemp'] != null ? json['brakeTemp'].cast<double>() : new List<double>();
     clutch = json['clutch'];
     isAIControlled = json['isAIControlled'];
     if (json['tyreContactPoint'] != null) {
@@ -131,10 +131,10 @@ class PageFilePhysics {
       });
     }
     brakeBias = json['brakeBias'];
-    localVelocity = json['localVelocity'].cast<double>();
-    mz = json['mz'].cast<double>();
-    fx = json['fx'].cast<double>();
-    fy = json['fy'].cast<double>();
+    localVelocity =json['localVelocity'] != null ? json['localVelocity'].cast<double>() : new List<double>();
+    mz = json['mz'] != null ? json['mz'].cast<double>() : new List<double>();
+    fx = json['fx'] != null ? json['fx'].cast<double>() : new List<double>();
+    fy = json['fy'] != null ? json['fy'].cast<double>() : new List<double>();
   }
 
   Map<String, dynamic> toJson() {

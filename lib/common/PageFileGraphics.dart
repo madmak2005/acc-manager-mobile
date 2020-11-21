@@ -132,7 +132,7 @@ class PageFileGraphics {
         carCoordinates.add((v));
       });
     }
-    carID = json['carID'].cast<int>();
+    carID = json['carID'] != null ? json['carID'].cast<int>() : new List<int>(60);
     playerCarID = json['playerCarID'];
     penaltyTime = json['penaltyTime'];
     flag = json['flag'];

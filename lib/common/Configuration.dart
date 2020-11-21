@@ -10,7 +10,7 @@ import 'package:virtual_keyboard/pages/graphics.page.dart';
 import 'KeySettings.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
-final Set<String> allowedKeys = {'LIGHTS','MAP+','MAP-','MFD','TC+','TC-','ABS+','ABS-','WIPERS','BB+','BB-'};
+final Set<String> allowedKeys = {'LIGHTS','MAP+','MAP-','MFD','TC+','TC-','ABS+','ABS-','WIPERS','BB+','BB-','IGNITION','STARTER'};
 
 class Configuration {
   String _serverIP;
@@ -135,6 +135,20 @@ class Configuration {
               _defaultKeySettings = new KeySettings.fromIconData(
                   SimpleLineIcons.minus,
                   'BB-', 'g');
+            }
+            break;
+          case 'IGNITION':
+            {
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.power,
+                  'IGNITION', 'i');
+            }
+            break;
+          case 'STARTER':
+            {
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  MaterialCommunityIcons.car_key,
+                  'STARTER', 's');
             }
             break;
         }

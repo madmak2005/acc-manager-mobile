@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:virtual_keyboard/common/KeySettings.dart';
 import 'package:virtual_keyboard/common/PageFileGraphics.dart';
 import 'package:virtual_keyboard/common/PageFilePhysics.dart';
+import 'package:virtual_keyboard/pages/widgets/Buttons.dart';
 import 'package:virtual_keyboard/pages/widgets/plusMinus.dart';
 import 'package:virtual_keyboard/services/RESTVirtualKeyboard.dart';
 import 'package:web_socket_channel/io.dart';
@@ -14,10 +15,13 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:virtual_keyboard/main.dart';
 
 Map<String, KeySettings> keySetting;
+bool firstTimeGraphics,firstTimePhysics;
 
 class GraphicsPage extends StatelessWidget {
   GraphicsPage(Map<String, KeySettings> k) {
     keySetting = k;
+    firstTimeGraphics = true;
+    firstTimePhysics = true;
   }
   BuildContext context;
 
@@ -52,6 +56,7 @@ class MyGraphicsPage extends StatefulWidget {
 }
 
 class _MyGraphicsPageState extends State<MyGraphicsPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,39 +65,48 @@ class _MyGraphicsPageState extends State<MyGraphicsPage> {
             stream: widget.channelPhysics.stream,
             builder: (context, snapshotPhysics) {
               if (snapshotPhysics.hasData) {
+                if(firstTimePhysics) {
+                  widget.channelPhysics.sink.add('fuel');
+                  firstTimePhysics = false;
+                }
                 PageFilePhysics pp =
                     PageFilePhysics.fromJson(json.decode(snapshotPhysics.data));
                 return StreamBuilder(
                     stream: widget.channelGraphics.stream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
+                        if(firstTimeGraphics) {
+                          widget.channelGraphics.sink.add(
+                              'packetId,isInPit,isInPitLane,TC,TCCut,EngineMap,ABS,fuelXLap,rainLights,flashingLights,lightsStage,wiperLV,normalizedCarPosition,lastSectorTime');
+                          firstTimeGraphics = false;
+                        }
                         PageFileGraphics pg = PageFileGraphics.fromJson(
                             json.decode(snapshot.data));
 
                         return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 24.0),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                    Expanded(
-                                    flex:1,
-                                    child:Lights(pg)),
+                                      Expanded(flex: 1, child: Lights(pageFileGraphics: pg,)),
                                       pg.isInPit == 0
                                           ? Expanded(
-                                          flex:2,
-                                          child:PlusMinus(
-                                              pg.engineMap + 1,
-                                              'M A P',
-                                              Colors.yellow,
-                                              keySetting['MAP+'],
-                                              keySetting['MAP-']))
+                                              flex: 2,
+                                              child: PlusMinus(
+                                                  pg.engineMap + 1,
+                                                  'M A P',
+                                                  Colors.yellow,
+                                                  keySetting['MAP+'],
+                                                  keySetting['MAP-']))
                                           : Expanded(
-                                        flex:2,
-                                        child:Container()),
+                                              flex: 2,
+                                              child: Ignition(
+                                                  pageFileGraphics: pg)),
                                     ],
                                   ),
                                 ),
@@ -101,19 +115,22 @@ class _MyGraphicsPageState extends State<MyGraphicsPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                    Expanded(
-                                    flex:1,
-                                    child:MFD(pg)
-                                    ),
-                                  Expanded(
-                                    flex:2,
-                                    child:PlusMinus(
-                                          pg.tc,
-                                          'T C',
-                                          Colors.lightBlueAccent,
-                                          keySetting['TC+'],
-                                          keySetting['TC-'])
-                                  ),
+                                      Expanded(flex: 1, child: MFD()),
+                                      pg.isInPit == 0
+                                          ? Expanded(
+                                              flex: 2,
+                                              child: PlusMinus(
+                                                  pg.tc,
+                                                  'T C',
+                                                  Colors.lightBlueAccent,
+                                                  keySetting['TC+'],
+                                                  keySetting['TC-']))
+                                          : Expanded(
+                                              flex: 2,
+                                              child: Starter(
+                                                pageFileGraphics: pg,
+                                              ),
+                                            ),
                                     ],
                                   ),
                                 ),
@@ -122,40 +139,46 @@ class _MyGraphicsPageState extends State<MyGraphicsPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Expanded(
-                                        flex:1,
-                                          child: Wipers(pg)),
-                                      Expanded(
-                                        flex:2,
-                                        child: PlusMinus(
-                                            pg.abs,
-                                            'A B S',
-                                            Colors.lightGreenAccent,
-                                            keySetting['ABS+'],
-                                            keySetting['ABS-']),
-                                      ),
+                                      Expanded(flex: 1, child: Wipers(pg)),
+                                      pg.isInPit == 0
+                                          ? Expanded(
+                                              flex: 2,
+                                              child: PlusMinus(
+                                                  pg.abs,
+                                                  'A B S',
+                                                  Colors.lightGreenAccent,
+                                                  keySetting['ABS+'],
+                                                  keySetting['ABS-']),
+                                            )
+                                          : Expanded(
+                                              flex: 2,
+                                              child: Container(),
+                                            ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(0,12.0,0,0),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0, 12.0, 0, 0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                      Expanded(
-                                      flex:1,
-                                      child:Container()),
-                                    Expanded(
-                                      flex:2,
-                                      child:PlusMinus(
-                                            pg.abs,
-                                            'B R A K E   B I A S',
-                                            Colors.lightGreen,
-                                            keySetting['BB+'],
-                                            keySetting['BB-'])
-                                    ),
+                                        Expanded(flex: 1, child: Container()),
+                                        pg.isInPit == 0
+                                            ? Expanded(
+                                                flex: 2,
+                                                child: PlusMinus(
+                                                    pg.abs,
+                                                    'B R A K E   B I A S',
+                                                    Colors.lightGreen,
+                                                    keySetting['BB+'],
+                                                    keySetting['BB-']))
+                                            : Expanded(
+                                                flex: 2,
+                                                child: Container(),
+                                              ),
                                       ],
                                     ),
                                   ),
@@ -240,13 +263,14 @@ class _MyGraphicsPageState extends State<MyGraphicsPage> {
                                                   color: Colors.white,
                                                   fontSize: 14,
                                                   fontWeight:
-                                                  FontWeight.normal))),
-                                          DataCell(Text((pp.fuel.toStringAsFixed(3)),
+                                                      FontWeight.normal))),
+                                          DataCell(Text(
+                                              (pp.fuel.toStringAsFixed(3)),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14,
                                                   fontWeight:
-                                                  FontWeight.normal))),
+                                                      FontWeight.normal))),
                                         ]),
                                       ],
                                     ),
@@ -269,137 +293,5 @@ class _MyGraphicsPageState extends State<MyGraphicsPage> {
     widget.channelGraphics.sink.close();
     widget.channelPhysics.sink.close();
     super.dispose();
-  }
-}
-
-class ButtonWidget extends StatelessWidget {
-  Icon icon;
-  String action;
-  ButtonWidget(Icon icon, String action) {
-    this.icon = icon;
-    this.action = action;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: GestureDetector(
-          onTap: () => RESTVirtualKeyboard.sendkey(action), child: icon),
-    );
-  }
-}
-
-class Lights extends StatelessWidget {
-  PageFileGraphics pg;
-  Lights(PageFileGraphics pageFileGraphics) {
-    pg = pageFileGraphics;
-  }
-
-  Color getLightColor(PageFileGraphics pg) {
-    switch (pg.lightsStage) {
-      case 0:
-        return Colors.grey;
-      case 1:
-        return Colors.lightGreenAccent;
-      case 2:
-        return Colors.cyanAccent;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Container(
-        child: Column(
-          children: [
-            Text(
-              "L I G H T S",
-              style: TextStyle(color: Colors.white, fontSize: 24.0),
-            ),
-            GestureDetector(
-              onTap: () {
-                RESTVirtualKeyboard.sendkey(keySetting['LIGHTS'].key);
-              },
-              child: Icon(keySetting['LIGHTS'].toIconData(),
-                  size: 70.0, color: getLightColor(pg)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MFD extends StatelessWidget {
-  PageFileGraphics pg;
-  MFD(PageFileGraphics pageFileGraphics) {
-    pg = pageFileGraphics;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Container(
-        child: Column(
-          children: [
-            Text(
-              "M F D",
-              style: TextStyle(color: Colors.white, fontSize: 24.0),
-            ),
-            GestureDetector(
-              onTap: () {
-                RESTVirtualKeyboard.sendkey(keySetting['MFD'].key);
-              },
-              child: Icon(keySetting['MFD'].toIconData(),
-                  size: 70.0, color: Colors.white),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class Wipers extends StatelessWidget {
-  PageFileGraphics pg;
-  Wipers(PageFileGraphics pageFileGraphics) {
-    pg = pageFileGraphics;
-  }
-
-  Color getColor(PageFileGraphics pg) {
-    switch (pg.wiperLV) {
-      case 0:
-        return Colors.grey;
-      case 1:
-        return Colors.lightGreenAccent;
-      case 2:
-        return Colors.cyanAccent;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(1.0),
-        child: Container(
-          child: Column(
-            children: [
-              Text(
-                "W I P E R S",
-                style: TextStyle(color: Colors.white, fontSize: 24.0),
-              ),
-              GestureDetector(
-                onTap: () {
-                  RESTVirtualKeyboard.sendkey(keySetting['WIPERS'].key);
-                },
-                child: Icon(keySetting['WIPERS'].toIconData(),
-                    size: 70.0, color: getColor(pg)),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

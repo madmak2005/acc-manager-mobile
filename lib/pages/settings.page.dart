@@ -66,6 +66,7 @@ class _MySettingsPageState extends State<MySettingsPage> {
                             var keyWipers = all['WIPERS'];
                             var keyBBP = all['BB+'];
                             var keyBBM = all['BB-'];
+                            var keyIGN = all['IGNITION'];
                             return Column(
                               children: [
                                 Container(
@@ -126,6 +127,10 @@ class _MySettingsPageState extends State<MySettingsPage> {
                                   child: Row(
                                     children: [
                                       Expanded(
+                                        flex:1,
+                                        child: new KeyConfig(keyIGN),
+                                      ),
+                                      Expanded(
                                         flex: 1,
                                         child: new KeyConfig(keyBBP),
                                       ),
@@ -133,10 +138,26 @@ class _MySettingsPageState extends State<MySettingsPage> {
                                         flex:1,
                                         child: new KeyConfig(keyBBM),
                                       ),
+
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex:1,
+                                        child: new KeyConfig(all['STARTER']),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(),
+                                      ),
                                       Expanded(
                                         flex:1,
                                         child: Container(),
                                       ),
+
                                     ],
                                   ),
                                 )
