@@ -1,4 +1,4 @@
-package pl.com.fastdata.virtual_keyboard
+package net.jastrzebia.virtual_keyboard
 
 import io.flutter.embedding.android.FlutterActivity
 

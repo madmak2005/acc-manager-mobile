@@ -4,21 +4,21 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:virtual_keyboard/common/KeySettings.dart';
-import 'package:virtual_keyboard/common/PageFileGraphics.dart';
-import 'package:virtual_keyboard/common/PageFilePhysics.dart';
-import 'package:virtual_keyboard/pages/widgets/Buttons.dart';
-import 'package:virtual_keyboard/pages/widgets/plusMinus.dart';
-import 'package:virtual_keyboard/services/RESTVirtualKeyboard.dart';
+import 'package:acc_manager/common/KeySettings.dart';
+import 'package:acc_manager/common/PageFileGraphics.dart';
+import 'package:acc_manager/common/PageFilePhysics.dart';
+import 'package:acc_manager/pages/widgets/Buttons.dart';
+import 'package:acc_manager/pages/widgets/plusMinus.dart';
+import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:virtual_keyboard/main.dart';
+import 'package:acc_manager/main.dart';
 
 Map<String, KeySettings> keySetting;
 bool firstTimeGraphics,firstTimePhysics;
 
-class GraphicsPage extends StatelessWidget {
-  GraphicsPage(Map<String, KeySettings> k) {
+class ControlPage extends StatelessWidget {
+  ControlPage(Map<String, KeySettings> k) {
     keySetting = k;
     firstTimeGraphics = true;
     firstTimePhysics = true;
@@ -30,7 +30,7 @@ class GraphicsPage extends StatelessWidget {
     this.context = context;
     return Scaffold(
         backgroundColor: Colors.black,
-        body: MyGraphicsPage(
+        body: MyControlPage(
           channelGraphics: kIsWeb
               ? WebSocketChannel.connect(Uri.parse(
                   'ws://${conf.serverIP}:${conf.serverPort}/acc/graphics'))
@@ -45,17 +45,17 @@ class GraphicsPage extends StatelessWidget {
   }
 }
 
-class MyGraphicsPage extends StatefulWidget {
+class MyControlPage extends StatefulWidget {
   final WebSocketChannel channelGraphics, channelPhysics;
-  MyGraphicsPage(
+  MyControlPage(
       {Key key, @required this.channelGraphics, @required this.channelPhysics})
       : super(key: key);
 
   @override
-  _MyGraphicsPageState createState() => _MyGraphicsPageState();
+  _MyControlPageState createState() => _MyControlPageState();
 }
 
-class _MyGraphicsPageState extends State<MyGraphicsPage> {
+class _MyControlPageState extends State<MyControlPage> {
 
   @override
   Widget build(BuildContext context) {

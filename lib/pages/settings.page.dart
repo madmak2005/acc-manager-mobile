@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:virtual_keyboard/common/KeySettings.dart';
-import 'package:virtual_keyboard/main.dart';
-import 'package:virtual_keyboard/pages/widgets/keyConfig.dart';
+import 'package:acc_manager/common/KeySettings.dart';
+import 'package:acc_manager/main.dart';
+import 'package:acc_manager/pages/widgets/keyConfig.dart';
 class SettingsPage extends StatelessWidget {
   BuildContext context;
   SettingsPage(BuildContext ctx) {
@@ -39,7 +39,7 @@ class _MySettingsPageState extends State<MySettingsPage> {
               image: DecorationImage(
                   image: new AssetImage("lib/assets/acc_3.jpg"),
                   alignment: FractionalOffset.topCenter,
-                  colorFilter: ColorFilter.mode(Colors.black54, BlendMode.darken),
+                  colorFilter: ColorFilter.mode(Colors.black26, BlendMode.darken),
                   fit: BoxFit.cover)),
           child: ListView(
             children: <Widget>[

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:virtual_keyboard/cards/graphicsCard.dart';
-import 'package:virtual_keyboard/cards/mediaCard.dart';
-import 'package:virtual_keyboard/cards/physicsCard.dart';
-import 'package:virtual_keyboard/cards/settingsCard.dart';
-import 'package:virtual_keyboard/pages/settings.page.dart';
+import 'package:acc_manager/cards/controlCard.dart';
+import 'package:acc_manager/cards/mediaCard.dart';
+import 'package:acc_manager/cards/physicsCard.dart';
+import 'package:acc_manager/cards/settingsCard.dart';
+import 'package:acc_manager/pages/settings.page.dart';
 
 class HomePage extends StatelessWidget {
   BuildContext context;

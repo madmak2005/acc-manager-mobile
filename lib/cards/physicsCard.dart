@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:virtual_keyboard/pages/audio.page.dart';
-import 'package:virtual_keyboard/pages/graphics.page.dart';
-import 'package:virtual_keyboard/pages/physics.page.dart';
+import 'package:acc_manager/pages/audio.page.dart';
+import 'package:acc_manager/pages/control.page.dart';
+import 'package:acc_manager/pages/physics.page.dart';
 
 class PhysicsCard extends StatelessWidget {
   @override

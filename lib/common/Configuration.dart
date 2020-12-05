@@ -6,7 +6,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 //import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:virtual_keyboard/pages/graphics.page.dart';
+import 'package:acc_manager/pages/control.page.dart';
 import 'KeySettings.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -172,23 +172,19 @@ class Configuration {
 
 
   Future<KeySettings> getKey(String key) async {
-    log('GET KEY $key');
     return _keys.then((value) {
-      log('RETURN: ${value[key].key}');
       return value[key];
     });
   }
 
   Future<String> getServerSetting(String key) async {
     final SharedPreferences prefs = await _prefs;
-    log('prefs: ${prefs.getString(key)}');
     return prefs.getString(key);
   }
 
   Future<void> save(String key, String value) async {
     if (key == "IP") _serverIP = value;
     if (key == "PORT") _serverPort = value;
-    log('value: $value');
     _prefs.then((store) {
       _keys.then((ks) {
         if (ks[key] != null) {
@@ -196,16 +192,13 @@ class Configuration {
           Map newMap = jsonDecode(value);
           KeySettings storedKey = new KeySettings.fromJson(mapStored);
           KeySettings newKey = new KeySettings.fromJson(newMap);
-          log('SAVING $key');
           storedKey.key = newKey.key;
           store.setString(storedKey.name, jsonEncode(storedKey.toJson()));
           print('saving: key=$key value=$value');
         } else {
-          log('SAVING $key');
           store.setString(key, value);
         }
       });
-
     });
   }
 }

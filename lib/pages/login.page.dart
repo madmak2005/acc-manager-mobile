@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:virtual_keyboard/pages/home.page.dart';
-import 'package:virtual_keyboard/main.dart';
+import 'package:acc_manager/common/Configuration.dart';
+import 'package:acc_manager/pages/home.page.dart';
+import 'package:acc_manager/main.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -49,7 +50,9 @@ class _LoginPageState extends State<LoginPage> {
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: new AssetImage("lib/assets/acc_2.jpg"),
-                  alignment: FractionalOffset.centerRight,
+                  colorFilter:
+                      ColorFilter.mode(Colors.black26, BlendMode.darken),
+                  alignment: FractionalOffset.topRight,
                   fit: BoxFit.cover)),
           child: ListView(
             children: <Widget>[
@@ -138,7 +141,6 @@ class _LoginPageState extends State<LoginPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            log('SAVE1');
                             conf.save("IP", myControllerIP.text);
                             conf.save("PORT", myControllerPort.text);
                             Navigator.pushReplacement(
@@ -151,7 +153,57 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text('Submit'),
                       ),
                     ),
-                  )
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                        top: 10, left: 160, right: 10, bottom: 0),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Image.asset('lib/assets/ACL_LOGO_WHITE-RED.png',
+                          alignment: Alignment.topRight,
+                          fit: BoxFit.fitWidth),
+                    ),
+                  ),
+                  Container(
+                    decoration: new BoxDecoration(
+                      color: Colors.white30,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(Consts.padding),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10.0,
+                          offset: const Offset(0.0, 10.0),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          Consts.title,
+                          style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.lightBlueAccent,
+                          ),
+                        ),
+                        SizedBox(height: 4.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: Text(
+                            Consts.description,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 4.0),
+                      ],
+                    ),
+                  ),
+
                 ],
               ),
             ],
@@ -160,4 +212,14 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+class Consts {
+  Consts._();
+
+  static const double padding = 8.0;
+
+  static const String title = "info";
+  static const String description =
+      "You must first run the \"acc-manager-server\" application on your PC with Assetto Corsa Competizione running. You can download it from https://github.com/madmak2005/acc-manager-server";
 }

@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:virtual_keyboard/common/KeySettings.dart';
-import 'package:virtual_keyboard/common/PageFileGraphics.dart';
-import 'package:virtual_keyboard/services/RESTVirtualKeyboard.dart';
+import 'package:acc_manager/common/KeySettings.dart';
+import 'package:acc_manager/common/PageFileGraphics.dart';
+import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 class PlusMinus extends StatelessWidget {
@@ -56,10 +56,6 @@ class _PlusMinusState extends State<PlusMinusWidget> {
     this.keySettingsPlus = keySettingsPlus;
     this.keySettingsMinus = keySettingsMinus;
     var ico  = Icon(Ionicons.ios_search);
-    log('Codepoint:  ${ico.icon.codePoint.toString()}');
-    log(ico.icon.fontFamily);
-    log(ico.icon.fontPackage);
-
   }
   @override
   Widget build(BuildContext context) {

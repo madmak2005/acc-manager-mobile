@@ -27,7 +27,7 @@ class PageFilePhysics {
   double roadTemp;
   List<double> localAngularVel;
   double finalFF;
-  List<double> brakeTemp;
+  List<double> brakeTemp  = new List<double>(4);
   double clutch;
   int isAIControlled;
   List<List> tyreContactPoint;

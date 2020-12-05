@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:virtual_keyboard/common/PageFileGraphics.dart';
-import 'package:virtual_keyboard/services/RESTVirtualKeyboard.dart';
+import 'package:acc_manager/common/PageFileGraphics.dart';
+import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 
-import '../graphics.page.dart';
+import '../control.page.dart';
 
 class ButtonWidget extends StatelessWidget {
   Icon icon;

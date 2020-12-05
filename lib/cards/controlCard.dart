@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:virtual_keyboard/common/KeySettings.dart';
-import 'package:virtual_keyboard/pages/audio.page.dart';
-import 'package:virtual_keyboard/pages/graphics.page.dart';
+import 'package:acc_manager/common/KeySettings.dart';
+import 'package:acc_manager/pages/audio.page.dart';
+import 'package:acc_manager/pages/control.page.dart';
 
 import '../main.dart';
 
@@ -34,7 +34,7 @@ class GraphicsCard extends StatelessWidget {
                           color: Colors.pink,
                         ),
                         title: Text(
-                          'Graphics',
+                          'Control',
                           style: GoogleFonts.comfortaa(
                               textStyle: TextStyle(
                                   color: Colors.black87,
@@ -46,7 +46,7 @@ class GraphicsCard extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => GraphicsPage(allKey)));
+                                  builder: (context) => ControlPage(allKey)));
                         }),
                   ),
                 );
