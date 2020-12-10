@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:acc_manager/common/KeySettings.dart';
 import 'package:acc_manager/main.dart';
 import 'package:acc_manager/pages/widgets/keyConfig.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 class SettingsPage extends StatelessWidget {
   BuildContext context;
   SettingsPage(BuildContext ctx) {

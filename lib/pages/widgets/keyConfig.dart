@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:acc_manager/common/KeySettings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:acc_manager/common/KeySettings.dart';
 
 import '../../main.dart';
 

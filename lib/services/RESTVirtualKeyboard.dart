@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
-import 'dart:developer';
-import 'package:acc_manager/common/Configuration.dart';
 import 'package:acc_manager/main.dart';
+import 'package:http/http.dart' as http;
 
 class RESTVirtualKeyboard {
   static void sendkey(String key) async {

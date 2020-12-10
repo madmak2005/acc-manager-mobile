@@ -2,6 +2,7 @@
     package="net.jastrzebia.virtual_keyboard">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="ACC Manager"
         android:icon="@mipmap/launcher_icon"

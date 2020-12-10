@@ -1,16 +1,13 @@
 import 'dart:convert';
-import 'dart:developer';
 
+import 'package:acc_manager/common/PageFilePhysics.dart';
+import 'package:acc_manager/main.dart';
+import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:acc_manager/cards/mediaCard.dart';
-import 'package:acc_manager/common/Configuration.dart';
-import 'package:acc_manager/common/PageFilePhysics.dart';
-import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:acc_manager/main.dart';
 
 bool firstTimePhysics;
 

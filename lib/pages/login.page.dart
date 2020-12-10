@@ -1,10 +1,10 @@
 import 'dart:developer';
 
+import 'package:acc_manager/main.dart';
+import 'package:acc_manager/pages/home.page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:acc_manager/common/Configuration.dart';
-import 'package:acc_manager/pages/home.page.dart';
-import 'package:acc_manager/main.dart';
+import 'package:regexed_validator/regexed_validator.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,15 +22,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    myControllerIP.addListener(_printLatestValue);
-    myControllerPort.addListener(_printLatestValue);
+    //myControllerIP.addListener(_printLatestValue);
+    //myControllerPort.addListener(_printLatestValue);
   }
-
+/*
   _printLatestValue() {
     print("IP: ${myControllerIP.text}");
     print("Port: ${myControllerPort.text}");
   }
-
+*/
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
@@ -71,17 +71,21 @@ class _LoginPageState extends State<LoginPage> {
                             } else {
                               myControllerIP.text = snapshot.data;
                               return TextFormField(
+                                maxLength: 15,
+                                autovalidateMode: AutovalidateMode.always,
                                 controller: myControllerIP,
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return 'Please enter IP';
+                                  } else {
+                                    if (!validator.ip(value)) return 'IP address is not valid';
                                   }
                                   return null;
                                 },
                                 style: GoogleFonts.comfortaa(
                                     textStyle: TextStyle(
                                         color: Colors.white70,
-                                        fontSize: 18,
+                                        fontSize: 22,
                                         fontWeight: FontWeight.w900)),
                                 decoration: InputDecoration(
                                   fillColor: Colors.lightBlueAccent,
@@ -89,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                                   labelStyle: GoogleFonts.comfortaa(
                                       textStyle: TextStyle(
                                           color: Colors.lightBlue,
-                                          fontSize: 22,
+                                          fontSize: 24,
                                           fontWeight: FontWeight.w900)),
                                 ),
                               );
@@ -109,17 +113,23 @@ class _LoginPageState extends State<LoginPage> {
                             } else {
                               myControllerPort.text = snapshot.data;
                               return TextFormField(
+                                maxLength: 5,
+                                autovalidateMode: AutovalidateMode.always,
                                 controller: myControllerPort,
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return 'Please enter Port (8080 default)';
+                                    return 'Please enter port (8080 default)';
+                                  }else{
+                                    const pattern = r'^[0-9]{1,5}$';
+                                    final regExp = RegExp(pattern);
+                                    if (!regExp.hasMatch(value)) return 'Please enter valid port. (8080 default)';
                                   }
                                   return null;
                                 },
                                 style: GoogleFonts.comfortaa(
                                     textStyle: TextStyle(
                                         color: Colors.white70,
-                                        fontSize: 18,
+                                        fontSize: 22,
                                         fontWeight: FontWeight.w900)),
                                 decoration: InputDecoration(
                                   fillColor: Colors.lightBlueAccent,
@@ -127,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                                   labelStyle: GoogleFonts.comfortaa(
                                       textStyle: TextStyle(
                                           color: Colors.lightBlue,
-                                          fontSize: 22,
+                                          fontSize: 24,
                                           fontWeight: FontWeight.w900)),
                                 ),
                               );

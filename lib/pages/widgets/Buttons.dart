@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:acc_manager/common/PageFileGraphics.dart';
 import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../control.page.dart';
 
@@ -34,7 +34,7 @@ class Lights extends StatelessWidget {
         return Colors.lightGreenAccent;
       case 2:
         return Colors.cyanAccent;
-      default :
+      default:
         return Colors.grey;
     }
   }
@@ -108,6 +108,10 @@ class Wipers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        child: GestureDetector(
+      onTap: () {
+        RESTVirtualKeyboard.sendkey(keySetting['WIPERS'].key);
+      },
       child: Padding(
         padding: const EdgeInsets.all(1.0),
         child: Container(
@@ -117,25 +121,19 @@ class Wipers extends StatelessWidget {
                 "W I P E R S",
                 style: TextStyle(color: Colors.white, fontSize: 24.0),
               ),
-              GestureDetector(
-                onTap: () {
-                  RESTVirtualKeyboard.sendkey(keySetting['WIPERS'].key);
-                },
-                child: Icon(keySetting['WIPERS'].toIconData(),
-                    size: 70.0, color: getColor()),
-              ),
+              Icon(keySetting['WIPERS'].toIconData(),
+                  size: 70.0, color: getColor()),
             ],
           ),
         ),
       ),
-    );
+    ));
   }
 }
 
-
 class Ignition extends StatelessWidget {
   final PageFileGraphics pageFileGraphics;
-  Ignition( {this.pageFileGraphics});
+  Ignition({this.pageFileGraphics});
 
   Color getColor() {
     switch (pageFileGraphics.lightsStage) {
@@ -172,7 +170,7 @@ class Ignition extends StatelessWidget {
 
 class Starter extends StatelessWidget {
   final PageFileGraphics pageFileGraphics;
-  Starter( {this.pageFileGraphics});
+  Starter({this.pageFileGraphics});
 
   Color getColor() {
     switch (pageFileGraphics.lightsStage) {

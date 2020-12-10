@@ -1,10 +1,8 @@
-import 'dart:developer';
 
+import 'package:acc_manager/common/KeySettings.dart';
+import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:acc_manager/common/KeySettings.dart';
-import 'package:acc_manager/common/PageFileGraphics.dart';
-import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 class PlusMinus extends StatelessWidget {

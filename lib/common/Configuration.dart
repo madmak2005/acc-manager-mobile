@@ -1,20 +1,17 @@
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 //import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
-import 'package:acc_manager/pages/control.page.dart';
+
 import 'KeySettings.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 final Set<String> allowedKeys = {'LIGHTS','MAP+','MAP-','MFD','TC+','TC-','ABS+','ABS-','WIPERS','BB+','BB-','IGNITION','STARTER'};
 
 class Configuration {
-  String _serverIP;
-  String _serverPort;
+  String serverIP;
+  String serverPort;
   Future<Map<String, KeySettings>> _keys;
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -27,7 +24,7 @@ class Configuration {
   init() {
     _keys = initAllKeys();
   }
-
+/*
   set serverIP(String serverIP) {
     _serverIP = serverIP;
   }
@@ -43,7 +40,7 @@ class Configuration {
   String get serverPort {
     return _serverPort;
   }
-
+*/
   Future<Map<String, KeySettings>> getAllKeys() async {
     return _keys;
   }
@@ -183,8 +180,8 @@ class Configuration {
   }
 
   Future<void> save(String key, String value) async {
-    if (key == "IP") _serverIP = value;
-    if (key == "PORT") _serverPort = value;
+    if (key == "IP") serverIP = value;
+    if (key == "PORT") serverPort = value;
     _prefs.then((store) {
       _keys.then((ks) {
         if (ks[key] != null) {
