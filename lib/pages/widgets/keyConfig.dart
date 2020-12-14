@@ -10,10 +10,8 @@ import '../../main.dart';
 
 
 class KeyConfig extends StatefulWidget {
-  KeySettings localKey;
-  KeyConfig(KeySettings key) {
-    this.localKey = key;
-  }
+  final KeySettings localKey;
+  KeyConfig(this.localKey);
   @override
   _KeyConfigState createState() => _KeyConfigState(localKey);
 }

@@ -3,33 +3,26 @@ import 'package:acc_manager/common/KeySettings.dart';
 import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 class PlusMinus extends StatelessWidget {
-  int value;
-  String title;
-  KeySettings keySettingsPlus, keySettingsMinus;
-  Color color;
+  final double value;
+  final String title;
+  final KeySettings keySettingsPlus, keySettingsMinus;
+  final Color color;
 
-  PlusMinus(int value, String title, Color color, KeySettings keySettingsPlus,
-      KeySettings keySettingsMinus) {
-    this.value = value;
-    this.title = title;
-    this.color = color;
-    this.keySettingsPlus = keySettingsPlus;
-    this.keySettingsMinus = keySettingsMinus;
-  }
+  PlusMinus(this.value, this.title, this.color, this.keySettingsPlus,
+      this.keySettingsMinus);
 
   //Future<List<User>> users = UsersService.fromBase64("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmlhbWFrb3dza2FAZ21haWwuY29tIiwiZXhwIjoxNjAxMjE2MzcwLCJpYXQiOjE2MDExOTgzNzB9.DgMpti2AmWR82Q7X5hwBaBNe1vQcZEZmItSrJi-1pf4EcIJfqlxWf0cpVPzgMKHU3_siRYynNDstqfpSyeg3bw").getUsers();
 
   @override
   Widget build(BuildContext context) {
-    return PlusMinusWidget(color: this.color, title: this.title,value: this.value,keySettingsMinus: this.keySettingsMinus,keySettingsPlus: keySettingsPlus);
+    return PlusMinusWidget(color: this.color, title: this.title,value: this.value, keySettingsMinus: this.keySettingsMinus,keySettingsPlus: keySettingsPlus);
   }
 }
 
 class PlusMinusWidget extends StatefulWidget {
-  final int value;
+  final double value;
   final String title;
   final KeySettings keySettingsPlus, keySettingsMinus;
   final Color color;
@@ -42,19 +35,13 @@ class PlusMinusWidget extends StatefulWidget {
 }
 
 class _PlusMinusState extends State<PlusMinusWidget> {
-  int value;
+  double value;
   String title;
   KeySettings keySettingsPlus, keySettingsMinus;
   Color color;
-  _PlusMinusState(int value, String title, Color color, KeySettings keySettingsPlus,
-      KeySettings keySettingsMinus){
-    this.value = value;
-    this.title = title;
-    this.color = color;
-    this.keySettingsPlus = keySettingsPlus;
-    this.keySettingsMinus = keySettingsMinus;
-    var ico  = Icon(Ionicons.ios_search);
-  }
+  _PlusMinusState(this.value, this.title, this.color, this.keySettingsPlus,
+      this.keySettingsMinus);
+
   @override
   Widget build(BuildContext context) {
     return Container(

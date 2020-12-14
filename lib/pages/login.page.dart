@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:acc_manager/main.dart';
 import 'package:acc_manager/pages/home.page.dart';
 import 'package:flutter/material.dart';
@@ -231,5 +229,7 @@ class Consts {
 
   static const String title = "info";
   static const String description =
-      "You must first run the \"acc-manager-server\" application on your PC with Assetto Corsa Competizione running. You can download it from https://github.com/madmak2005/acc-manager-server";
+      'Make sure you have run the "acc-manager-server" application on the same computer where Assetto Corsa Competizione is running.\n\n'
+    + 'You can download the "acc-manager-server" program from:\n'
+    + 'https://github.com/madmak2005/acc-manager-server';
 }

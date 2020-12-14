@@ -9,21 +9,22 @@ class PageFileStatic {
   String playerSurname;
   String playerNick;
   int sectorCount;
-  int maxTorque;
-  int maxPower;
+  double maxTorque;
+  double maxPower;
   int maxRpm;
-  int maxFuel;
-  List<int> suspensionMaxTravel;
-  List<int> tyreRadius;
+  double maxFuel;
+  List<double> suspensionMaxTravel;
+  List<double> tyreRadius;
   int penaltiesEnabled;
-  int aidFuelRate;
-  int aidTireRate;
-  int aidMechanicalDamage;
+  double aidFuelRate;
+  double aidTireRate;
+  double aidMechanicalDamage;
   int aidAllowTyreBlankets;
-  int aidStability;
+  double aidStability;
   int aidAutoClutch;
   int aidAutoBlip;
-  int kersMaxJ;
+  double kersMaxJ;
+  int reversedGridPositions;
   int pitWindowStart;
   int pitWindowEnd;
   int isOnline;
@@ -54,6 +55,7 @@ class PageFileStatic {
         this.aidAutoClutch,
         this.aidAutoBlip,
         this.kersMaxJ,
+        this.reversedGridPositions,
         this.pitWindowStart,
         this.pitWindowEnd,
         this.isOnline});
@@ -73,8 +75,8 @@ class PageFileStatic {
     maxPower = json['maxPower'];
     maxRpm = json['maxRpm'];
     maxFuel = json['maxFuel'];
-    suspensionMaxTravel = json['suspensionMaxTravel'].cast<int>();
-    tyreRadius = json['tyreRadius'].cast<int>();
+    suspensionMaxTravel = json['suspensionMaxTravel'] != null ? json['suspensionMaxTravel'].cast<double>() : new List<double>();
+    tyreRadius = json['tyreRadius'] != null ? json['tyreRadius'].cast<double>() : new List<double>();
     penaltiesEnabled = json['penaltiesEnabled'];
     aidFuelRate = json['aidFuelRate'];
     aidTireRate = json['aidTireRate'];
@@ -84,6 +86,7 @@ class PageFileStatic {
     aidAutoClutch = json['aidAutoClutch'];
     aidAutoBlip = json['aidAutoBlip'];
     kersMaxJ = json['kersMaxJ'];
+    reversedGridPositions = json['reversedGridPositions'];
     pitWindowStart = json['pitWindowStart'];
     pitWindowEnd = json['pitWindowEnd'];
     isOnline = json['isOnline'];
@@ -116,6 +119,7 @@ class PageFileStatic {
     data['aidAutoClutch'] = this.aidAutoClutch;
     data['aidAutoBlip'] = this.aidAutoBlip;
     data['kersMaxJ'] = this.kersMaxJ;
+    data['reversedGridPositions'] = this.reversedGridPositions;
     data['pitWindowStart'] = this.pitWindowStart;
     data['pitWindowEnd'] = this.pitWindowEnd;
     data['isOnline'] = this.isOnline;

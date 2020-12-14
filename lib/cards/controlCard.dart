@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../main.dart';
 
 class GraphicsCard extends StatelessWidget {
-  Future<Map<String, KeySettings>> _allKeys = conf.getAllKeys();
+  final Future<Map<String, KeySettings>> _allKeys = conf.getAllKeys();
 
   @override
   Widget build(BuildContext context) {

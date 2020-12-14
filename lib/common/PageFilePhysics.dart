@@ -190,7 +190,7 @@ class PageFilePhysics {
 }
 
 class TyreContactPoint {
-  TyreContactPoint.fromJson(Map<String, dynamic> json) {}
+  TyreContactPoint.fromJson(Map<String, dynamic> json);
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
