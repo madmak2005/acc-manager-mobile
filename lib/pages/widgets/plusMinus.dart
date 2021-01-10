@@ -49,7 +49,7 @@ class _PlusMinusState extends State<PlusMinusWidget> {
         children: [
           Text(
             widget.title,
-            style: TextStyle(color: Colors.white, fontSize: 24.0),
+            style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -66,8 +66,8 @@ class _PlusMinusState extends State<PlusMinusWidget> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 0.0),
                 child: Text(
-                  widget.value.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 32.0),
+                  formatNumber(widget.value),
+                  style: TextStyle(color: Colors.white, fontSize: (formatNumber(widget.value).length > 1 ?  22.0 : 32.0) ),
                 ),
               ),
               GestureDetector(
@@ -76,7 +76,7 @@ class _PlusMinusState extends State<PlusMinusWidget> {
                 },
                 child: Icon(
                     widget.keySettingsMinus.toIconData(),
-                    size: 70.0,
+                    size: 60.0,
                     color: widget.color),
               ),
             ],
@@ -85,4 +85,8 @@ class _PlusMinusState extends State<PlusMinusWidget> {
       ),
     );
   }
+}
+
+String formatNumber(double value){
+  return value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 2);
 }

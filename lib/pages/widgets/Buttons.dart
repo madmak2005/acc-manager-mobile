@@ -45,7 +45,11 @@ class Lights extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          } else {
+          } if (!snapshot.hasData){
+            return
+              CircularProgressIndicator();
+          }
+          else {
             Map<String, KeySettings> _allKeys = snapshot.data;
             return Container(
               child: Container(
@@ -53,7 +57,7 @@ class Lights extends StatelessWidget {
                   children: [
                     Text(
                       "L I G H T S",
-                      style: TextStyle(color: Colors.white, fontSize: 24.0),
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -82,6 +86,9 @@ class MFD extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
+          }  if (!snapshot.hasData){
+            return
+              CircularProgressIndicator();
           } else {
             Map<String, KeySettings> _allKeys = snapshot.data;
             return Container(
@@ -90,7 +97,7 @@ class MFD extends StatelessWidget {
                   children: [
                     Text(
                       "M F D",
-                      style: TextStyle(color: Colors.white, fontSize: 24.0),
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -135,6 +142,9 @@ class Wipers extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
+          }  if (!snapshot.hasData){
+            return
+              CircularProgressIndicator();
           } else {
             Map<String, KeySettings> _allKeys = snapshot.data;
             return Container(
@@ -149,7 +159,7 @@ class Wipers extends StatelessWidget {
                     children: [
                       Text(
                         "W I P E R S",
-                        style: TextStyle(color: Colors.white, fontSize: 24.0),
+                        style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
                       Icon(_allKeys['WIPERS'].toIconData(),
                           size: 70.0, color: getColor()),
@@ -185,6 +195,9 @@ class Ignition extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
+          }  if (!snapshot.hasData){
+            return
+              CircularProgressIndicator();
           } else {
             Map<String, KeySettings> _allKeys = snapshot.data;
             return Container(
@@ -193,7 +206,7 @@ class Ignition extends StatelessWidget {
                   children: [
                     Text(
                       "I G N I T I O N",
-                      style: TextStyle(color: Colors.white, fontSize: 24.0),
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -233,6 +246,9 @@ class Starter extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
+          }  if (!snapshot.hasData){
+            return
+              CircularProgressIndicator();
           } else {
             Map<String, KeySettings> _allKeys = snapshot.data;
             return Container(
@@ -241,7 +257,7 @@ class Starter extends StatelessWidget {
                   children: [
                     Text(
                       "S T A R T E R",
-                      style: TextStyle(color: Colors.white, fontSize: 24.0),
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
                     ),
                     GestureDetector(
                       onTap: () {

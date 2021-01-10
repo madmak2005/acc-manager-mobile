@@ -1,9 +1,15 @@
+import 'dart:developer';
+
 import 'package:acc_manager/cards/controlCard.dart';
 import 'package:acc_manager/cards/mediaCard.dart';
 import 'package:acc_manager/cards/physicsCard.dart';
 import 'package:acc_manager/cards/settingsCard.dart';
+import 'package:acc_manager/pages/widgets/BGImages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:screen/screen.dart';
+
+import '../main.dart';
 
 class HomePage extends StatelessWidget {
   BuildContext context;
@@ -32,7 +38,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _isKeptOn = false;
+  double _brightness = 1.0;
 
+  @override
+  initState() {
+    super.initState();
+    initPlatformState();
+  }
+
+  initPlatformState() async {
+    String _kOn = await conf.getServerSetting('isKeptOn');
+    log('isKeptOn $_kOn');
+    bool keptOn = _kOn  == 'true' ? true : false;
+    double brightness = await Screen.brightness;
+    setState((){
+      _isKeptOn = keptOn;
+      _brightness = brightness;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: new AssetImage("lib/assets/acc_1.jpg"),
+                  image: new AssetImage(getBGImage()),
                   alignment: FractionalOffset.centerRight,
                   fit: BoxFit.cover)),
           child: GridView.count(

@@ -7,8 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../main.dart';
 
-
-
 class KeyConfig extends StatefulWidget {
   final KeySettings localKey;
   KeyConfig(this.localKey);
