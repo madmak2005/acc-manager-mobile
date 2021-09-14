@@ -395,7 +395,41 @@ class _MyControlPageState extends State<MyControlPage> {
                 );
               } else {
                 return
-                  CircularProgressIndicator();
+                  Container(
+                      child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Text(
+                                Consts.title,
+                                style: TextStyle(
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.lightBlueAccent,
+                                ),
+                              ),
+                              SizedBox(height: 4.0),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                child: Text(
+                                  Consts.description,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 4.0),
+                            ],
+                          )
+                      )
+                  );
               }
             }
         ),
@@ -412,5 +446,7 @@ class _MyControlPageState extends State<MyControlPage> {
     widget.channelPhysics.sink.close();
     super.dispose();
   }
+
+
 
 }

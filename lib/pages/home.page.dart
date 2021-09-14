@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:acc_manager/cards/controlCard.dart';
 import 'package:acc_manager/cards/mediaCard.dart';
 import 'package:acc_manager/cards/physicsCard.dart';
+import 'package:acc_manager/cards/sessionCard.dart';
 import 'package:acc_manager/cards/settingsCard.dart';
 import 'package:acc_manager/pages/widgets/BGImages.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,10 +73,12 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.all(12.0),
             childAspectRatio: 8.0 / 4.0,
             children: <Widget>[
-              PhysicsCard(),
+             // PhysicsCard(),
               GraphicsCard(),
-              MediaCard(),
+              //MediaCard(),
+              SessionCard(),
               SettingsCard(),
+
             ],
           ),
         ));

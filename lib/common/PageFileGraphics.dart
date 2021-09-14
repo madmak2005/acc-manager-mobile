@@ -40,7 +40,7 @@ class PageFileGraphics {
   int tccut = 0;
   int engineMap = 0;
   int abs = 0;
-  int fuelXLap = 0;
+  double fuelXLap = 0;
   int rainLights = 0;
   int flashingLights = 0;
   int lightsStage = 0;

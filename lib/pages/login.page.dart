@@ -46,14 +46,12 @@ class _LoginPageState extends State<LoginPage> {
       body: Form(
         key: _formKey,
         child: Container(
-
           decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: new AssetImage(getBGImage()),
-                  colorFilter:
-                      ColorFilter.mode(Colors.black26, BlendMode.darken),
-                  alignment: FractionalOffset.topRight,
-                  fit: BoxFit.cover)),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.blueGrey, Colors.black45])
+          ),
           child: Container(
             margin: const EdgeInsets.only(left: 20.0, right: 20.0),
             child: ListView(

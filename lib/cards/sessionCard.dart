@@ -1,9 +1,9 @@
-import 'package:acc_manager/pages/statistics.page.dart';
+import 'package:acc_manager/pages/session.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PhysicsCard extends StatelessWidget {
+class SessionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,11 +13,11 @@ class PhysicsCard extends StatelessWidget {
         color: Colors.grey.withOpacity(0.6),
         child: ListTile(
             leading: Icon(
-              Icons.car_rental,
+              Icons.addchart,
               color: Colors.pink,
             ),
             title: Text(
-              'Physics',
+              'Session',
               style: GoogleFonts.comfortaa(
                   textStyle: TextStyle(
                       color: Colors.black87,
@@ -27,7 +27,7 @@ class PhysicsCard extends StatelessWidget {
             dense: true,
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => StatisticsPage()));
+                  MaterialPageRoute(builder: (context) => SessionPage()));
             }),
       ),
     );
