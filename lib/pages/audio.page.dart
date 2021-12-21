@@ -4,12 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AudioPage extends StatelessWidget {
-  AudioPage();
-  BuildContext context;
-
   @override
   Widget build(BuildContext context) {
-    this.context = context;
     return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
@@ -60,8 +56,9 @@ class _MyAudioPageState extends State<MyAudioPage> {
 }
 
 class ButtonWidget extends StatelessWidget {
-  Icon icon;
-  String action;
+  Icon? icon;
+  String? action;
+
   ButtonWidget(Icon icon, String action){
    this.icon = icon;
    this.action = action;
@@ -71,7 +68,7 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: GestureDetector(
-          onTap: () => RESTVirtualKeyboard.sendkey(action),
+          onTap: () => RESTVirtualKeyboard.sendkey(action!),
           child: icon),
     );
   }

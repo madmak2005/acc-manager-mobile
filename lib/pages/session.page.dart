@@ -2,27 +2,49 @@ import 'dart:convert';
 
 import 'package:acc_manager/common/StatMobile.dart';
 import 'package:acc_manager/main.dart';
+import 'package:acc_manager/services/RESTSessions.dart';
 import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 
 import 'dart:developer';
 
 import 'login.page.dart';
 
-bool firstTimeStatistics;
+bool firstTimeStatistics = true;
 
 class SessionPage extends StatelessWidget {
+  BuildContext? context;
+
   SessionPage() {
     firstTimeStatistics = true;
   }
 
-  BuildContext context;
+  void handleClick(String value) {
+    switch (value) {
+      case 'Save xls':
+        {
+          RESTSessions.saveSessions().then((v) {
+            print(v.body);
+            showAlert(v.body);
+          });
+          break;
+        }
+    }
+  }
+
+  void showAlert(String msg) {
+    showDialog(
+        context: context!,
+        builder: (context) => AlertDialog(
+              content: Text(msg,
+                  style: TextStyle(fontSize: 8, fontWeight: FontWeight.normal)),
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +55,19 @@ class SessionPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.blue,
           title: Text("Statistics"),
+          actions: <Widget>[
+            PopupMenuButton<String>(
+              onSelected: handleClick,
+              itemBuilder: (BuildContext context) {
+                return {'Save xls'}.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                }).toList();
+              },
+            ),
+          ],
         ),
         body: MySessionPage(
           channelStatistics: kIsWeb
@@ -47,7 +82,7 @@ class SessionPage extends StatelessWidget {
 class MySessionPage extends StatefulWidget {
   final WebSocketChannel channelStatistics;
 
-  MySessionPage({Key key, @required this.channelStatistics}) : super(key: key);
+  MySessionPage({Key? key, required this.channelStatistics}) : super(key: key);
 
   @override
   _MySessionPageState createState() => _MySessionPageState();
@@ -68,7 +103,8 @@ class _MySessionPageState extends State<MySessionPage> {
                 widget.channelStatistics.sink.add('');
                 firstTimeStatistics = false;
               }
-              StatMobile l = StatMobile.fromJson(json.decode(snapshot.data));
+              StatMobile l =
+                  StatMobile.fromJson(json.decode(snapshot.data as String));
               statLaps.add(l);
               log(statLaps.length.toString());
               return SingleChildScrollView(
@@ -224,7 +260,7 @@ class _MySessionPageState extends State<MySessionPage> {
 }
 
 class StatRow extends StatelessWidget {
-  StatMobile lap;
+  StatMobile lap = new StatMobile.empty();
 
   StatRow(StatMobile lap) {
     this.lap = lap;
@@ -261,7 +297,7 @@ class StatRow extends StatelessWidget {
             flex: 1,
             child: Text(lap.lapNo.toString(),
                 style: TextStyle(
-                    color: Colors.white,
+                    color: lap.isValidLap ? Colors.green : Colors.red,
                     fontSize: 12,
                     fontWeight: FontWeight.normal)),
           ),
@@ -384,8 +420,8 @@ class StatRow extends StatelessWidget {
 }
 
 class ButtonWidget extends StatelessWidget {
-  Icon icon;
-  String action;
+  Icon? icon;
+  String? action;
 
   ButtonWidget(Icon icon, String action) {
     this.icon = icon;
@@ -396,7 +432,7 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: GestureDetector(
-          onTap: () => RESTVirtualKeyboard.sendkey(action), child: icon),
+          onTap: () => RESTVirtualKeyboard.sendkey(action!), child: icon),
     );
   }
 }
@@ -423,8 +459,9 @@ class DataPopUp extends StatelessWidget {
     String threeDigits(int n) => n.toString().padLeft(3, "0");
     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    //String threeDigitMilliSeconds = threeDigits(duration.inSeconds.remainder(100));
     String threeDigitMilliSeconds =
-        threeDigits(duration.inSeconds.remainder(100));
+        threeDigits(duration.inMilliseconds - duration.inSeconds * 1000);
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds.$threeDigitMilliSeconds";
   }
 
@@ -519,7 +556,10 @@ class DataPopUp extends StatelessWidget {
                                           Text(
                                             root.trackStatus,
                                             style: TextStyle(
-                                              color: root.trackStatus == 'OPTIMUM' ? Colors.green : Colors.yellow,
+                                              color:
+                                                  root.trackStatus == 'OPTIMUM'
+                                                      ? Colors.green
+                                                      : Colors.yellow,
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -540,9 +580,12 @@ class DataPopUp extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            root.avgRainIntensity.toStringAsFixed(1),
+                                            root.avgRainIntensity
+                                                .toStringAsFixed(1),
                                             style: TextStyle(
-                                              color: root.avgRainIntensity > 0 ? Colors.yellow : Colors.green,
+                                              color: root.avgRainIntensity > 0
+                                                  ? Colors.yellow
+                                                  : Colors.green,
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -595,12 +638,15 @@ class DataPopUp extends StatelessWidget {
                                               Icon(
                                                 MaterialCommunityIcons
                                                     .gas_station,
-                                                color: root.fuelAdded > 0 ? Colors.green.shade400 : Colors.red.shade400,
+                                                color: root.fuelAdded > 0
+                                                    ? Colors.green.shade400
+                                                    : Colors.red.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
                                               (root.fuelLeftOnStart -
-                                                          root.fuelLeftOnEnd + root.fuelAdded)
+                                                          root.fuelLeftOnEnd +
+                                                          root.fuelAdded)
                                                       .toStringAsFixed(2) +
                                                   " l",
                                               Icon(
@@ -628,19 +674,21 @@ class DataPopUp extends StatelessWidget {
                                                 size: 19,
                                               )),
                                           Row(
-                                              children: root.splitTimes.splits
+                                              children: root.splitTimes!.splits
                                                   .map<Widget>(
-                                                    (e) => BoxedData.name(
-                                                        _printDurationHoursMinutesSecondsMilliseconds(
-                                                                e) +
-                                                            " ",
-                                                        Icon(
-                                                          MaterialCommunityIcons
-                                                              .timer,
-                                                          color: Colors
-                                                              .blue.shade400,
-                                                          size: 7,
-                                                        )),
+                                                    (e) => e > 0
+                                                        ? BoxedData.name(
+                                                            _printDurationHoursMinutesSecondsMilliseconds(
+                                                                    e) +
+                                                                " ",
+                                                            Icon(
+                                                              MaterialCommunityIcons
+                                                                  .timer,
+                                                              color: Colors.blue
+                                                                  .shade400,
+                                                              size: 7,
+                                                            ))
+                                                        : new SizedBox.shrink(),
                                                   )
                                                   .toList()),
                                         ],
@@ -654,23 +702,29 @@ class DataPopUp extends StatelessWidget {
                                       padding: const EdgeInsets.only(left: 1.0),
                                       child: Row(
                                         children: [
-
                                           BoxedData.name(
-                                              'MFD [LF]: ' +root.mfdTyrePressureLF.toStringAsFixed(1),
+                                              'MFD [LF]: ' +
+                                                  root.mfdTyrePressureLF
+                                                      .toStringAsFixed(1),
                                               Icon(
-                                                MaterialCommunityIcons.arrow_top_left,
+                                                MaterialCommunityIcons
+                                                    .arrow_top_left,
                                                 color: Colors.blue.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
-                                              'MFD [RF]: ' +root.mfdTyrePressureRF.toStringAsFixed(1),
+                                              'MFD [RF]: ' +
+                                                  root.mfdTyrePressureRF
+                                                      .toStringAsFixed(1),
                                               Icon(
-                                                MaterialCommunityIcons.arrow_top_right,
+                                                MaterialCommunityIcons
+                                                    .arrow_top_right,
                                                 color: Colors.blue.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
-                                              'MFD [l]: ' +root.mfdFuelToAdd.toString(),
+                                              'MFD [l]: ' +
+                                                  root.mfdFuelToAdd.toString(),
                                               Icon(
                                                 MaterialCommunityIcons.fuel,
                                                 color: Colors.blue.shade400,
@@ -678,7 +732,6 @@ class DataPopUp extends StatelessWidget {
                                               )),
                                         ],
                                       ),
-
                                     )
                                   ],
                                 ),
@@ -689,21 +742,28 @@ class DataPopUp extends StatelessWidget {
                                       child: Row(
                                         children: [
                                           BoxedData.name(
-                                              'MFD [LR]: ' +root.mfdTyrePressureLR.toStringAsFixed(1),
+                                              'MFD [LR]: ' +
+                                                  root.mfdTyrePressureLR
+                                                      .toStringAsFixed(1),
                                               Icon(
-                                                MaterialCommunityIcons.arrow_bottom_left,
+                                                MaterialCommunityIcons
+                                                    .arrow_bottom_left,
                                                 color: Colors.blue.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
-                                              'MFD [RR]: ' +root.mfdTyrePressureRR.toStringAsFixed(1),
+                                              'MFD [RR]: ' +
+                                                  root.mfdTyrePressureRR
+                                                      .toStringAsFixed(1),
                                               Icon(
-                                                MaterialCommunityIcons.arrow_bottom_right,
+                                                MaterialCommunityIcons
+                                                    .arrow_bottom_right,
                                                 color: Colors.blue.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
-                                              'MFD [set]: ' +root.mfdTyreSet.toString(),
+                                              'MFD [set]: ' +
+                                                  root.mfdTyreSet.toString(),
                                               Icon(
                                                 MaterialCommunityIcons.reload,
                                                 color: Colors.blue.shade400,
@@ -711,7 +771,6 @@ class DataPopUp extends StatelessWidget {
                                               )),
                                         ],
                                       ),
-
                                     )
                                   ],
                                 )

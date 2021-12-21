@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-//import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'KeySettings.dart';
@@ -10,20 +9,19 @@ import 'KeySettings.dart';
 final Set<String> allowedKeys = {'LIGHTS','MAP+','MAP-','MFD','TC+','TC-','ABS+','ABS-','WIPERS','BB+','BB-','IGNITION','STARTER'};
 
 class Configuration {
-  String serverIP;
-  String serverPort;
-  Future<Map<String, KeySettings>> _keys;
+  String serverIP = "";
+  String serverPort = "8080";
+  late Future<Map<String, KeySettings>> _keys;
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Future<SharedPreferences> get prefs => _prefs;
 
   Configuration() {
-    init();
+    this.serverIP = "";
+    this.serverPort = "8080";
+    this._keys = initAllKeys();
   }
 
-  init() {
-    _keys = initAllKeys();
-  }
 /*
   set serverIP(String serverIP) {
     _serverIP = serverIP;
@@ -48,11 +46,11 @@ class Configuration {
   Future<Map<String, KeySettings>> initAllKeys() async {
     Map<String, KeySettings> allKeys = new Map();
     allowedKeys.forEach((key) async {
-      KeySettings _ks = await getKeyFromStore(key);
-      if (_ks != null) {
+      KeySettings? _ks = await getKeyFromStore(key);
+      if (_ks.key != "") {
         allKeys.putIfAbsent(_ks.name, () => _ks);
       } else{
-        KeySettings _defaultKeySettings;
+        KeySettings _defaultKeySettings = new KeySettings("", "", "", "", "");
         switch (key) {
           case 'LIGHTS':
             {
@@ -159,10 +157,12 @@ class Configuration {
     SharedPreferences prefs = await _prefs;
     var dbKey = prefs.getString(key);
     if (dbKey != null) {
-      Map keyMap = jsonDecode(dbKey);
+      Map<String,String> keyMap = jsonDecode(dbKey);
       return new KeySettings.fromJson(keyMap);
-      }
-    return null;
+      }else{
+      return new KeySettings("", "", "", "", "");
+    }
+
     }
 
 
@@ -170,13 +170,14 @@ class Configuration {
 
   Future<KeySettings> getKey(String key) async {
     return _keys.then((value) {
-      return value[key];
+      return value[key]!;
     });
   }
 
   Future<String> getServerSetting(String key) async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getString(key);
+    String? _value = prefs.getString(key);
+    return  _value != null ? _value : "";
   }
 
   Future<void> save(String key, String value) async {
@@ -185,8 +186,8 @@ class Configuration {
     _prefs.then((store) {
       _keys.then((ks) {
         if (ks[key] != null) {
-          Map mapStored = ks[key].toJson();
-          Map newMap = jsonDecode(value);
+          Map<String, dynamic> mapStored = ks[key]!.toJson();
+          Map<String, dynamic> newMap = jsonDecode(value);
           KeySettings storedKey = new KeySettings.fromJson(mapStored);
           KeySettings newKey = new KeySettings.fromJson(newMap);
           storedKey.key = newKey.key;

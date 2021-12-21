@@ -1,9 +1,10 @@
+import 'package:acc_manager/pages/previousSessions.page.dart';
 import 'package:acc_manager/pages/session.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SessionCard extends StatelessWidget {
+class PreviousSessionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +18,7 @@ class SessionCard extends StatelessWidget {
               color: Colors.pink,
             ),
             title: Text(
-              'Session',
+              'Previous Sessions',
               style: GoogleFonts.comfortaa(
                   textStyle: TextStyle(
                       color: Colors.black87,
@@ -27,7 +28,7 @@ class SessionCard extends StatelessWidget {
             dense: true,
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SessionPage()));
+                  MaterialPageRoute(builder: (context) => PreviousSessionsPage()));
             }),
       ),
     );

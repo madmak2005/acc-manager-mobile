@@ -17,7 +17,7 @@ class SessionCard extends StatelessWidget {
               color: Colors.pink,
             ),
             title: Text(
-              'Session',
+              'Current Session',
               style: GoogleFonts.comfortaa(
                   textStyle: TextStyle(
                       color: Colors.black87,

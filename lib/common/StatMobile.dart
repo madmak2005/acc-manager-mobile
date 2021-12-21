@@ -1,124 +1,132 @@
 class StatMobile {
-  int lapNo;
-  bool fromPit;
-  bool toPit;
-  int lapTime;
-  double distanceTraveled;
-  SplitTimes splitTimes;
-  int internalLapIndex;
-  double fuelAdded;
-  double fuelUsed;
-  double fuelBeforePit;
-  double fuelAfterPit;
-  double fuelLeftOnStart;
-  double fuelLeftOnEnd;
-  double fuelAVGPerMinute;
-  double fuelXlap;
-  Maps maps;
-  int rainTyres;
-  bool isValidLap;
-  bool first;
-  bool last;
-  double sessionTimeLeft;
-  double avgpFL;
-  double avgpFR;
-  double avgpRL;
-  double avgpRR;
-  double avgtFL;
-  double avgtFR;
-  double avgtRL;
-  double avgtRR;
-  double avgBPFL;
-  double avgBPFR;
-  double avgBPRL;
-  double avgBPRR;
-  double avgBDFL;
-  double avgBDFR;
-  double avgBDRL;
-  double avgBDRR;
-  double avgAirTemp;
-  double avgRoadTemp;
-  double fuelNTFOnEnd;
-  double fuelEstForNextMiliseconds;
-  double fuelEFNLapsOnEnd;
-  double fuelAVGPerLap;
-  double clockAtStart;
-  double avgRainIntensity;
-  double avgTrackGripStatus;
-  String trackStatus;
-  String driverName;
-  bool saved;
-  int mfdTyreSet;
-  double mfdFuelToAdd;
-  double mfdTyrePressureLF;
-  double mfdTyrePressureRF;
-  double mfdTyrePressureLR;
-  double mfdTyrePressureRR;
-  int rainIntensityIn10min;
-  int rainIntensityIn30min;
-  int currentTyreSet;
-  int strategyTyreSet;
+  int lapNo = 0;
+  bool fromPit = false;
+  bool toPit = false;
+  int lapTime = 0;
+  double distanceTraveled = 0.0;
+  SplitTimes? splitTimes;
+  int internalLapIndex = 0;
+  double fuelAdded = 0.0;
+  double fuelUsed = 0.0;
+  double fuelBeforePit = 0.0;
+  double fuelAfterPit = 0.0;
+  double fuelLeftOnStart = 0.0;
+  double fuelLeftOnEnd = 0.0;
+  double fuelAVGPerMinute = 0.0;
+  double fuelXlap = 0.0;
+  Maps? maps;
+  int rainTyres = 0;
+  bool isValidLap = true;
+  bool first = false;
+  bool last = false;
+  double sessionTimeLeft = 0.0;
+  String session_TYPE = "";
+  int sessionIndex = 0;
+  int internalSessionIndex = 0;
+  double avgpFL = 0.0;
+  double avgpFR = 0.0;
+  double avgpRL = 0.0;
+  double avgpRR = 0.0;
+  double avgtFL = 0.0;
+  double avgtFR = 0.0;
+  double avgtRL = 0.0;
+  double avgtRR = 0.0;
+  double avgBPFL = 0.0;
+  double avgBPFR = 0.0;
+  double avgBPRL = 0.0;
+  double avgBPRR = 0.0;
+  double avgBDFL = 0.0;
+  double avgBDFR = 0.0;
+  double avgBDRL = 0.0;
+  double avgBDRR = 0.0;
+  double avgAirTemp = 0.0;
+  double avgRoadTemp = 0.0;
+  double fuelNTFOnEnd = 0.0;
+  double fuelEstForNextMiliseconds = 0.0;
+  double fuelEFNLapsOnEnd = 0.0;
+  double fuelAVGPerLap = 0.0;
+  double clockAtStart = 0.0;
+  double avgRainIntensity = 0.0;
+  double avgTrackGripStatus = 0.0;
+  String trackStatus = "";
+  String driverName = "";
+  bool saved = false;
+  int mfdTyreSet = 0;
+  double mfdFuelToAdd = 0.0;
+  double mfdTyrePressureLF = 0.0;
+  double mfdTyrePressureRF = 0.0;
+  double mfdTyrePressureLR = 0.0;
+  double mfdTyrePressureRR = 0.0;
+  int rainIntensityIn10min = 0;
+  int rainIntensityIn30min = 0;
+  int currentTyreSet = 0;
+  int strategyTyreSet = 0;
+
+  StatMobile.empty();
 
   StatMobile(
-      {this.lapNo,
-        this.fromPit,
-        this.toPit,
-        this.lapTime,
-        this.distanceTraveled,
-        this.splitTimes,
-        this.internalLapIndex,
-        this.fuelAdded,
-        this.fuelUsed,
-        this.fuelBeforePit,
-        this.fuelAfterPit,
-        this.fuelLeftOnStart,
-        this.fuelLeftOnEnd,
-        this.fuelAVGPerMinute,
-        this.fuelXlap,
-        this.maps,
-        this.rainTyres,
-        this.isValidLap,
-        this.first,
-        this.last,
-        this.sessionTimeLeft,
-        this.avgpFL,
-        this.avgpFR,
-        this.avgpRL,
-        this.avgpRR,
-        this.avgtFL,
-        this.avgtFR,
-        this.avgtRL,
-        this.avgtRR,
-        this.avgBPFL,
-        this.avgBPFR,
-        this.avgBPRL,
-        this.avgBPRR,
-        this.avgBDFL,
-        this.avgBDFR,
-        this.avgBDRL,
-        this.avgBDRR,
-        this.avgAirTemp,
-        this.avgRoadTemp,
-        this.fuelNTFOnEnd,
-        this.fuelEstForNextMiliseconds,
-        this.fuelEFNLapsOnEnd,
-        this.fuelAVGPerLap,
-        this.clockAtStart,
-        this.avgRainIntensity,
-        this.avgTrackGripStatus,
-        this.trackStatus,
-        this.driverName,
-        this.saved,
-        this.mfdTyreSet,
-        this.mfdFuelToAdd,
-        this.mfdTyrePressureLF,
-        this.mfdTyrePressureRF,
-        this.mfdTyrePressureLR,
-        this.mfdTyrePressureRR,
-        this.rainIntensityIn10min,
-        this.rainIntensityIn30min,
-        this.currentTyreSet,
-        this.strategyTyreSet});
+      {required this.lapNo,
+      required this.fromPit,
+      required this.toPit,
+      required this.lapTime,
+      required this.distanceTraveled,
+      required this.splitTimes,
+      required this.internalLapIndex,
+      required this.fuelAdded,
+      required this.fuelUsed,
+      required this.fuelBeforePit,
+      required this.fuelAfterPit,
+      required this.fuelLeftOnStart,
+      required this.fuelLeftOnEnd,
+      required this.fuelAVGPerMinute,
+      required this.fuelXlap,
+      required this.maps,
+      required this.rainTyres,
+      required this.isValidLap,
+      required this.first,
+      required this.last,
+      required this.sessionTimeLeft,
+      required this.session_TYPE,
+      required this.sessionIndex,
+      required this.internalSessionIndex,
+      required this.avgpFL,
+      required this.avgpFR,
+      required this.avgpRL,
+      required this.avgpRR,
+      required this.avgtFL,
+      required this.avgtFR,
+      required this.avgtRL,
+      required this.avgtRR,
+      required this.avgBPFL,
+      required this.avgBPFR,
+      required this.avgBPRL,
+      required this.avgBPRR,
+      required this.avgBDFL,
+      required this.avgBDFR,
+      required this.avgBDRL,
+      required this.avgBDRR,
+      required this.avgAirTemp,
+      required this.avgRoadTemp,
+      required this.fuelNTFOnEnd,
+      required this.fuelEstForNextMiliseconds,
+      required this.fuelEFNLapsOnEnd,
+      required this.fuelAVGPerLap,
+      required this.clockAtStart,
+      required this.avgRainIntensity,
+      required this.avgTrackGripStatus,
+      required this.trackStatus,
+      required this.driverName,
+      required this.saved,
+      required this.mfdTyreSet,
+      required this.mfdFuelToAdd,
+      required this.mfdTyrePressureLF,
+      required this.mfdTyrePressureRF,
+      required this.mfdTyrePressureLR,
+      required this.mfdTyrePressureRR,
+      required this.rainIntensityIn10min,
+      required this.rainIntensityIn30min,
+      required this.currentTyreSet,
+      required this.strategyTyreSet});
 
   StatMobile.fromJson(Map<String, dynamic> json) {
     lapNo = json['lapNo'];
@@ -130,7 +138,7 @@ class StatMobile {
         ? new SplitTimes.fromJson(json['splitTimes'])
         : null;
     internalLapIndex = json['internalLapIndex'];
-    fuelAdded = json['fuelAdded'];
+    fuelAdded = json['fuelAdded'] == null ? 0 : json['fuelAdded'];
     fuelUsed = json['fuelUsed'];
     fuelBeforePit = json['fuelBeforePit'];
     fuelAfterPit = json['fuelAfterPit'];
@@ -144,6 +152,9 @@ class StatMobile {
     first = json['first'];
     last = json['last'];
     sessionTimeLeft = json['sessionTimeLeft'];
+    session_TYPE = json['session_TYPE'];
+    sessionIndex = json['sessionIndex'];
+    internalSessionIndex = json['internalSessionIndex'];
     avgpFL = json['avgpFL'];
     avgpFR = json['avgpFR'];
     avgpRL = json['avgpRL'];
@@ -162,7 +173,7 @@ class StatMobile {
     avgBDRR = json['avgBDRR'];
     avgAirTemp = json['avgAirTemp'];
     avgRoadTemp = json['avgRoadTemp'];
-    fuelNTFOnEnd = json['fuelNTFOnEnd'];
+    fuelNTFOnEnd = json['fuelNTFOnEnd'] == null ? 0 : json['fuelNTFOnEnd'];
     fuelEstForNextMiliseconds = json['fuelEstForNextMiliseconds'];
     fuelEFNLapsOnEnd = json['fuelEFNLapsOnEnd'];
     fuelAVGPerLap = json['fuelAVGPerLap'];
@@ -192,7 +203,7 @@ class StatMobile {
     data['lapTime'] = this.lapTime;
     data['distanceTraveled'] = this.distanceTraveled;
     if (this.splitTimes != null) {
-      data['splitTimes'] = this.splitTimes.toJson();
+      data['splitTimes'] = this.splitTimes!.toJson();
     }
     data['internalLapIndex'] = this.internalLapIndex;
     data['fuelAdded'] = this.fuelAdded;
@@ -204,7 +215,7 @@ class StatMobile {
     data['fuelAVGPerMinute'] = this.fuelAVGPerMinute;
     data['fuelXlap'] = this.fuelXlap;
     if (this.maps != null) {
-      data['maps'] = this.maps.toJson();
+      data['maps'] = this.maps!.toJson();
     }
     data['rainTyres'] = this.rainTyres;
     data['isValidLap'] = this.isValidLap;
@@ -255,21 +266,22 @@ class StatMobile {
 class SplitTimes {
   List<int> splits = [];
 
-  SplitTimes.fromJson(Map<String, dynamic> json){
+  SplitTimes.fromJson(Map<String, dynamic> json) {
     int i = 0;
     json.forEach((key, value) {
       int v = value;
       if (i == 0)
         splits.add(v);
       else {
-          int sum =0;
-          splits.forEach((element) { sum += element;});
-          splits.add(v - sum);
+        int sum = 0;
+        splits.forEach((element) {
+          sum += element;
+        });
+        splits.add(v - sum);
       }
       i++;
     });
   }
-
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

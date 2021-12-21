@@ -15,13 +15,13 @@ import 'dart:developer';
 
 import 'login.page.dart';
 
-bool firstTimeStatistics;
+bool firstTimeStatistics= true;
 
 class StatisticsPage extends StatelessWidget {
   StatisticsPage(){
     firstTimeStatistics = true;
   }
-  BuildContext context;
+  BuildContext? context;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class StatisticsPage extends StatelessWidget {
 class MyStatisticsPage extends StatefulWidget {
   final WebSocketChannel channelStatistics;
 
-  MyStatisticsPage({Key key, @required this.channelStatistics})
+  MyStatisticsPage({Key? key, required this.channelStatistics})
       : super(key: key);
 
   @override
@@ -67,7 +67,7 @@ class _MyStatisticsPageState extends State<MyStatisticsPage> {
               widget.channelStatistics.sink.add('');
               firstTimeStatistics = false;
             }
-            StatSession pp = StatSession.fromJson(json.decode(snapshot.data));
+            StatSession pp = StatSession.fromJson(json.decode(snapshot.data as String));
             DateFormat formatter = DateFormat('Hms');
             DateTime fuelEstForNextMiliseconds = new DateTime.fromMicrosecondsSinceEpoch(1);
             //DateTime fuelEstForNextMiliseconds = new DateTime.fromMicrosecondsSinceEpoch(pp.currentLap.fuelEstForNextMiliseconds.truncate());
@@ -110,7 +110,7 @@ class _MyStatisticsPageState extends State<MyStatisticsPage> {
                               fontWeight:
                               FontWeight.normal))),
                       DataCell(Text(
-                          (pp.currentLap.lapNo.toString()),
+                          (pp.currentLap!.lapNo.toString()),
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -125,7 +125,7 @@ class _MyStatisticsPageState extends State<MyStatisticsPage> {
                               fontWeight:
                               FontWeight.normal))),
                       DataCell(Text(
-                          '${(pp.currentLap.pFL).toStringAsFixed(2)} ${(pp.currentLap.pFR).toStringAsFixed(2)} ${(pp.currentLap.pRL).toStringAsFixed(2)} ${(pp.currentLap.pRR).toStringAsFixed(2)}',
+                          '${(pp.currentLap!.pFL).toStringAsFixed(2)} ${(pp.currentLap!.pFR).toStringAsFixed(2)} ${(pp.currentLap!.pRL).toStringAsFixed(2)} ${(pp.currentLap!.pRR).toStringAsFixed(2)}',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -140,7 +140,7 @@ class _MyStatisticsPageState extends State<MyStatisticsPage> {
                               fontWeight:
                               FontWeight.normal))),
                       DataCell(Text(
-                          '${(pp.currentLap.tFL).toStringAsFixed(2)} ${(pp.currentLap.tFR).toStringAsFixed(2)} ${(pp.currentLap.tRL).toStringAsFixed(2)} ${(pp.currentLap.tRR).toStringAsFixed(2)} ',
+                          '${(pp.currentLap!.tFL).toStringAsFixed(2)} ${(pp.currentLap!.tFR).toStringAsFixed(2)} ${(pp.currentLap!.tRL).toStringAsFixed(2)} ${(pp.currentLap!.tRR).toStringAsFixed(2)} ',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -156,7 +156,7 @@ class _MyStatisticsPageState extends State<MyStatisticsPage> {
                               fontWeight:
                               FontWeight.normal))),
                       DataCell(Text(
-                          (pp.currentLap.roadTemp).toStringAsFixed(1),
+                          (pp.currentLap!.roadTemp).toStringAsFixed(1),
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -171,7 +171,7 @@ class _MyStatisticsPageState extends State<MyStatisticsPage> {
                               fontWeight:
                               FontWeight.normal))),
                       DataCell(Text(
-                          (pp.currentLap.fuelLeftOnEnd.toStringAsFixed(3)),
+                          (pp.currentLap!.fuelLeftOnEnd.toStringAsFixed(3)),
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -186,7 +186,7 @@ class _MyStatisticsPageState extends State<MyStatisticsPage> {
                               fontWeight:
                               FontWeight.normal))),
                       DataCell(Text(
-                          (pp.currentLap.fuelEFNLapsOnEnd.toStringAsFixed(1)),
+                          (pp.currentLap!.fuelEFNLapsOnEnd.toStringAsFixed(1)),
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -262,8 +262,8 @@ class _MyStatisticsPageState extends State<MyStatisticsPage> {
 }
 
 class ButtonWidget extends StatelessWidget {
-  Icon icon;
-  String action;
+  Icon? icon;
+  String? action;
   ButtonWidget(Icon icon, String action){
    this.icon = icon;
    this.action = action;
@@ -273,7 +273,7 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: GestureDetector(
-          onTap: () => RESTVirtualKeyboard.sendkey(action),
+          onTap: () => RESTVirtualKeyboard.sendkey(action!),
           child: icon),
     );
   }

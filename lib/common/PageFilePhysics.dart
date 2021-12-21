@@ -1,84 +1,87 @@
 class PageFilePhysics {
-  int packetId;
-  double gas;
-  double brake;
-  double fuel;
-  int gear;
-  int rpms;
-  double steerAngle;
-  double speedKmh;
-  List<double> velocity = new List<double>(3);
-  List<double> accG;
-  List<double> wheelSlip;
-  List<double> wheelsPressure;
-  List<double> wheelAngularSpeed;
-  List<double> tyreCoreTemperature;
-  List<double> suspensionTravel;
-  double tc;
-  double heading;
-  double pitch;
-  double roll;
-  List<double> carDamage;
-  int pitLimiterOn;
-  double abs;
-  int autoShifterOn;
-  double turboBoost;
-  double airTemp;
-  double roadTemp;
-  List<double> localAngularVel;
-  double finalFF;
-  List<double> brakeTemp  = new List<double>(4);
-  double clutch;
-  int isAIControlled;
-  List<List> tyreContactPoint;
-  List<List> tyreContactNormal;
-  List<List> tyreContactHeading;
-  double brakeBias;
-  List<double> localVelocity;
-  List<double> mz;
-  List<double> fx;
-  List<double> fy;
+  int? packetId = 0;
+  double? gas = 0;
+  double? brake = 0;
+  double? fuel = 0;
+  int? gear = 0;
+  int? rpms = 0;
+  double? steerAngle = 0;
+  double speedKmh = 0;
+  List<double> velocity = new List<double>.filled(3, 0, growable: false);
+  List<double> accG = [0, 0, 0];
+  List<double> wheelSlip = [0, 0, 0, 0];
+  List<double> wheelsPressure = [0, 0, 0, 0];
+  List<double> wheelAngularSpeed = [0, 0, 0, 0];
+  List<double> tyreCoreTemperature = [0, 0, 0, 0];
+  List<double> suspensionTravel = [0, 0, 0, 0];
+  double? tc = 0.0;
+  double? heading = 0.0;
+  double? pitch = 0.0;
+  double? roll = 0.0;
+  List<double> carDamage = [0, 0, 0, 0, 0];
+  int? pitLimiterOn = 0;
+  double? abs = 0.0;
+  int? autoShifterOn = 0;
+  double? turboBoost = 0.0;
+  double? airTemp = 0.0;
+  double? roadTemp = 0.0;
+  List<double> localAngularVel = [0, 0, 0];
+  double? finalFF = 0.0;
+  List<double> brakeTemp = new List<double>.filled(4, 0.0, growable: false);
+  double? clutch = 0.0;
+  int? isAIControlled = 0;
+  List<List<double>> tyreContactPoint =
+      new List<List<double>>.filled(4, [0.0, 0.0, 0.0], growable: false);
+  List<List<double>> tyreContactNormal =
+      new List<List<double>>.filled(4, [0.0, 0.0, 0.0], growable: false);
+  List<List<double>> tyreContactHeading =
+      new List<List<double>>.filled(4, [0.0, 0.0, 0.0], growable: false);
+  double brakeBias = 0.0;
+  List<double> localVelocity = [0, 0, 0];
+  List<double> mz = [0, 0, 0, 0];
+  List<double> fx = [0, 0, 0, 0];
+  List<double> fy = [0, 0, 0, 0];
 
   PageFilePhysics(
-      {this.packetId,
-      this.gas,
-      this.brake,
-      this.fuel,
-      this.gear,
-      this.rpms,
-      this.steerAngle,
-      this.speedKmh,
-      this.velocity,
-      this.accG,
-      this.wheelSlip,
-      this.wheelsPressure,
-      this.wheelAngularSpeed,
-      this.tyreCoreTemperature,
-      this.suspensionTravel,
-      this.tc,
-      this.heading,
-      this.pitch,
-      this.roll,
-      this.carDamage,
-      this.pitLimiterOn,
-      this.abs,
-      this.autoShifterOn,
-      this.turboBoost,
-      this.airTemp,
-      this.roadTemp,
-      this.localAngularVel,
-      this.finalFF,
-      this.brakeTemp,
-      this.clutch,
-      this.isAIControlled,
-      this.tyreContactPoint,
-      this.tyreContactNormal,
-      this.tyreContactHeading,
-      this.brakeBias,
-      this.localVelocity,
-      this.mz,
-      this.fx,
-      this.fy});
+      {required this.packetId,
+      required this.gas,
+      required this.brake,
+      required this.fuel,
+      required this.gear,
+      required this.rpms,
+      required this.steerAngle,
+      required this.speedKmh,
+      required this.velocity,
+      required this.accG,
+      required this.wheelSlip,
+      required this.wheelsPressure,
+      required this.wheelAngularSpeed,
+      required this.tyreCoreTemperature,
+      required this.suspensionTravel,
+      required this.tc,
+      required this.heading,
+      required this.pitch,
+      required this.roll,
+      required this.carDamage,
+      required this.pitLimiterOn,
+      required this.abs,
+      required this.autoShifterOn,
+      required this.turboBoost,
+      required this.airTemp,
+      required this.roadTemp,
+      required this.localAngularVel,
+      required this.finalFF,
+      required this.brakeTemp,
+      required this.clutch,
+      required this.isAIControlled,
+      required this.tyreContactPoint,
+      required this.tyreContactNormal,
+      required this.tyreContactHeading,
+      required this.brakeBias,
+      required this.localVelocity,
+      required this.mz,
+      required this.fx,
+      required this.fy});
 
   PageFilePhysics.fromJson(Map<String, dynamic> json) {
     packetId = json['packetId'];
@@ -88,53 +91,85 @@ class PageFilePhysics {
     gear = json['gear'];
     rpms = json['rpms'];
     steerAngle = json['steerAngle'];
-    speedKmh = json['speedKmh'];
-    velocity = json['velocity'] != null ? json['velocity'].cast<double>() : new List<double>();
-    accG =  json['accG'] != null ? json['accG'].cast<double>() : new List<double>();
-    wheelSlip = json['wheelSlip'] != null ? json['wheelSlip'].cast<double>() : new List<double>();
-    wheelsPressure = json['wheelsPressure'] != null ? json['wheelsPressure'].cast<double>() : new List<double>();
-    wheelAngularSpeed = json['wheelAngularSpeed'] != null ? json['wheelAngularSpeed'].cast<double>() : new List<double>();
-    tyreCoreTemperature = json['tyreCoreTemperature'] != null ? json['tyreCoreTemperature'].cast<double>() : new List<double>();
-    suspensionTravel = json['suspensionTravel'] != null ? json['suspensionTravel'].cast<double>() : new List<double>();
+    speedKmh = json['speedKmh'] == null ? 0.0 : json['speedKmh'];
+    velocity = json['velocity'] != null
+        ? json['velocity'].cast<double>()
+        : new List<double>.filled(3, 0, growable: false);
+    accG = json['accG'] != null ? json['accG'].cast<double>() : [0, 0, 0];
+    wheelSlip = json['wheelSlip'] != null
+        ? json['wheelSlip'].cast<double>()
+        : [0, 0, 0, 0];
+    wheelsPressure = json['wheelsPressure'] != null
+        ? json['wheelsPressure'].cast<double>()
+        : [0, 0, 0, 0];
+    wheelAngularSpeed = json['wheelAngularSpeed'] != null
+        ? json['wheelAngularSpeed'].cast<double>()
+        : [0, 0, 0, 0];
+    tyreCoreTemperature = json['tyreCoreTemperature'] != null
+        ? json['tyreCoreTemperature'].cast<double>()
+        : [0, 0, 0, 0];
+    suspensionTravel = json['suspensionTravel'] != null
+        ? json['suspensionTravel'].cast<double>()
+        : [0, 0, 0, 0];
     tc = json['tc'];
     heading = json['heading'];
     pitch = json['pitch'];
     roll = json['roll'];
-    carDamage = json['carDamage'] != null ? json['carDamage'].cast<double>() : new List<double>();
+    carDamage = json['carDamage'] != null
+        ? json['carDamage'].cast<double>()
+        : [0, 0, 0, 0, 0];
     pitLimiterOn = json['pitLimiterOn'];
     abs = json['abs'];
     autoShifterOn = json['autoShifterOn'];
     turboBoost = json['turboBoost'];
     airTemp = json['airTemp'];
     roadTemp = json['roadTemp'];
-    localAngularVel = json['localAngularVel'] != null ? json['localAngularVel'].cast<double>() : new List<double>();
+    localAngularVel = json['localAngularVel'] != null
+        ? json['localAngularVel'].cast<double>()
+        : [0, 0, 0];
     finalFF = json['finalFF'];
-    brakeTemp = json['brakeTemp'] != null ? json['brakeTemp'].cast<double>() : new List<double>();
+    brakeTemp = json['brakeTemp'] != null
+        ? json['brakeTemp'].cast<double>()
+        : [0, 0, 0, 0];
     clutch = json['clutch'];
     isAIControlled = json['isAIControlled'];
     if (json['tyreContactPoint'] != null) {
-      tyreContactPoint = new List<List>();
+      tyreContactPoint =
+          new List<List<double>>.filled(4, [0.0, 0.0, 0.0], growable: false);
+      var i = 0;
       json['tyreContactPoint'].forEach((v) {
-        tyreContactPoint.add((v));
+        var coord = new List<double>.from(v);
+        tyreContactPoint[i] = coord;
+        i++;
       });
     }
     if (json['tyreContactNormal'] != null) {
-      tyreContactNormal = new List<List>();
+      tyreContactNormal =
+          new List<List<double>>.filled(4, [0.0, 0.0, 0.0], growable: false);
+      var i = 0;
       json['tyreContactNormal'].forEach((v) {
-        tyreContactNormal.add((v));
+        var coord = new List<double>.from(v);
+        tyreContactNormal[i] = coord;
+        i++;
       });
     }
     if (json['tyreContactHeading'] != null) {
-      tyreContactHeading = new List<List>();
+      tyreContactHeading =
+          new List<List<double>>.filled(4, [0.0, 0.0, 0.0], growable: false);
+      var i = 0;
       json['tyreContactHeading'].forEach((v) {
-        tyreContactHeading.add((v));
+        var coord = new List<double>.from(v);
+        tyreContactHeading[i] = coord;
+        i++;
       });
     }
-    brakeBias = json['brakeBias'];
-    localVelocity =json['localVelocity'] != null ? json['localVelocity'].cast<double>() : new List<double>();
-    mz = json['mz'] != null ? json['mz'].cast<double>() : new List<double>();
-    fx = json['fx'] != null ? json['fx'].cast<double>() : new List<double>();
-    fy = json['fy'] != null ? json['fy'].cast<double>() : new List<double>();
+    brakeBias = json['brakeBias'] == null ? 0.0 : json['brakeBias'];
+    localVelocity = json['localVelocity'] != null
+        ? json['localVelocity'].cast<double>()
+        : [0, 0, 0];
+    mz = json['mz'] != null ? json['mz'].cast<double>() : [0, 0, 0, 0];
+    fx = json['fx'] != null ? json['fx'].cast<double>() : [0, 0, 0, 0];
+    fy = json['fy'] != null ? json['fy'].cast<double>() : [0, 0, 0, 0];
   }
 
   Map<String, dynamic> toJson() {

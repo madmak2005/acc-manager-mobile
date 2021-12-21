@@ -1,64 +1,64 @@
 class PageFileStatic {
-  String smVersion;
-  String acVersion;
-  int numberOfSessions;
-  int numCars;
-  String carModel;
-  String track;
-  String playerName;
-  String playerSurname;
-  String playerNick;
-  int sectorCount;
-  double maxTorque;
-  double maxPower;
-  int maxRpm;
-  double maxFuel;
-  List<double> suspensionMaxTravel;
-  List<double> tyreRadius;
-  int penaltiesEnabled;
-  double aidFuelRate;
-  double aidTireRate;
-  double aidMechanicalDamage;
-  int aidAllowTyreBlankets;
-  double aidStability;
-  int aidAutoClutch;
-  int aidAutoBlip;
-  double kersMaxJ;
-  int reversedGridPositions;
-  int pitWindowStart;
-  int pitWindowEnd;
-  int isOnline;
+  String smVersion = "";
+  String acVersion = "";
+  int numberOfSessions = 0;
+  int numCars = 0;
+  String carModel = "";
+  String track = "";
+  String playerName = "";
+  String playerSurname = "";
+  String playerNick = "";
+  int sectorCount = 0;
+  double maxTorque = 0.0;
+  double maxPower = 0.0;
+  int maxRpm = 0;
+  double maxFuel = 0.0;
+  List<double> suspensionMaxTravel = [0.0,0.0,0.0,0.0];
+  List<double> tyreRadius = [0.0,0.0,0.0,0.0];
+  int penaltiesEnabled = 0;
+  double aidFuelRate = 0.0;
+  double aidTireRate = 0.0;
+  double aidMechanicalDamage = 0.0;
+  int aidAllowTyreBlankets = 0;
+  double aidStability = 0.0;
+  int aidAutoClutch = 0;
+  int aidAutoBlip = 0;
+  double kersMaxJ = 0.0;
+  int? reversedGridPositions = 0;
+  int? pitWindowStart = 0;
+  int? pitWindowEnd = 0;
+  int? isOnline = 0;
 
-  PageFileStatic(
-      {this.smVersion,
-        this.acVersion,
-        this.numberOfSessions,
-        this.numCars,
-        this.carModel,
-        this.track,
-        this.playerName,
-        this.playerSurname,
-        this.playerNick,
-        this.sectorCount,
-        this.maxTorque,
-        this.maxPower,
-        this.maxRpm,
-        this.maxFuel,
-        this.suspensionMaxTravel,
-        this.tyreRadius,
-        this.penaltiesEnabled,
-        this.aidFuelRate,
-        this.aidTireRate,
-        this.aidMechanicalDamage,
-        this.aidAllowTyreBlankets,
-        this.aidStability,
-        this.aidAutoClutch,
-        this.aidAutoBlip,
-        this.kersMaxJ,
-        this.reversedGridPositions,
-        this.pitWindowStart,
-        this.pitWindowEnd,
-        this.isOnline});
+  PageFileStatic({
+      required this.smVersion,
+      required this.acVersion,
+      required this.numberOfSessions,
+      required this.numCars,
+      required this.carModel,
+      required this.track,
+      required this.playerName,
+      required this.playerSurname,
+      required this.playerNick,
+      required this.sectorCount,
+      required this.maxTorque,
+      required this.maxPower,
+      required this.maxRpm,
+      required this.maxFuel,
+      required this.suspensionMaxTravel,
+      required this.tyreRadius,
+      required this.penaltiesEnabled,
+      required this.aidFuelRate,
+      required this.aidTireRate,
+      required this.aidMechanicalDamage,
+      required this.aidAllowTyreBlankets,
+      required this.aidStability,
+      required this.aidAutoClutch,
+      required this.aidAutoBlip,
+      required this.kersMaxJ,
+      required this.reversedGridPositions,
+      required this.pitWindowStart,
+      required this.pitWindowEnd,
+      required this.isOnline});
 
   PageFileStatic.fromJson(Map<String, dynamic> json) {
     smVersion = json['smVersion'];
@@ -75,8 +75,8 @@ class PageFileStatic {
     maxPower = json['maxPower'];
     maxRpm = json['maxRpm'];
     maxFuel = json['maxFuel'];
-    suspensionMaxTravel = json['suspensionMaxTravel'] != null ? json['suspensionMaxTravel'].cast<double>() : new List<double>();
-    tyreRadius = json['tyreRadius'] != null ? json['tyreRadius'].cast<double>() : new List<double>();
+    suspensionMaxTravel = json['suspensionMaxTravel'].cast<double>();
+    tyreRadius = json['tyreRadius'].cast<double>();
     penaltiesEnabled = json['penaltiesEnabled'];
     aidFuelRate = json['aidFuelRate'];
     aidTireRate = json['aidTireRate'];

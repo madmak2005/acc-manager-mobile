@@ -20,12 +20,12 @@ class ButtonWidget extends StatelessWidget {
 }
 
 class Lights extends StatelessWidget {
-  final Future<Map<String, KeySettings>> keySetting = conf.getAllKeys();
-  final PageFileGraphics pageFileGraphics;
+  final Future<Map<String, KeySettings>>? keySetting = conf.getAllKeys();
+  final PageFileGraphics? pageFileGraphics;
   Lights({this.pageFileGraphics});
 
   Color getColor() {
-    switch (pageFileGraphics.lightsStage) {
+    switch (pageFileGraphics!.lightsStage) {
       case 0:
         return Colors.grey;
       case 1:
@@ -50,7 +50,7 @@ class Lights extends StatelessWidget {
               CircularProgressIndicator();
           }
           else {
-            Map<String, KeySettings> _allKeys = snapshot.data;
+            Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(
               child: Container(
                 child: Column(
@@ -61,9 +61,9 @@ class Lights extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        RESTVirtualKeyboard.sendkey(_allKeys['LIGHTS'].key);
+                        RESTVirtualKeyboard.sendkey(_allKeys!['LIGHTS']!.key);
                       },
-                      child: Icon(_allKeys['LIGHTS'].toIconData(),
+                      child: Icon(_allKeys!['LIGHTS']!.toIconData(),
                           size: 70.0, color: getColor()),
                     ),
                   ],
@@ -76,7 +76,7 @@ class Lights extends StatelessWidget {
 }
 
 class MFD extends StatelessWidget {
-  final Future<Map<String, KeySettings>> keySetting = conf.getAllKeys();
+  final Future<Map<String, KeySettings>>? keySetting = conf.getAllKeys();
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +90,7 @@ class MFD extends StatelessWidget {
             return
               CircularProgressIndicator();
           } else {
-            Map<String, KeySettings> _allKeys = snapshot.data;
+            Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(
               child: Container(
                 child: Column(
@@ -101,9 +101,9 @@ class MFD extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        RESTVirtualKeyboard.sendkey(_allKeys['MFD'].key);
+                        RESTVirtualKeyboard.sendkey(_allKeys!['MFD']!.key);
                       },
-                      child: Icon(_allKeys['MFD'].toIconData(),
+                      child: Icon(_allKeys!['MFD']!.toIconData(),
                           size: 70.0, color: Colors.white),
                     ),
                   ],
@@ -116,7 +116,7 @@ class MFD extends StatelessWidget {
 }
 
 class Wipers extends StatelessWidget {
-  final Future<Map<String, KeySettings>> keySetting = conf.getAllKeys();
+  final Future<Map<String, KeySettings>>? keySetting = conf.getAllKeys();
 
   final PageFileGraphics pageFileGraphics;
   Wipers(this.pageFileGraphics);
@@ -146,11 +146,11 @@ class Wipers extends StatelessWidget {
             return
               CircularProgressIndicator();
           } else {
-            Map<String, KeySettings> _allKeys = snapshot.data;
+            Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(
                 child: GestureDetector(
               onTap: () {
-                RESTVirtualKeyboard.sendkey(_allKeys['WIPERS'].key);
+                RESTVirtualKeyboard.sendkey(_allKeys!['WIPERS']!.key);
               },
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
@@ -161,7 +161,7 @@ class Wipers extends StatelessWidget {
                         "W I P E R S",
                         style: TextStyle(color: Colors.white, fontSize: 20.0),
                       ),
-                      Icon(_allKeys['WIPERS'].toIconData(),
+                      Icon(_allKeys!['WIPERS']!.toIconData(),
                           size: 70.0, color: getColor()),
                     ],
                   ),
@@ -174,12 +174,12 @@ class Wipers extends StatelessWidget {
 }
 
 class Ignition extends StatelessWidget {
-  final Future<Map<String, KeySettings>> keySetting = conf.getAllKeys();
-  final PageFileGraphics pageFileGraphics;
+  final Future<Map<String, KeySettings>>? keySetting = conf.getAllKeys();
+  final PageFileGraphics? pageFileGraphics;
   Ignition({this.pageFileGraphics});
 
   Color getColor() {
-    switch (pageFileGraphics.lightsStage) {
+    switch (pageFileGraphics!.lightsStage) {
       case 0:
         return Colors.grey;
       default:
@@ -199,7 +199,7 @@ class Ignition extends StatelessWidget {
             return
               CircularProgressIndicator();
           } else {
-            Map<String, KeySettings> _allKeys = snapshot.data;
+            Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(
               child: Container(
                 child: Column(
@@ -210,9 +210,9 @@ class Ignition extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        RESTVirtualKeyboard.sendkey(_allKeys['IGNITION'].key);
+                        RESTVirtualKeyboard.sendkey(_allKeys!['IGNITION']!.key);
                       },
-                      child: Icon(_allKeys['IGNITION'].toIconData(),
+                      child: Icon(_allKeys!['IGNITION']!.toIconData(),
                           size: 70.0, color: getColor()),
                     ),
                   ],
@@ -225,12 +225,12 @@ class Ignition extends StatelessWidget {
 }
 
 class Starter extends StatelessWidget {
-  final Future<Map<String, KeySettings>> keySetting = conf.getAllKeys();
-  final PageFileGraphics pageFileGraphics;
+  final Future<Map<String, KeySettings>>? keySetting = conf.getAllKeys();
+  final PageFileGraphics? pageFileGraphics;
   Starter({this.pageFileGraphics});
 
   Color getColor() {
-    switch (pageFileGraphics.lightsStage) {
+    switch (pageFileGraphics!.lightsStage) {
       case 0:
         return Colors.grey;
       default:
@@ -250,7 +250,7 @@ class Starter extends StatelessWidget {
             return
               CircularProgressIndicator();
           } else {
-            Map<String, KeySettings> _allKeys = snapshot.data;
+            Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(
               child: Container(
                 child: Column(
@@ -261,9 +261,9 @@ class Starter extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        RESTVirtualKeyboard.sendkey(_allKeys['STARTER'].key);
+                        RESTVirtualKeyboard.sendkey(_allKeys!['STARTER']!.key);
                       },
-                      child: Icon(_allKeys['STARTER'].toIconData(),
+                      child: Icon(_allKeys!['STARTER']!.toIconData(),
                           size: 70.0, color: getColor()),
                     ),
                   ],

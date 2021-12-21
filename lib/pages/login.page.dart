@@ -3,7 +3,7 @@ import 'package:acc_manager/pages/home.page.dart';
 import 'package:acc_manager/pages/widgets/BGImages.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:regexed_validator/regexed_validator.dart';
+import 'package:regexpattern/regexpattern.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -69,16 +69,16 @@ class _LoginPageState extends State<LoginPage> {
                               if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               } else {
-                                myControllerIP.text = snapshot.data;
+                                myControllerIP.text = snapshot.data as String;
                                 return TextFormField(
                                   maxLength: 15,
                                   autovalidateMode: AutovalidateMode.always,
                                   controller: myControllerIP,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Please enter IP';
                                     } else {
-                                      if (!validator.ip(value)) return 'IP address is not valid';
+                                      if (!value.isIPV4()) return 'IP address is not valid';
                                     }
                                     return null;
                                   },
@@ -111,13 +111,13 @@ class _LoginPageState extends State<LoginPage> {
                               if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               } else {
-                                myControllerPort.text = snapshot.data;
+                                myControllerPort.text = snapshot.data as String;
                                 return TextFormField(
                                   maxLength: 5,
                                   autovalidateMode: AutovalidateMode.always,
                                   controller: myControllerPort,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Please enter port (8080 default)';
                                     }else{
                                       const pattern = r'^[0-9]{1,5}$';
@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_formKey.currentState.validate()) {
+                            if (_formKey.currentState!.validate()) {
                               conf.save("IP", myControllerIP.text);
                               conf.save("PORT", myControllerPort.text);
                               Navigator.pushReplacement(

@@ -32,8 +32,8 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 30
-    ndkVersion "22.0.6917172"
+    compileSdkVersion 31
+    ndkVersion "23.1.7779620"
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId "net.jastrzebia.acc_manager"
         minSdkVersion 22
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -81,4 +81,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.firebase:firebase-messaging:20.1.4'
+    implementation platform('com.google.firebase:firebase-bom:28.4.2')
+    implementation 'com.google.firebase:firebase-analytics'
 }

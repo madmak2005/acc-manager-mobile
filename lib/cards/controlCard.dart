@@ -7,13 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 import '../main.dart';
 
 class GraphicsCard extends StatelessWidget {
-  final Future<Map<String, KeySettings>> _allKeys = conf.getAllKeys();
+  final Future<Map<String, KeySettings>>? _allKeys = conf.getAllKeys();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: _allKeys,
-        builder: (BuildContext context, AsyncSnapshot<Map<String,KeySettings>> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
               return const CircularProgressIndicator();
@@ -21,7 +22,7 @@ class GraphicsCard extends StatelessWidget {
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
-                Map<String,KeySettings> allKey = snapshot.data;
+                Map<String, KeySettings> allKey = snapshot.data!;
                 return Container(
                   child: Card(
                     clipBehavior: Clip.antiAlias,
@@ -33,7 +34,7 @@ class GraphicsCard extends StatelessWidget {
                           color: Colors.pink,
                         ),
                         title: Text(
-                          'Control',
+                          'Control Your Car',
                           style: GoogleFonts.comfortaa(
                               textStyle: TextStyle(
                                   color: Colors.black87,

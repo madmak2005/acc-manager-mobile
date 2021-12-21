@@ -1,4 +1,4 @@
-package net.jastrzebia.virtual_keyboard
+package net.jastrzebia.accmanager
 
 import io.flutter.embedding.android.FlutterActivity
 

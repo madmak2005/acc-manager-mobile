@@ -15,7 +15,7 @@ class KeyConfig extends StatefulWidget {
 }
 
 class _KeyConfigState extends State<KeyConfig> {
-  KeySettings localKey;
+  KeySettings? localKey;
   _KeyConfigState(KeySettings key){
     this.localKey = key;
   }
@@ -30,12 +30,12 @@ class _KeyConfigState extends State<KeyConfig> {
   }
 
   setKeysOnStart() async {
-      myController.text = localKey.key;
+      myController.text = localKey!.key;
   }
 
   _setLatestValue() {
           setState(() {
-            _savedCheck = checkSaveNeed(localKey);
+            _savedCheck = checkSaveNeed(localKey!);
           });
   }
 
@@ -60,16 +60,16 @@ class _KeyConfigState extends State<KeyConfig> {
             flex: 1,
             child: GestureDetector(
               onTap: () {
-                if (_form.currentState.validate()) {
-                  localKey.key = myController.text;
-                  conf.save(localKey.name, jsonEncode(localKey.toJson()));
+                if (_form.currentState!.validate()) {
+                  localKey!.key = myController.text;
+                  conf.save(localKey!.name, jsonEncode(localKey!.toJson()));
                   setState(() {
                     _savedCheck = true;
                   });
                 }
               },
               child: Icon(
-                localKey.toIconData(),
+                localKey!.toIconData(),
                 color: _savedCheck ? Colors.greenAccent : Colors.yellowAccent,
               ),
             ),
@@ -80,11 +80,11 @@ class _KeyConfigState extends State<KeyConfig> {
           child: TextFormField(
             controller: myController,
             validator: (value) {
-              if (value.isEmpty) {
+              if (value!.isEmpty) {
                 return 'Please enter a letter';
               } else {
                 setState(() {
-                  _savedCheck = checkSaveNeed(localKey);
+                  _savedCheck = checkSaveNeed(localKey!);
                 });
               }
               return null;
@@ -96,7 +96,7 @@ class _KeyConfigState extends State<KeyConfig> {
                     fontWeight: FontWeight.w900)),
             decoration: InputDecoration(
               fillColor: Colors.lightBlueAccent,
-              labelText: localKey.name,
+              labelText: localKey!.name,
               labelStyle: GoogleFonts.comfortaa(
                   textStyle: TextStyle(
                       color: Colors.lightBlue,

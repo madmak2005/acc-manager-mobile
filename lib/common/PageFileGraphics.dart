@@ -1,54 +1,57 @@
 class PageFileGraphics {
-  int packetId = 0;
-  int status = 0;
-  int session = 0;
-  String currentTime = "";
-  String lastTime = "";
-  String bestTime = "";
-  String split = "";
-  int completedLaps = 0;
-  int position = 0;
+  int? packetId = 0;
+  int? status = 0;
+  int? session = 0;
+  String? currentTime = "";
+  String? lastTime = "";
+  String? bestTime = "";
+  String? split = "";
+  int? completedLaps = 0;
+  int? position = 0;
   int iCurrentTime = 0;
-  int iLastTime = 0;
-  int iBestTime = 0;
-  double sessionTimeLeft = 0;
-  double distanceTraveled = 0;
-  int isInPit = 0;
-  int currentSectorIndex = 0;
-  int lastSectorTime = 0;
-  int numberOfLaps = 0;
-  String tyreCompound;
-  double replayTimeMultiplier = 0;
+  int? iLastTime = 0;
+  int? iBestTime = 0;
+  double? sessionTimeLeft = 0;
+  double? distanceTraveled = 0;
+  int? isInPit = 0;
+  int? currentSectorIndex = 0;
+  int? lastSectorTime = 0;
+  int? numberOfLaps = 0;
+  String? tyreCompound;
+  double? replayTimeMultiplier = 0;
   double normalizedCarPosition = 0;
-  int activeCars = 0;
-  List<List> carCoordinates;
-  List<int> carID = new List<int>(60);
-  int playerCarID = 0;
-  double penaltyTime = 0;
-  int flag = 0;
-  int penalty = 0;
-  int idealLineOn = 0;
-  int isInPitLane = 0;
-  double surfaceGrip = 0;
-  int mandatoryPitDone = 0;
-  double windSpeed = 0;
-  double windDirection = 0;
-  int isSetupMenuVisible = 0;
-  int mainDisplayIndex = 0;
-  int secondaryDisplayIndex = 0;
-  int tc = 0;
-  int tccut = 0;
-  int engineMap = 0;
-  int abs = 0;
-  double fuelXLap = 0;
-  int rainLights = 0;
-  int flashingLights = 0;
-  int lightsStage = 0;
-  double exhaustTemperature = 0;
-  int wiperLV = 0;
-  int driverStintTotalTimeLeft = 0;
-  int driverStintTimeLeft = 0;
-  int rainTyres = 0;
+  int? activeCars = 0;
+  //List<double> coordinates = new List<double>.filled(3,0,growable: false);
+  List<List<double>> carCoordinates =
+      new List<List<double>>.filled(60, [0.0, 0.0, 0.0], growable: false);
+
+  List<int> carID = new List<int>.filled(60, 0, growable: false);
+  int? playerCarID = 0;
+  double? penaltyTime = 0;
+  int? flag = 0;
+  int? penalty = 0;
+  int? idealLineOn = 0;
+  int? isInPitLane = 0;
+  double? surfaceGrip = 0;
+  int? mandatoryPitDone = 0;
+  double? windSpeed = 0;
+  double? windDirection = 0;
+  int? isSetupMenuVisible = 0;
+  int? mainDisplayIndex = 0;
+  int? secondaryDisplayIndex = 0;
+  int? tc = 0;
+  int? tccut = 0;
+  int? engineMap = 0;
+  int? abs = 0;
+  double? fuelXLap = 0;
+  int? rainLights = 0;
+  int? flashingLights = 0;
+  int? lightsStage = 0;
+  double? exhaustTemperature = 0;
+  int? wiperLV = 0;
+  int? driverStintTotalTimeLeft = 0;
+  int? driverStintTimeLeft = 0;
+  int? rainTyres = 0;
 
   PageFileGraphics(
       {this.packetId,
@@ -60,7 +63,7 @@ class PageFileGraphics {
       this.split,
       this.completedLaps,
       this.position,
-      this.iCurrentTime,
+      required this.iCurrentTime,
       this.iLastTime,
       this.iBestTime,
       this.sessionTimeLeft,
@@ -71,10 +74,10 @@ class PageFileGraphics {
       this.numberOfLaps,
       this.tyreCompound,
       this.replayTimeMultiplier,
-      this.normalizedCarPosition,
+      required this.normalizedCarPosition,
       this.activeCars,
-      this.carCoordinates,
-      this.carID,
+      required this.carCoordinates,
+      required this.carID,
       this.playerCarID,
       this.penaltyTime,
       this.flag,
@@ -112,7 +115,7 @@ class PageFileGraphics {
     split = json['split'];
     completedLaps = json['completedLaps'];
     position = json['position'];
-    iCurrentTime = json['iCurrentTime'];
+    iCurrentTime = json['iCurrentTime'] == null ? 0 : json['iCurrentTime'];
     iLastTime = json['iLastTime'];
     iBestTime = json['iBestTime'];
     sessionTimeLeft = json['sessionTimeLeft'];
@@ -123,16 +126,24 @@ class PageFileGraphics {
     numberOfLaps = json['numberOfLaps'];
     tyreCompound = json['tyreCompound'];
     replayTimeMultiplier = json['replayTimeMultiplier'];
-    normalizedCarPosition = json['normalizedCarPosition'];
+    normalizedCarPosition = json['normalizedCarPosition'] == null
+        ? 0.0
+        : json['normalizedCarPosition'];
     activeCars = json['activeCars'];
 
     if (json['carCoordinates'] != null) {
-      carCoordinates = new List<List>();
+      carCoordinates =
+          new List<List<double>>.filled(60, [0.0, 0.0, 0.0], growable: false);
+      var i = 0;
       json['carCoordinates'].forEach((v) {
-        carCoordinates.add((v));
+        var coord = new List<double>.from(v);
+        carCoordinates[i] = coord;
+        i++;
       });
     }
-    carID = json['carID'] != null ? json['carID'].cast<int>() : new List<int>(60);
+    carID = json['carID'] != null
+        ? json['carID'].cast<int>()
+        : new List<int>.filled(60, 0, growable: false);
     playerCarID = json['playerCarID'];
     penaltyTime = json['penaltyTime'];
     flag = json['flag'];
@@ -185,9 +196,9 @@ class PageFileGraphics {
     data['replayTimeMultiplier'] = this.replayTimeMultiplier;
     data['normalizedCarPosition'] = this.normalizedCarPosition;
     data['activeCars'] = this.activeCars;
-    if (this.carCoordinates != null) {
-      data['carCoordinates'] = this.carCoordinates.map((v) => v).toList();
-    }
+
+    data['carCoordinates'] = this.carCoordinates.map((v) => v).toList();
+
     data['carID'] = this.carID;
     data['playerCarID'] = this.playerCarID;
     data['penaltyTime'] = this.penaltyTime;
@@ -218,7 +229,7 @@ class PageFileGraphics {
     return data;
   }
 }
-
+/*
 class CarCoordinates {
   CarCoordinates.fromJson(Map<String, dynamic> json);
 
@@ -227,3 +238,5 @@ class CarCoordinates {
     return data;
   }
 }
+ */
+

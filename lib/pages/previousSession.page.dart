@@ -1,29 +1,21 @@
 import 'dart:convert';
 
 import 'package:acc_manager/common/StatMobile.dart';
-import 'package:acc_manager/main.dart';
 import 'package:acc_manager/services/RESTSessions.dart';
 import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-
-
-import 'dart:developer';
-
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'login.page.dart';
 
-bool firstTimeStatistics;
+bool? firstTimeStatistics;
 
-class SessionPage extends StatelessWidget {
-  SessionPage() {
-    firstTimeStatistics = true;
-  }
+class PreviousSessionPage extends StatelessWidget {
+  int internalSessionIndex;
+  BuildContext? context;
 
-  BuildContext context;
+  PreviousSessionPage(this.internalSessionIndex) {}
 
   void handleClick(String value) {
     switch (value) {
@@ -40,12 +32,11 @@ class SessionPage extends StatelessWidget {
 
   void showAlert(String msg) {
     showDialog(
-        context: context,
+        context: context!,
         builder: (context) => AlertDialog(
-          content: Text(msg,style: TextStyle(
-              fontSize: 8,
-              fontWeight: FontWeight.normal)),
-        ));
+              content: Text(msg,
+                  style: TextStyle(fontSize: 8, fontWeight: FontWeight.normal)),
+            ));
   }
 
   @override
@@ -71,197 +62,200 @@ class SessionPage extends StatelessWidget {
             ),
           ],
         ),
-        body: MySessionPage(
-          channelStatistics: kIsWeb
-              ? WebSocketChannel.connect(Uri.parse(
-                  'ws://${conf.serverIP}:${conf.serverPort}/acc/mobileStats'))
-              : IOWebSocketChannel.connect(Uri.parse(
-                  'ws://${conf.serverIP}:${conf.serverPort}/acc/mobileStats')),
-        ));
+        body: MyPreviousSessionPage(
+            internalSessionIndex: this.internalSessionIndex));
   }
 }
 
-class MySessionPage extends StatefulWidget {
-  final WebSocketChannel channelStatistics;
+class MyPreviousSessionPage extends StatefulWidget {
+  final int internalSessionIndex;
 
-  MySessionPage({Key key, @required this.channelStatistics}) : super(key: key);
+  MyPreviousSessionPage({Key? key, required this.internalSessionIndex})
+      : super(key: key);
 
   @override
-  _MySessionPageState createState() => _MySessionPageState();
+  _MyPreviousSessionPageState createState() => _MyPreviousSessionPageState();
 }
 
-class _MySessionPageState extends State<MySessionPage> {
-  List<StatMobile> statLaps = <StatMobile>[];
+class _MyPreviousSessionPageState extends State<MyPreviousSessionPage> {
+  _MyPreviousSessionPageState();
+
+  Future<List<StatMobile>> getHttpData() async {
+    return RESTSessions.getPreviousSession(widget.internalSessionIndex);
+  }
+
+  Future<void> _getData() async {
+    setState(() {
+      getHttpData();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.black,
-        body: StreamBuilder(
-          stream: widget.channelStatistics.stream,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (firstTimeStatistics) {
-                widget.channelStatistics.sink.add('');
-                firstTimeStatistics = false;
-              }
-              StatMobile l = StatMobile.fromJson(json.decode(snapshot.data));
-              statLaps.add(l);
-              log(statLaps.length.toString());
-              return SingleChildScrollView(
-                  physics: ScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Container(
-                        color: Colors.amber,
-                        height: 48.0,
-                        alignment: Alignment.center,
-                        child: Row(children: [
-                          Expanded(
-                            flex: 1,
-                            child: Center(
-                              child: Text("Lap",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Center(
-                              child: Text("Time in game",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Center(
-                              child: Text("Pressure",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text("Fuel / lap",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text("Fuel / minute",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text("Minutes till end",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text("Fuel for laps",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text("Fuel for minutes",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text("",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                        ]),
-                      ),
-                      ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return DataPopUp(
-                              statLaps[statLaps.length - 1 - index]);
-                        },
-                        itemCount: statLaps.length,
-                      ),
-                    ],
-                  ));
-            } else {
-              return Container(
-                  color: Colors.black54,
-                  child: Center(
+        body: FutureBuilder<List<StatMobile>>(
+            future: getHttpData(),
+            initialData: [],
+            builder: (BuildContext context,
+                AsyncSnapshot<List<StatMobile>> snapshot) {
+              if (snapshot.hasData) {
+                return RefreshIndicator(
+                  onRefresh: _getData,
+                  child: SingleChildScrollView(
+                      physics: ScrollPhysics(),
                       child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                      Text(
-                        Consts.title,
-                        style: TextStyle(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.lightBlueAccent,
+                        children: [
+                          Container(
+                            color: Colors.amber,
+                            height: 48.0,
+                            alignment: Alignment.center,
+                            child: Row(children: [
+                              Expanded(
+                                flex: 1,
+                                child: Center(
+                                  child: Text("Lap",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Center(
+                                  child: Text("Time in game",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Center(
+                                  child: Text("Pressure",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text("Fuel / lap",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text("Fuel / minute",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text("Minutes till end",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text("Fuel for laps",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text("Fuel for minutes",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text("",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            ]),
+                          ),
+                          ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return DataPopUp(snapshot
+                                  .data![snapshot.data!.length - index - 1]);
+                            },
+                            itemCount: snapshot.data!.length,
+                          ),
+                        ],
+                      )),
+                );
+              } else {
+                return Container(
+                    color: Colors.black54,
+                    child: Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: CircularProgressIndicator(),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          'You need to finish at least one full lap.',
+                        Text(
+                          Consts.title,
                           style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 24.0,
                             fontWeight: FontWeight.w700,
                             color: Colors.lightBlueAccent,
                           ),
                         ),
-                      ),
-                      SizedBox(height: 4.0),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        child: Text(
-                          Consts.description,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.white,
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            'You need to finish at least one full lap.',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.lightBlueAccent,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 4.0),
-                    ],
-                  )));
-            }
-          },
-        ));
+                        SizedBox(height: 4.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: Text(
+                            Consts.description,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 4.0),
+                      ],
+                    )));
+              }
+            }));
   }
 }
 
 class StatRow extends StatelessWidget {
-  StatMobile lap;
+  StatMobile lap = new StatMobile.empty();
 
   StatRow(StatMobile lap) {
     this.lap = lap;
@@ -421,8 +415,8 @@ class StatRow extends StatelessWidget {
 }
 
 class ButtonWidget extends StatelessWidget {
-  Icon icon;
-  String action;
+  Icon? icon;
+  String? action;
 
   ButtonWidget(Icon icon, String action) {
     this.icon = icon;
@@ -433,7 +427,7 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: GestureDetector(
-          onTap: () => RESTVirtualKeyboard.sendkey(action), child: icon),
+          onTap: () => RESTVirtualKeyboard.sendkey(action!), child: icon),
     );
   }
 }
@@ -456,12 +450,17 @@ class DataPopUp extends StatelessWidget {
   String _printDurationHoursMinutesSecondsMilliseconds(int miliseconds) {
     //lap.fuelEstForNextMiliseconds.toInt()
     Duration duration = Duration(milliseconds: miliseconds);
+
     String twoDigits(int n) => n.toString().padLeft(2, "0");
     String threeDigits(int n) => n.toString().padLeft(3, "0");
     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
     String threeDigitMilliSeconds =
-        threeDigits(duration.inSeconds.remainder(100));
+        threeDigits(duration.inMilliseconds - duration.inSeconds * 1000);
+    //print("${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds.$threeDigitMilliSeconds");
+    //print(duration);
+    //print(duration.inMilliseconds);
+    //print(duration.inSeconds);
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds.$threeDigitMilliSeconds";
   }
 
@@ -556,7 +555,10 @@ class DataPopUp extends StatelessWidget {
                                           Text(
                                             root.trackStatus,
                                             style: TextStyle(
-                                              color: root.trackStatus == 'OPTIMUM' ? Colors.green : Colors.yellow,
+                                              color:
+                                                  root.trackStatus == 'OPTIMUM'
+                                                      ? Colors.green
+                                                      : Colors.yellow,
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -577,9 +579,12 @@ class DataPopUp extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            root.avgRainIntensity.toStringAsFixed(1),
+                                            root.avgRainIntensity
+                                                .toStringAsFixed(1),
                                             style: TextStyle(
-                                              color: root.avgRainIntensity > 0 ? Colors.yellow : Colors.green,
+                                              color: root.avgRainIntensity > 0
+                                                  ? Colors.yellow
+                                                  : Colors.green,
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -632,12 +637,15 @@ class DataPopUp extends StatelessWidget {
                                               Icon(
                                                 MaterialCommunityIcons
                                                     .gas_station,
-                                                color: root.fuelAdded > 0 ? Colors.green.shade400 : Colors.red.shade400,
+                                                color: root.fuelAdded > 0
+                                                    ? Colors.green.shade400
+                                                    : Colors.red.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
                                               (root.fuelLeftOnStart -
-                                                          root.fuelLeftOnEnd + root.fuelAdded)
+                                                          root.fuelLeftOnEnd +
+                                                          root.fuelAdded)
                                                       .toStringAsFixed(2) +
                                                   " l",
                                               Icon(
@@ -665,19 +673,21 @@ class DataPopUp extends StatelessWidget {
                                                 size: 19,
                                               )),
                                           Row(
-                                              children: root.splitTimes.splits
+                                              children: root.splitTimes!.splits
                                                   .map<Widget>(
-                                                    (e) => BoxedData.name(
-                                                        _printDurationHoursMinutesSecondsMilliseconds(
-                                                                e) +
-                                                            " ",
-                                                        Icon(
-                                                          MaterialCommunityIcons
-                                                              .timer,
-                                                          color: Colors
-                                                              .blue.shade400,
-                                                          size: 7,
-                                                        )),
+                                                    (e) => e > 0
+                                                        ? BoxedData.name(
+                                                            _printDurationHoursMinutesSecondsMilliseconds(
+                                                                    e) +
+                                                                " ",
+                                                            Icon(
+                                                              MaterialCommunityIcons
+                                                                  .timer,
+                                                              color: Colors.blue
+                                                                  .shade400,
+                                                              size: 7,
+                                                            ))
+                                                        : new SizedBox.shrink(),
                                                   )
                                                   .toList()),
                                         ],
@@ -691,23 +701,29 @@ class DataPopUp extends StatelessWidget {
                                       padding: const EdgeInsets.only(left: 1.0),
                                       child: Row(
                                         children: [
-
                                           BoxedData.name(
-                                              'MFD [LF]: ' +root.mfdTyrePressureLF.toStringAsFixed(1),
+                                              'MFD [LF]: ' +
+                                                  root.mfdTyrePressureLF
+                                                      .toStringAsFixed(1),
                                               Icon(
-                                                MaterialCommunityIcons.arrow_top_left,
+                                                MaterialCommunityIcons
+                                                    .arrow_top_left,
                                                 color: Colors.blue.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
-                                              'MFD [RF]: ' +root.mfdTyrePressureRF.toStringAsFixed(1),
+                                              'MFD [RF]: ' +
+                                                  root.mfdTyrePressureRF
+                                                      .toStringAsFixed(1),
                                               Icon(
-                                                MaterialCommunityIcons.arrow_top_right,
+                                                MaterialCommunityIcons
+                                                    .arrow_top_right,
                                                 color: Colors.blue.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
-                                              'MFD [l]: ' +root.mfdFuelToAdd.toString(),
+                                              'MFD [l]: ' +
+                                                  root.mfdFuelToAdd.toString(),
                                               Icon(
                                                 MaterialCommunityIcons.fuel,
                                                 color: Colors.blue.shade400,
@@ -715,7 +731,6 @@ class DataPopUp extends StatelessWidget {
                                               )),
                                         ],
                                       ),
-
                                     )
                                   ],
                                 ),
@@ -726,21 +741,28 @@ class DataPopUp extends StatelessWidget {
                                       child: Row(
                                         children: [
                                           BoxedData.name(
-                                              'MFD [LR]: ' +root.mfdTyrePressureLR.toStringAsFixed(1),
+                                              'MFD [LR]: ' +
+                                                  root.mfdTyrePressureLR
+                                                      .toStringAsFixed(1),
                                               Icon(
-                                                MaterialCommunityIcons.arrow_bottom_left,
+                                                MaterialCommunityIcons
+                                                    .arrow_bottom_left,
                                                 color: Colors.blue.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
-                                              'MFD [RR]: ' +root.mfdTyrePressureRR.toStringAsFixed(1),
+                                              'MFD [RR]: ' +
+                                                  root.mfdTyrePressureRR
+                                                      .toStringAsFixed(1),
                                               Icon(
-                                                MaterialCommunityIcons.arrow_bottom_right,
+                                                MaterialCommunityIcons
+                                                    .arrow_bottom_right,
                                                 color: Colors.blue.shade400,
                                                 size: 19,
                                               )),
                                           BoxedData.name(
-                                              'MFD [set]: ' +root.mfdTyreSet.toString(),
+                                              'MFD [set]: ' +
+                                                  root.mfdTyreSet.toString(),
                                               Icon(
                                                 MaterialCommunityIcons.reload,
                                                 color: Colors.blue.shade400,
@@ -748,7 +770,6 @@ class DataPopUp extends StatelessWidget {
                                               )),
                                         ],
                                       ),
-
                                     )
                                   ],
                                 )

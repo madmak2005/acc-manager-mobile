@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_chat_demo/constants/constants.dart';
-import 'package:flutter_chat_demo/models/models.dart';
+import 'package:acc_manager/constants/constants.dart';
+import 'package:acc_manager/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatProvider {

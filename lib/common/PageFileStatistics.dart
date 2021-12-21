@@ -20,12 +20,12 @@ class PageFileStatistics {
   Map<int, StatSession> sessions = new Map<int, StatSession>();
 
    */
-  StatSession currentSession;
+  StatSession? currentSession;
   double fuelBeforePit = 0;
   double fuelAfterPit = 0;
   String pageName = "";
   String currentDateAndTime = "";
-  String previous, current;
+  String previous = "", current = "";
   int raceStartAt = 0;
   int sessionCounter = 0;
   String lastChange = "";
@@ -47,7 +47,7 @@ class PageFileStatistics {
 
 
   PageFileStatistics.fromJson(Map<String, dynamic> json) {
-    currentSession = json['currentSession'] != null ? new StatSession.fromJson(json['currentSession']) : null;
+    currentSession = new StatSession.fromJson(json['currentSession']);
     pageName = json['pageName'];
   }
 
@@ -55,7 +55,7 @@ class PageFileStatistics {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
     if (this.currentSession != null) {
-      data['currentSession'] = this.currentSession.toJson();
+      data['currentSession'] = this.currentSession!.toJson();
     }
     data['pageName'] = this.pageName;
     return data;

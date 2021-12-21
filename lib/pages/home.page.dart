@@ -3,26 +3,27 @@ import 'dart:developer';
 import 'package:acc_manager/cards/controlCard.dart';
 import 'package:acc_manager/cards/mediaCard.dart';
 import 'package:acc_manager/cards/physicsCard.dart';
+import 'package:acc_manager/cards/previousSessionCard.dart';
 import 'package:acc_manager/cards/sessionCard.dart';
 import 'package:acc_manager/cards/settingsCard.dart';
 import 'package:acc_manager/pages/widgets/BGImages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:screen/screen.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../main.dart';
 
 class HomePage extends StatelessWidget {
-  BuildContext context;
+  //BuildContext? context;
   HomePage(BuildContext ctx) {
-    context = ctx;
+    //context = ctx;
   }
 
   //Future<List<User>> users = UsersService.fromBase64("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmlhbWFrb3dza2FAZ21haWwuY29tIiwiZXhwIjoxNjAxMjE2MzcwLCJpYXQiOjE2MDExOTgzNzB9.DgMpti2AmWR82Q7X5hwBaBNe1vQcZEZmItSrJi-1pf4EcIJfqlxWf0cpVPzgMKHU3_siRYynNDstqfpSyeg3bw").getUsers();
 
   @override
   Widget build(BuildContext context) {
-    this.context = context;
+    //this.context = context;
     return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
@@ -51,13 +52,16 @@ class _MyHomePageState extends State<MyHomePage> {
   initPlatformState() async {
     String _kOn = await conf.getServerSetting('isKeptOn');
     log('isKeptOn $_kOn');
-    bool keptOn = _kOn  == 'true' ? true : false;
-    double brightness = await Screen.brightness;
-    setState((){
+    bool keptOn = _kOn == 'true' ? true : false;
+    setState(() {
       _isKeptOn = keptOn;
-      _brightness = brightness;
+      if (_isKeptOn)
+        Wakelock.enable();
+      else
+        Wakelock.disable();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,12 +77,12 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.all(12.0),
             childAspectRatio: 8.0 / 4.0,
             children: <Widget>[
-             // PhysicsCard(),
+              // PhysicsCard(),
               GraphicsCard(),
               //MediaCard(),
               SessionCard(),
               SettingsCard(),
-
+              PreviousSessionCard(),
             ],
           ),
         ));

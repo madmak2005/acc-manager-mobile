@@ -27,7 +27,7 @@ class PlusMinusWidget extends StatefulWidget {
   final KeySettings keySettingsPlus, keySettingsMinus;
   final Color color;
 
- PlusMinusWidget({Key key, @required this.value, @required this.title, @required this.keySettingsPlus, @required this.keySettingsMinus, @required this.color}) : super(key: key);
+ PlusMinusWidget({Key? key, required this.value, required this.title, required this.keySettingsPlus, required this.keySettingsMinus, required this.color}) : super(key: key);
 
   @override
   _PlusMinusState createState() => _PlusMinusState(value,  title,  color,  keySettingsPlus, keySettingsMinus);

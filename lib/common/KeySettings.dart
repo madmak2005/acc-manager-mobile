@@ -22,7 +22,7 @@ class KeySettings{
     _codePoint = value;
   }
 
-  get icon => _codePoint;
+  //get icon => _codePoint;
   set icon(String value) { _codePoint = value; }
 
   get key => _key;

@@ -1,80 +1,80 @@
 class StatLap {
-  int lapNo;
-  bool fromPit;
-  bool toPit;
-  int lapTime;
-  double distanceTraveled;
-  SplitTimes splitTimes;
-  double fuelAdded;
-  double fuelUsed;
-  double fuelLeftOnStart;
-  double fuelLeftOnEnd;
-  double fuelAVGPerMinute;
-  double fuelXlap;
-  Maps maps;
-  int rainTyres;
-  bool isValidLap;
-  bool first;
-  bool last;
-  double sessionTimeLeft;
-  double pFL;
-  double pFR;
-  double pRL;
-  double pRR;
-  double tFL;
-  double tFR;
-  double tRL;
-  double tRR;
-  double airTemp;
-  double roadTemp;
-  double fuelNTFOnEnd;
+  int lapNo = 0;
+  bool fromPit = false;
+  bool toPit = false;
+  int lapTime = 0;
+  double distanceTraveled = 0.0;
+  SplitTimes? splitTimes;
+  double fuelAdded = 0.0;
+  double fuelUsed = 0.0;
+  double fuelLeftOnStart = 0.0;
+  double fuelLeftOnEnd = 0.0;
+  double fuelAVGPerMinute = 0.0;
+  double fuelXlap = 0.0;
+  Maps? maps;
+  int rainTyres = 0;
+  bool isValidLap = false;
+  bool first = false;
+  bool last = false;
+  double sessionTimeLeft = 0.0;
+  double pFL = 0.0;
+  double pFR = 0.0;
+  double pRL = 0.0;
+  double pRR = 0.0;
+  double tFL = 0.0;
+  double tFR = 0.0;
+  double tRL = 0.0;
+  double tRR = 0.0;
+  double airTemp = 0.0;
+  double roadTemp = 0.0;
+  double fuelNTFOnEnd = 0.0;
   //double fuelEFNMinutesOnEnd;
-  double fuelEFNLapsOnEnd;
-  double fuelAVGPerLap;
-  double clockAtStart;
-  double rainIntensity;
-  double trackGripStatus;
-  String trackStatus;
-  double fuelEstForNextMiliseconds;
+  double fuelEFNLapsOnEnd = 0.0;
+  double fuelAVGPerLap = 0.0;
+  double clockAtStart = 0.0;
+  double rainIntensity = 0.0;
+  double trackGripStatus = 0.0;
+  String trackStatus = "";
+  double fuelEstForNextMiliseconds = 0.0;
 
   StatLap(
-      {this.lapNo,
-        this.fromPit,
-        this.toPit,
-        this.lapTime,
-        this.distanceTraveled,
-        this.splitTimes,
-        this.fuelAdded,
-        this.fuelUsed,
-        this.fuelLeftOnStart,
-        this.fuelLeftOnEnd,
-        this.fuelAVGPerMinute,
-        this.fuelXlap,
-        this.maps,
-        this.rainTyres,
-        this.isValidLap,
-        this.first,
-        this.last,
-        this.sessionTimeLeft,
-        this.pFL,
-        this.pFR,
-        this.pRL,
-        this.pRR,
-        this.tFL,
-        this.tFR,
-        this.tRL,
-        this.tRR,
-        this.airTemp,
-        this.roadTemp,
-        this.fuelNTFOnEnd,
+      {required this.lapNo,
+       required this.fromPit,
+       required this.toPit,
+       required this.lapTime,
+       required this.distanceTraveled,
+       required this.splitTimes,
+       required this.fuelAdded,
+       required this.fuelUsed,
+       required this.fuelLeftOnStart,
+       required this.fuelLeftOnEnd,
+       required this.fuelAVGPerMinute,
+       required this.fuelXlap,
+       required this.maps,
+       required this.rainTyres,
+       required this.isValidLap,
+       required this.first,
+       required this.last,
+       required this.sessionTimeLeft,
+       required this.pFL,
+       required this.pFR,
+       required this.pRL,
+       required this.pRR,
+       required this.tFL,
+       required this.tFR,
+       required this.tRL,
+       required this.tRR,
+       required this.airTemp,
+       required this.roadTemp,
+       required this.fuelNTFOnEnd,
         //this.fuelEFNMinutesOnEnd,
-        this.fuelEFNLapsOnEnd,
-        this.fuelAVGPerLap,
-        this.clockAtStart,
-        this.rainIntensity,
-        this.trackGripStatus,
-        this.trackStatus,
-        this.fuelEstForNextMiliseconds});
+       required this.fuelEFNLapsOnEnd,
+       required this.fuelAVGPerLap,
+       required this.clockAtStart,
+       required this.rainIntensity,
+       required this.trackGripStatus,
+       required this.trackStatus,
+       required this.fuelEstForNextMiliseconds});
 
   StatLap.fromJson(Map<String, dynamic> json) {
     lapNo = json['lapNo'];
@@ -126,7 +126,7 @@ class StatLap {
     data['lapTime'] = this.lapTime;
     data['distanceTraveled'] = this.distanceTraveled;
     if (this.splitTimes != null) {
-      data['splitTimes'] = this.splitTimes.toJson();
+      data['splitTimes'] = this.splitTimes!.toJson();
     }
     data['fuelAdded'] = this.fuelAdded;
     data['fuelUsed'] = this.fuelUsed;
@@ -135,7 +135,7 @@ class StatLap {
     data['fuelAVGPerMinute'] = this.fuelAVGPerMinute;
     data['fuelXlap'] = this.fuelXlap;
     if (this.maps != null) {
-      data['maps'] = this.maps.toJson();
+      data['maps'] = this.maps!.toJson();
     }
     data['rainTyres'] = this.rainTyres;
     data['isValidLap'] = this.isValidLap;
