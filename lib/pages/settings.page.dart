@@ -86,6 +86,8 @@ class _MySettingsPageState extends State<MySettingsPage> {
                             var keyMFD = all['MFD'];
                             var keyTCP = all['TC+'];
                             var keyTCM = all['TC-'];
+                            var keyTC2P = all['TC2+'];
+                            var keyTC2M = all['TC2-'];
                             var keyABSP = all['ABS+'];
                             var keyABSM = all['ABS-'];
                             var keyWipers = all['WIPERS'];
@@ -117,15 +119,33 @@ class _MySettingsPageState extends State<MySettingsPage> {
                                     children: [
                                       Expanded(
                                         flex: 1,
-                                        child: new KeyConfig(keyMFD!),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
                                         child: new KeyConfig(keyTCP!),
                                       ),
                                       Expanded(
                                         flex: 1,
                                         child: new KeyConfig(keyTCM!),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: new KeyConfig(keyTC2P!),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: new KeyConfig(keyTC2M!),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(),
                                       ),
                                     ],
                                   ),
@@ -175,7 +195,7 @@ class _MySettingsPageState extends State<MySettingsPage> {
                                       ),
                                       Expanded(
                                         flex: 1,
-                                        child: Container(),
+                                        child: new KeyConfig(keyMFD!),
                                       ),
                                       Expanded(
                                         flex: 1,

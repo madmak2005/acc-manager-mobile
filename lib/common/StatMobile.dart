@@ -1,4 +1,6 @@
 class StatMobile {
+  String teamCode = "";
+  String pin = "";
   int lapNo = 0;
   bool fromPit = false;
   bool toPit = false;
@@ -61,11 +63,17 @@ class StatMobile {
   int rainIntensityIn30min = 0;
   int currentTyreSet = 0;
   int strategyTyreSet = 0;
-
+  String carModel = "";
+  String track = "";
   StatMobile.empty();
+  int position = 0;
+  int driverStintTotalTimeLeft = 0;
+  int driverStintTimeLeft = 0;
 
   StatMobile(
-      {required this.lapNo,
+      {required this.teamCode,
+      required this.pin,
+      required this.lapNo,
       required this.fromPit,
       required this.toPit,
       required this.lapTime,
@@ -126,9 +134,16 @@ class StatMobile {
       required this.rainIntensityIn10min,
       required this.rainIntensityIn30min,
       required this.currentTyreSet,
-      required this.strategyTyreSet});
+      required this.strategyTyreSet,
+      required this.carModel,
+      required this.track,
+      required this.position,
+      required this.driverStintTotalTimeLeft,
+      required this.driverStintTimeLeft});
 
   StatMobile.fromJson(Map<String, dynamic> json) {
+    teamCode = json['teamCode'] == null ? '' : json['teamCode'];
+    pin = json['pin'] == null ? '' : json['pin'];
     lapNo = json['lapNo'];
     fromPit = json['fromPit'];
     toPit = json['toPit'];
@@ -193,10 +208,17 @@ class StatMobile {
     rainIntensityIn30min = json['rainIntensityIn30min'];
     currentTyreSet = json['currentTyreSet'];
     strategyTyreSet = json['strategyTyreSet'];
+    carModel = json['carModel'] == null ? "not kwnown" : json['carModel'];
+    track = json['track'] == null ? "not kwnown" : json['track'];
+    position = json['position'];
+    driverStintTotalTimeLeft = json['driverStintTotalTimeLeft'];
+    driverStintTimeLeft = json['driverStintTimeLeft'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['teamCode'] = this.teamCode;
+    data['pin'] = this.pin;
     data['lapNo'] = this.lapNo;
     data['fromPit'] = this.fromPit;
     data['toPit'] = this.toPit;
@@ -248,6 +270,7 @@ class StatMobile {
     data['avgRainIntensity'] = this.avgRainIntensity;
     data['avgTrackGripStatus'] = this.avgTrackGripStatus;
     data['trackStatus'] = this.trackStatus;
+    data['driverName'] = this.driverName;
     data['saved'] = this.saved;
     data['mfdTyreSet'] = this.mfdTyreSet;
     data['mfdFuelToAdd'] = this.mfdFuelToAdd;
@@ -259,6 +282,11 @@ class StatMobile {
     data['rainIntensityIn30min'] = this.rainIntensityIn30min;
     data['currentTyreSet'] = this.currentTyreSet;
     data['strategyTyreSet'] = this.strategyTyreSet;
+    data['carModel'] = this.carModel;
+    data['track'] = this.track;
+    data['position'] = this.position;
+    data['driverStintTotalTimeLeft'] = this.driverStintTotalTimeLeft;
+    data['driverStintTimeLeft'] = this.driverStintTimeLeft;
     return data;
   }
 }

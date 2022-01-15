@@ -6,11 +6,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'KeySettings.dart';
 
-final Set<String> allowedKeys = {'LIGHTS','MAP+','MAP-','MFD','TC+','TC-','ABS+','ABS-','WIPERS','BB+','BB-','IGNITION','STARTER'};
+final Set<String> allowedKeys = {
+  'LIGHTS',
+  'MAP+',
+  'MAP-',
+  'MFD',
+  'TC+',
+  'TC-',
+  'TC2+',
+  'TC2-',
+  'ABS+',
+  'ABS-',
+  'WIPERS',
+  'BB+',
+  'BB-',
+  'IGNITION',
+  'STARTER'
+};
 
 class Configuration {
   String serverIP = "";
   String serverPort = "8080";
+
+  String team = "";
+  String passwd = "";
+
   late Future<Map<String, KeySettings>> _keys;
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -19,6 +39,9 @@ class Configuration {
   Configuration() {
     this.serverIP = "";
     this.serverPort = "8080";
+    this.team = "";
+    this.passwd = "";
+
     this._keys = initAllKeys();
   }
 
@@ -49,105 +72,102 @@ class Configuration {
       KeySettings? _ks = await getKeyFromStore(key);
       if (_ks.key != "") {
         allKeys.putIfAbsent(_ks.name, () => _ks);
-      } else{
+      } else {
         KeySettings _defaultKeySettings = new KeySettings("", "", "", "", "");
         switch (key) {
           case 'LIGHTS':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  Icons.lightbulb_outline_rounded,
-                  'LIGHTS',
-                  'L');
+                  Icons.lightbulb_outline_rounded, 'LIGHTS', 'L');
             }
             break;
           case 'MFD':
             {
-              _defaultKeySettings = new KeySettings.fromIconData(
-                  Icons.storage,
-                  'MFD',
-                  'INSERT');
+              _defaultKeySettings =
+                  new KeySettings.fromIconData(Icons.storage, 'MFD', 'INSERT');
             }
             break;
           case 'WIPERS':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  WeatherIcons.wi_storm_showers,
-                  'WIPERS',
-                  'w');
+                  WeatherIcons.wi_storm_showers, 'WIPERS', 'w');
             }
             break;
           case 'MAP+':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  SimpleLineIcons.plus,
-                  'MAP+', 'P');
+                  SimpleLineIcons.plus, 'MAP+', 'P');
             }
             break;
           case 'MAP-':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  SimpleLineIcons.minus,
-                  'MAP-', 'k');
+                  SimpleLineIcons.minus, 'MAP-', 'k');
             }
             break;
           case 'TC+':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  SimpleLineIcons.plus,
-                  'TC+', 'u');
+                  SimpleLineIcons.plus, 'TC+', 'u');
             }
             break;
           case 'TC-':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  SimpleLineIcons.minus,
-                  'TC-', 'j');
+                  SimpleLineIcons.minus, 'TC-', 'j');
+            }
+            break;
+          case 'TC2+':
+            {
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.plus, 'TC2+', 'r');
+            }
+            break;
+          case 'TC2-':
+            {
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  SimpleLineIcons.minus, 'TC2-', 'f');
             }
             break;
           case 'ABS+':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  SimpleLineIcons.plus,
-                  'ABS+', 'y');
+                  SimpleLineIcons.plus, 'ABS+', 'y');
             }
             break;
           case 'ABS-':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  SimpleLineIcons.minus,
-                  'ABS-', 'h');
+                  SimpleLineIcons.minus, 'ABS-', 'h');
             }
             break;
           case 'BB+':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  SimpleLineIcons.plus,
-                  'BB+', 't');
+                  SimpleLineIcons.plus, 'BB+', 't');
             }
             break;
           case 'BB-':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  SimpleLineIcons.minus,
-                  'BB-', 'g');
+                  SimpleLineIcons.minus, 'BB-', 'g');
             }
             break;
           case 'IGNITION':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  SimpleLineIcons.power,
-                  'IGNITION', 'i');
+                  SimpleLineIcons.power, 'IGNITION', 'i');
             }
             break;
           case 'STARTER':
             {
               _defaultKeySettings = new KeySettings.fromIconData(
-                  MaterialCommunityIcons.car_key,
-                  'STARTER', 's');
+                  MaterialCommunityIcons.car_key, 'STARTER', 's');
             }
             break;
         }
-        allKeys.putIfAbsent(_defaultKeySettings.name, () => _defaultKeySettings);
+        allKeys.putIfAbsent(
+            _defaultKeySettings.name, () => _defaultKeySettings);
       }
     });
     return allKeys;
@@ -157,16 +177,12 @@ class Configuration {
     SharedPreferences prefs = await _prefs;
     var dbKey = prefs.getString(key);
     if (dbKey != null) {
-      Map<String,String> keyMap = jsonDecode(dbKey);
+      Map<String, String> keyMap = jsonDecode(dbKey);
       return new KeySettings.fromJson(keyMap);
-      }else{
+    } else {
       return new KeySettings("", "", "", "", "");
     }
-
-    }
-
-
-
+  }
 
   Future<KeySettings> getKey(String key) async {
     return _keys.then((value) {
@@ -177,12 +193,14 @@ class Configuration {
   Future<String> getServerSetting(String key) async {
     final SharedPreferences prefs = await _prefs;
     String? _value = prefs.getString(key);
-    return  _value != null ? _value : "";
+    return _value != null ? _value : "";
   }
 
   Future<void> save(String key, String value) async {
     if (key == "IP") serverIP = value;
     if (key == "PORT") serverPort = value;
+    if (key == "TEAM") team = value;
+    if (key == "PASSWD") passwd = value;
     _prefs.then((store) {
       _keys.then((ks) {
         if (ks[key] != null) {

@@ -1,10 +1,15 @@
+import 'package:acc_manager/common/StatMobile.dart';
+
 import 'StatLap.dart';
 import 'StatCar.dart';
 
 class StatSession {
+  StatSession();
+
   int sessionTYPE = 0;
-  String session_TYPENAME ="";
-  Laps? laps;
+
+  String session_TYPENAME = "";
+  List<StatMobile> laps = [];
   List<StatLap> last3Laps = [];
   List<StatLap> last5Laps = [];
 
@@ -14,7 +19,14 @@ class StatSession {
 
   double fuelNTFOnEnd = 0.0;
 
-  StatCar car = new StatCar(carModel: "",maxFuel: 0,playerName: "",playerNick: "",playerSurname: "",sectorCount: 0,track: "");
+  StatCar car = new StatCar(
+      carModel: "",
+      maxFuel: 0,
+      playerName: "",
+      playerNick: "",
+      playerSurname: "",
+      sectorCount: 0,
+      track: "");
 
   int sessionIndex = 0;
   int internalSessionIndex = 0;
@@ -36,6 +48,8 @@ class StatSession {
   int packetDelta = 0;
 
   int? fuelEstForNextMiliseconds = 0;
+
+  Set<String> driverSet = {};
 /*
   double fuelEFNMinutesOnEnd;
   double fuelEFNLapsOnEnd;
@@ -71,15 +85,23 @@ class StatSession {
   StatSession.fromJson(Map<String, dynamic> json) {
     sessionTYPE = json['session_TYPE'];
     session_TYPENAME = json['session_TYPENAME'];
-    if (json['laps'] != null)
-      laps = new Laps.fromJson(json['laps']);
+    if (json['laps'] != null) {
+      laps = <StatMobile>[];
+      json['laps'].forEach((v) {
+        laps.add(new StatMobile.fromJson(v));
+      });
+    }
     if (json['last3Laps'] != null) {
       last3Laps = <StatLap>[];
-      json['last3Laps'].forEach((v) { last3Laps.add(new StatLap.fromJson(v)); });
+      json['last3Laps'].forEach((v) {
+        last3Laps.add(new StatLap.fromJson(v));
+      });
     }
     if (json['last5Laps'] != null) {
       last5Laps = <StatLap>[];
-      json['last5Laps'].forEach((v) { last5Laps.add(new StatLap.fromJson(v)); });
+      json['last5Laps'].forEach((v) {
+        last5Laps.add(new StatLap.fromJson(v));
+      });
     }
     if (json['bestLap'] != null)
       bestLap = new StatLap.fromJson(json['bestLap']);
@@ -102,21 +124,15 @@ class StatSession {
     avgLapTime5 = json['avgLapTime5'];
     packetDelta = json['packetDelta'];
     fuelEstForNextMiliseconds = json['fuelEstForNextMiliseconds'];
-    }
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['session_TYPE'] = this.sessionTYPE;
     data['session_TYPENAME'] = this.session_TYPENAME;
-    if (this.laps != null) {
-      data['laps'] = this.laps!.toJson();
-    }
-    if (this.last3Laps != null) {
-      data['last3Laps'] = this.last3Laps.map((v) => v.toJson()).toList();
-    }
-    if (this.last5Laps != null) {
-      data['last5Laps'] = this.last5Laps.map((v) => v.toJson()).toList();
-    }
+    data['laps'] = this.laps.map((v) => v.toJson()).toList();
+    data['last3Laps'] = this.last3Laps.map((v) => v.toJson()).toList();
+    data['last5Laps'] = this.last5Laps.map((v) => v.toJson()).toList();
     if (this.bestLap != null) {
       data['bestLap'] = this.bestLap!.toJson();
     }
@@ -126,9 +142,7 @@ class StatSession {
     if (this.currentLap != null) {
       data['currentLap'] = this.currentLap!.toJson();
     }
-    if (this.car != null) {
-      data['car'] = this.car.toJson();
-    }
+    data['car'] = this.car.toJson();
     data['sessionIndex'] = this.sessionIndex;
     data['internalSessionIndex'] = this.internalSessionIndex;
     data['wasGreenFlag'] = this.wasGreenFlag;

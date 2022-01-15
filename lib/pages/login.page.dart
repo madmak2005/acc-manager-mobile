@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     //myControllerIP.addListener(_printLatestValue);
     //myControllerPort.addListener(_printLatestValue);
   }
+
 /*
   _printLatestValue() {
     print("IP: ${myControllerIP.text}");
@@ -48,10 +49,9 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topCenter,
+                  begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.blueGrey, Colors.black45])
-          ),
+                  colors: [Colors.blueGrey, Colors.black45])),
           child: Container(
             margin: const EdgeInsets.only(left: 20.0, right: 20.0),
             child: ListView(
@@ -78,7 +78,8 @@ class _LoginPageState extends State<LoginPage> {
                                     if (value!.isEmpty) {
                                       return 'Please enter IP';
                                     } else {
-                                      if (!value.isIPV4()) return 'IP address is not valid';
+                                      if (!value.isIPV4())
+                                        return 'IP address is not valid';
                                     }
                                     return null;
                                   },
@@ -119,10 +120,11 @@ class _LoginPageState extends State<LoginPage> {
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Please enter port (8080 default)';
-                                    }else{
+                                    } else {
                                       const pattern = r'^[0-9]{1,5}$';
                                       final regExp = RegExp(pattern);
-                                      if (!regExp.hasMatch(value)) return 'Please enter valid port. (8080 default)';
+                                      if (!regExp.hasMatch(value))
+                                        return 'Please enter valid port. (8080 default)';
                                     }
                                     return null;
                                   },
@@ -165,16 +167,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(
-                          top: 10, left: 160, right: 10, bottom: 0),
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: Image.asset('lib/assets/ACL_LOGO_WHITE-RED.png',
-                            alignment: Alignment.topRight,
-                            fit: BoxFit.fitWidth),
-                      ),
-                    ),
-                    Container(
                       decoration: new BoxDecoration(
                         color: Colors.white30,
                         shape: BoxShape.rectangle,
@@ -213,7 +205,6 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ],
@@ -232,7 +223,10 @@ class Consts {
 
   static const String title = "info";
   static const String description =
-      'Make sure you have run the "acc-manager-server" application on the same computer where Assetto Corsa Competizione is running.\n\n'
-    + 'You can download the "acc-manager-server" program from:\n'
-    + 'https://github.com/madmak2005/acc-manager-server';
+      'Make sure you have run the "acc-manager-server" application on the same computer where Assetto Corsa Competizione is running.\n\n' +
+          'You can download the "acc-manager-server" program from:\n' +
+          'https://github.com/madmak2005/acc-manager-server';
+
+  static const String one_lap_description =
+      'You need to finish at least one full lap to see more statistics.';
 }

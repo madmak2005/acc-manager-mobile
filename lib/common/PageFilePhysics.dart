@@ -2,7 +2,7 @@ class PageFilePhysics {
   int? packetId = 0;
   double? gas = 0;
   double? brake = 0;
-  double? fuel = 0;
+  double fuel = 0;
   int? gear = 0;
   int? rpms = 0;
   double? steerAngle = 0;
@@ -87,7 +87,7 @@ class PageFilePhysics {
     packetId = json['packetId'];
     gas = json['gas'];
     brake = json['brake'];
-    fuel = json['fuel'];
+    fuel = json['fuel'] == null ? 0.0 : json['fuel'];
     gear = json['gear'];
     rpms = json['rpms'];
     steerAngle = json['steerAngle'];

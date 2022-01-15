@@ -1,4 +1,6 @@
 class StatLap {
+  String teamCode = "";
+  String pin = "";
   int lapNo = 0;
   bool fromPit = false;
   bool toPit = false;
@@ -35,48 +37,60 @@ class StatLap {
   double rainIntensity = 0.0;
   double trackGripStatus = 0.0;
   String trackStatus = "";
+  String driverName = "";
   double fuelEstForNextMiliseconds = 0.0;
+  int position = 0;
+  int driverStintTotalTimeLeft = 0;
+  int driverStintTimeLeft = 0;
 
   StatLap(
-      {required this.lapNo,
-       required this.fromPit,
-       required this.toPit,
-       required this.lapTime,
-       required this.distanceTraveled,
-       required this.splitTimes,
-       required this.fuelAdded,
-       required this.fuelUsed,
-       required this.fuelLeftOnStart,
-       required this.fuelLeftOnEnd,
-       required this.fuelAVGPerMinute,
-       required this.fuelXlap,
-       required this.maps,
-       required this.rainTyres,
-       required this.isValidLap,
-       required this.first,
-       required this.last,
-       required this.sessionTimeLeft,
-       required this.pFL,
-       required this.pFR,
-       required this.pRL,
-       required this.pRR,
-       required this.tFL,
-       required this.tFR,
-       required this.tRL,
-       required this.tRR,
-       required this.airTemp,
-       required this.roadTemp,
-       required this.fuelNTFOnEnd,
-        //this.fuelEFNMinutesOnEnd,
-       required this.fuelEFNLapsOnEnd,
-       required this.fuelAVGPerLap,
-       required this.clockAtStart,
-       required this.rainIntensity,
-       required this.trackGripStatus,
-       required this.trackStatus,
-       required this.fuelEstForNextMiliseconds});
+      {required this.teamCode,
+      required this.pin,
+      required this.lapNo,
+      required this.fromPit,
+      required this.toPit,
+      required this.lapTime,
+      required this.distanceTraveled,
+      required this.splitTimes,
+      required this.fuelAdded,
+      required this.fuelUsed,
+      required this.fuelLeftOnStart,
+      required this.fuelLeftOnEnd,
+      required this.fuelAVGPerMinute,
+      required this.fuelXlap,
+      required this.maps,
+      required this.rainTyres,
+      required this.isValidLap,
+      required this.first,
+      required this.last,
+      required this.sessionTimeLeft,
+      required this.pFL,
+      required this.pFR,
+      required this.pRL,
+      required this.pRR,
+      required this.tFL,
+      required this.tFR,
+      required this.tRL,
+      required this.tRR,
+      required this.airTemp,
+      required this.roadTemp,
+      required this.fuelNTFOnEnd,
+      //this.fuelEFNMinutesOnEnd,
+      required this.fuelEFNLapsOnEnd,
+      required this.fuelAVGPerLap,
+      required this.clockAtStart,
+      required this.rainIntensity,
+      required this.trackGripStatus,
+      required this.trackStatus,
+      required this.driverName,
+      required this.fuelEstForNextMiliseconds,
+      required this.position,
+      required this.driverStintTotalTimeLeft,
+      required this.driverStintTimeLeft});
 
   StatLap.fromJson(Map<String, dynamic> json) {
+    teamCode = json['teamCode'] == null ? '' : json['teamCode'];
+    pin = json['pin'] == null ? '' : json['pin'];
     lapNo = json['lapNo'];
     fromPit = json['fromPit'];
     toPit = json['toPit'];
@@ -115,11 +129,17 @@ class StatLap {
     rainIntensity = json['rainIntensity'];
     trackGripStatus = json['trackGripStatus'];
     trackStatus = json['trackStatus'];
+    driverName = json['driverName'];
     fuelEstForNextMiliseconds = json['fuelEstForNextMiliseconds'];
+    position = json['position'];
+    driverStintTotalTimeLeft = json['driverStintTotalTimeLeft'];
+    driverStintTimeLeft = json['driverStintTimeLeft'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['teamCode'] = this.teamCode;
+    data['pin'] = this.pin;
     data['lapNo'] = this.lapNo;
     data['fromPit'] = this.fromPit;
     data['toPit'] = this.toPit;
@@ -160,7 +180,11 @@ class StatLap {
     data['rainIntensity'] = this.rainIntensity;
     data['trackGripStatus'] = this.trackGripStatus;
     data['trackStatus'] = this.trackStatus;
+    data['driverName'] = this.driverName;
     data['fuelEstForNextMiliseconds'] = this.fuelEstForNextMiliseconds;
+    data['position'] = this.position;
+    data['driverStintTotalTimeLeft'] = this.driverStintTotalTimeLeft;
+    data['driverStintTimeLeft'] = this.driverStintTimeLeft;
     return data;
   }
 }

@@ -11,7 +11,10 @@ class ChatProvider {
   final FirebaseFirestore firebaseFirestore;
   final FirebaseStorage firebaseStorage;
 
-  ChatProvider({required this.firebaseFirestore, required this.prefs, required this.firebaseStorage});
+  ChatProvider(
+      {required this.firebaseFirestore,
+      required this.prefs,
+      required this.firebaseStorage});
 
   String? getPref(String key) {
     return prefs.getString(key);
@@ -23,8 +26,12 @@ class ChatProvider {
     return uploadTask;
   }
 
-  Future<void> updateDataFirestore(String collectionPath, String docPath, Map<String, dynamic> dataNeedUpdate) {
-    return firebaseFirestore.collection(collectionPath).doc(docPath).update(dataNeedUpdate);
+  Future<void> updateDataFirestore(String collectionPath, String docPath,
+      Map<String, dynamic> dataNeedUpdate) {
+    return firebaseFirestore
+        .collection(collectionPath)
+        .doc(docPath)
+        .update(dataNeedUpdate);
   }
 
   Stream<QuerySnapshot> getChatStream(String groupChatId, int limit) {
@@ -37,7 +44,18 @@ class ChatProvider {
         .snapshots();
   }
 
-  void sendMessage(String content, int type, String groupChatId, String currentUserId, String peerId) {
+  Future<QuerySnapshot<Map<String, dynamic>>> getChatCollection(
+      String groupChatId) {
+    return firebaseFirestore
+        .collection(FirestoreConstants.pathMessageCollection)
+        .doc(groupChatId)
+        .collection(groupChatId)
+        .orderBy(FirestoreConstants.timestamp, descending: true)
+        .get();
+  }
+
+  void sendMessage(String content, int type, String groupChatId,
+      String currentUserId, String peerId) {
     DocumentReference documentReference = firebaseFirestore
         .collection(FirestoreConstants.pathMessageCollection)
         .doc(groupChatId)

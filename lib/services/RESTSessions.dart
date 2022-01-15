@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:acc_manager/common/StatMobile.dart';
@@ -13,9 +14,11 @@ class RESTSessions {
       HttpHeaders.acceptCharsetHeader: 'UTF-8',
     };
     var queryParameters = new Map<String, String>();
-      queryParameters = {'range': 'currentSession', };
+    queryParameters = {
+      'range': 'currentSession',
+    };
 
-    var address = conf.serverIP+":"+conf.serverPort;
+    var address = conf.serverIP + ":" + conf.serverPort;
     var uri = Uri.http('$address', "/getSession", queryParameters);
     http.get(uri, headers: headers);
   }
@@ -26,9 +29,33 @@ class RESTSessions {
       HttpHeaders.acceptCharsetHeader: 'UTF-8',
     };
     var queryParameters = new Map<String, String>();
-    var address = conf.serverIP+":"+conf.serverPort;
+    var address = conf.serverIP + ":" + conf.serverPort;
     var uri = Uri.http('$address', "/save", queryParameters);
     return http.get(uri, headers: headers);
+  }
+
+  static Future<String> importTeamLap(String json) async {
+    var headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptCharsetHeader: 'UTF-8',
+    };
+    var queryParameters = new Map<String, String>();
+    var address = conf.serverIP + ":" + conf.serverPort;
+    var uri = Uri.http('$address', "/importTeamLap", queryParameters);
+    print('------< IMPORTING >-------');
+    print(json);
+    try {
+      return await http
+          .put(uri, body: json, headers: headers)
+          .timeout(const Duration(seconds: 2))
+          .toString();
+    } on TimeoutException catch (e) {
+      print('Timeout');
+      return 'Timeout';
+    } on Error catch (e) {
+      print('Error: $e');
+      return '$e';
+    }
   }
 
   static Future<List<StatSession>> getPreviousSessions() async {
@@ -39,27 +66,27 @@ class RESTSessions {
     var queryParameters = new Map<String, String>();
     queryParameters = {};
 
-    var address = conf.serverIP + ":" +conf.serverPort;
+    var address = conf.serverIP + ":" + conf.serverPort;
     var uri = Uri.http('$address', "/getMobileSessionList", queryParameters);
     final res = await http.get(uri, headers: headers);
     var statList = json.decode(res.body) as List;
     return statList.map((list) => StatSession.fromJson(list)).toList();
-
   }
 
-  static Future<List<StatMobile>> getPreviousSession(int internalSessionIndex) async {
+  static Future<List<StatMobile>> getPreviousSession(
+      int internalSessionIndex) async {
     var headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.acceptCharsetHeader: 'UTF-8',
     };
     var queryParameters = new Map<String, String>();
-    queryParameters = {'internalSessionIndex': internalSessionIndex.toString(), };
-    var address = conf.serverIP+":"+conf.serverPort;
+    queryParameters = {
+      'internalSessionIndex': internalSessionIndex.toString(),
+    };
+    var address = conf.serverIP + ":" + conf.serverPort;
     var uri = Uri.http('$address', "/getMobileSession", queryParameters);
     final res = await http.get(uri, headers: headers);
     var statList = json.decode(res.body) as List;
     return statList.map((list) => StatMobile.fromJson(list)).toList();
   }
-
-
 }
