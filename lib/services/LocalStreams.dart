@@ -68,6 +68,7 @@ class LocalStreams {
   static void initStreams(String team, String passwd) {
     vteam = team;
     vpin = passwd;
+    stat_sessions.clear();
     //var _streamController = new NotificationController().streamController;
     notContoller = new NotificationController().streamController.stream.listen(
       (data) {
@@ -124,6 +125,7 @@ class LocalStreams {
 
     List<QueryDocumentSnapshot> listMessage = [];
     log('onTimeCollection.then');
+    int i = 0;
     onTimeCollection.then((value) => {
           value.docs.forEach((element) {
             MessageChat sm = MessageChat.fromDocument(element);
@@ -131,17 +133,12 @@ class LocalStreams {
                 StatMobile.fromJson(json.decode(sm.content.toString()));
             lap.teamCode = vteam;
             lap.pin = vpin;
+            log("importing " +
+                (++i).toString() +
+                '/' +
+                value.docs.length.toString());
             _addLap(lap);
             controllerLapsToSend.add(true);
-            /*
-            log(lap.driverName);
-
-            try {
-              RESTSessions.importTeamLap(sm.content).then((value) => {});
-            } on RESTSessions catch (e) {
-              print('error caught: $e');
-            }
-            */
           })
         });
 
@@ -197,7 +194,6 @@ class LocalStreams {
       stat_sessions.forEach((session) {
         if (session.internalSessionIndex == lap.internalSessionIndex) {
           haveSession = true;
-          bool lapExists = false;
           /*
           session.laps.forEach((lapElement) {
             if (lapElement.internalLapIndex == lap.internalLapIndex) {
@@ -215,6 +211,7 @@ class LocalStreams {
           double avg5 = 0;
           double avg3t = 0.0;
           double avg5t = 0.0;
+
           avg3Laps.forEach((element) {
             avg3 += element.fuelXlap;
             avg3t += element.lapTime;
@@ -224,11 +221,14 @@ class LocalStreams {
             avg5t += element.lapTime;
           });
 
-          avg3 = avg3 / avg3Laps.length;
-          avg5 = avg5 / avg5Laps.length;
-
-          avg3t = avg3t / avg3Laps.length;
-          avg5t = avg5t / avg5Laps.length;
+          if (avg3Laps.length > 0) {
+            avg3 = avg3 / avg3Laps.length;
+            avg3t = avg3t / avg3Laps.length;
+          }
+          if (avg5Laps.length > 0) {
+            avg5 = avg5 / avg5Laps.length;
+            avg5t = avg5t / avg5Laps.length;
+          }
 
           session.fuelAVG3Laps = avg3;
           session.fuelAVG5Laps = avg5;

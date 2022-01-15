@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:acc_manager/common/StatMobile.dart';
 import 'package:acc_manager/services/LocalStreams.dart';
 import 'package:acc_manager/services/RESTSessions.dart';
@@ -97,163 +99,177 @@ class _MyEnduranceDetailsPageState extends State<MyEnduranceDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.black,
-        body: FutureBuilder<List<StatMobile>>(
-            future: getData(),
-            initialData: [],
-            builder: (BuildContext context,
-                AsyncSnapshot<List<StatMobile>> snapshot) {
-              if (snapshot.hasData) {
-                return RefreshIndicator(
-                  onRefresh: _getData,
-                  child: SingleChildScrollView(
-                      physics: ScrollPhysics(),
-                      child: Column(
-                        children: [
-                          Container(
-                            color: Colors.amber,
-                            height: 48.0,
-                            alignment: Alignment.center,
-                            child: Row(children: [
-                              Expanded(
-                                flex: 1,
-                                child: Center(
-                                  child: Text("Lap",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold)),
+        body: Column(
+          children: [
+            Expanded(flex: 1, child: HeaderComponent()),
+            Expanded(
+              flex: 15,
+              child: FutureBuilder<List<StatMobile>>(
+                  future: getData(),
+                  initialData: [],
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<StatMobile>> snapshot) {
+                    if (snapshot.hasData) {
+                      return RefreshIndicator(
+                        onRefresh: _getData,
+                        child: SingleChildScrollView(
+                            physics: ScrollPhysics(),
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return DataPopUp(snapshot.data![
+                                        snapshot.data!.length - index - 1]);
+                                  },
+                                  itemCount: snapshot.data!.length,
+                                ),
+                              ],
+                            )),
+                      );
+                    } else {
+                      return Container(
+                          color: Colors.black54,
+                          child: Center(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Text(
+                                Consts.title,
+                                style: TextStyle(
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.lightBlueAccent,
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Center(
-                                  child: Text("Time in game",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold)),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  'You need to finish at least one full lap.',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.lightBlueAccent,
+                                  ),
                                 ),
                               ),
-                              Expanded(
-                                flex: 2,
-                                child: Center(
-                                  child: Text("Pressure",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold)),
+                              SizedBox(height: 4.0),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 6),
+                                child: Text(
+                                  Consts.description,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Text("Fuel / lap",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text("Fuel / minute",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text("Minutes till end",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text("Fuel for laps",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text("Fuel for minutes",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text("",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                            ]),
-                          ),
-                          ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return DataPopUp(snapshot
-                                  .data![snapshot.data!.length - index - 1]);
-                            },
-                            itemCount: snapshot.data!.length,
-                          ),
-                        ],
-                      )),
-                );
-              } else {
-                return Container(
-                    color: Colors.black54,
-                    child: Center(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: CircularProgressIndicator(),
-                        ),
-                        Text(
-                          Consts.title,
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.lightBlueAccent,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            'You need to finish at least one full lap.',
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.lightBlueAccent,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 4.0),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: Text(
-                            Consts.description,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 4.0),
-                      ],
-                    )));
-              }
-            }));
+                              SizedBox(height: 4.0),
+                            ],
+                          )));
+                    }
+                  }),
+            ),
+          ],
+        ));
+  }
+
+  Container HeaderComponent() {
+    return Container(
+      color: Colors.amber,
+      height: 48.0,
+      alignment: Alignment.center,
+      child: Row(children: [
+        Expanded(
+          flex: 1,
+          child: Center(
+            child: Text("Lap",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold)),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Center(
+            child: Text("Pos",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold)),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Center(
+            child: Text("Time in game",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold)),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Center(
+            child: Text("Pressure",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold)),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text("Fuel per lap",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold)),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text("Fuel per minute",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold)),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text("Fuel for laps",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold)),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text("Fuel for minutes",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold)),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text("",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold)),
+        ),
+      ]),
+    );
   }
 }
 
@@ -287,15 +303,37 @@ class StatRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(4.0),
-      child: Row(
+    return Column(children: [
+      SizedBox(
+        //width: 200,
+        height: 3,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.indigo,
+                Colors.black,
+                Colors.indigo,
+              ],
+            ),
+          ),
+        ),
+      ),
+      Row(
         children: [
           Expanded(
             flex: 1,
             child: Text(lap.lapNo.toString(),
                 style: TextStyle(
                     color: lap.isValidLap ? Colors.green : Colors.red,
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal)),
+          ),
+          Expanded(
+            flex: 1,
+            child: Text(lap.position.toString(),
+                style: TextStyle(
+                    color: _colorForPosition(lap.position),
                     fontSize: 12,
                     fontWeight: FontWeight.normal)),
           ),
@@ -308,112 +346,211 @@ class StatRow extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: FontWeight.normal)),
           ),
+          PressureWidget(),
           Expanded(
-            flex: 2,
-            child: Row(children: [
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Text(lap.avgpFL.toStringAsFixed(2),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.normal)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Text(lap.avgpRL.toStringAsFixed(2),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.normal)),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Text(lap.avgpFR.toStringAsFixed(2),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.normal)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Text(lap.avgpRR.toStringAsFixed(2),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.normal)),
-                  ),
-                ],
-              ),
-            ]),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text(lap.fuelAVGPerLap.toStringAsFixed(3),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.normal)),
+            flex: 4,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(lap.fuelAVGPerLap.toStringAsFixed(2),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.normal)),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(lap.fuelAVGPerMinute.toStringAsFixed(2),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.normal)),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(lap.fuelEFNLapsOnEnd.toStringAsFixed(2),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.normal)),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                            _printDurationMinutesSeconds(
+                                lap.fuelEstForNextMiliseconds.toInt()),
+                            style: TextStyle(
+                                color: _colorForEstMiliseconds(
+                                    lap.fuelEstForNextMiliseconds,
+                                    lap.sessionTimeLeft),
+                                fontSize: 10,
+                                fontWeight: FontWeight.normal)),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(lap.driverName,
+                            style: TextStyle(
+                                color: Colors.yellowAccent,
+                                fontSize: 8,
+                                fontWeight: FontWeight.normal)),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Text(
+                          _printDurationMinutesSeconds(lap.driverStintTimeLeft),
+                          style: TextStyle(
+                              color: _colorForStintTimeLeft(
+                                  lap.driverStintTimeLeft),
+                              fontSize: 9,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Text('/',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 9,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Text(
+                          _printDurationMinutesSeconds(
+                              lap.driverStintTotalTimeLeft),
+                          style: TextStyle(
+                              color: _colorForStintTotalTimeLeft(
+                                  lap.driverStintTotalTimeLeft),
+                              fontSize: 9,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Text('/',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 9,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Text(
+                          _printDurationHoursMinutes(
+                              lap.sessionTimeLeft.toInt()),
+                          style: TextStyle(
+                              color: _colorForSessionTimeLeft(
+                                  lap.sessionTimeLeft, lap.driverStintTimeLeft),
+                              fontSize: 9,
+                              fontWeight: FontWeight.normal)),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text(lap.fuelAVGPerMinute.toStringAsFixed(2),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.normal)),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text(
-                  _printDurationHoursMinutes(lap.sessionTimeLeft.toInt()),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.normal)),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text(lap.fuelEFNLapsOnEnd.toStringAsFixed(2),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.normal)),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text(
-                  _printDurationMinutesSeconds(
-                      lap.fuelEstForNextMiliseconds.toInt()),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.normal)),
-            ),
-          )
         ],
       ),
+    ]);
+  }
+
+  Expanded PressureWidget() {
+    return Expanded(
+      flex: 2,
+      child: Row(children: [
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text(lap.avgpFL.toStringAsFixed(2),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.normal)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text(lap.avgpRL.toStringAsFixed(2),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.normal)),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text(lap.avgpFR.toStringAsFixed(2),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.normal)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text(lap.avgpRR.toStringAsFixed(2),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.normal)),
+            ),
+          ],
+        ),
+      ]),
     );
+  }
+
+  _colorForStintTimeLeft(int driverStintTimeLeft) {
+    if (driverStintTimeLeft < 30000)
+      return Colors.redAccent;
+    else if (driverStintTimeLeft < 90000) return Colors.yellowAccent;
+    return Colors.greenAccent;
+  }
+
+  _colorForStintTotalTimeLeft(int driverStintTotalTimeLeft) {
+    if (driverStintTotalTimeLeft < 60000)
+      return Colors.redAccent;
+    else if (driverStintTotalTimeLeft < 180000) return Colors.yellowAccent;
+    return Colors.greenAccent;
+  }
+
+  _colorForPosition(int position) {
+    if (position == 1) return Colors.green;
+    if (position > 1 && position <= 10) return Colors.amber;
+    return Colors.redAccent;
+  }
+
+  _colorForSessionTimeLeft(double sessionTimeLeft, int driverStintTimeLeft) {
+    if (driverStintTimeLeft >= sessionTimeLeft) return Colors.green;
+    return Colors.red;
+  }
+
+  _colorForEstMiliseconds(
+      double fuelEstForNextMiliseconds, double sessionTimeLeft) {
+    if (fuelEstForNextMiliseconds >= sessionTimeLeft) return Colors.green;
+    return Colors.red;
   }
 }
 
@@ -497,8 +634,8 @@ class DataPopUp extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.fromLTRB(1, 1, 1, 0),
-            height: 170,
-            width: double.maxFinite,
+            //height: 170,
+            //width: double.maxFinite,
             decoration: BoxDecoration(
                 border: Border.all(
                   color: Colors.white,

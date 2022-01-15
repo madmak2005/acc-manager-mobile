@@ -210,9 +210,12 @@ class StatMobile {
     strategyTyreSet = json['strategyTyreSet'];
     carModel = json['carModel'] == null ? "not kwnown" : json['carModel'];
     track = json['track'] == null ? "not kwnown" : json['track'];
-    position = json['position'];
-    driverStintTotalTimeLeft = json['driverStintTotalTimeLeft'];
-    driverStintTimeLeft = json['driverStintTimeLeft'];
+    position = json['position'] == null ? 0 : json['position'];
+    driverStintTotalTimeLeft = json['driverStintTotalTimeLeft'] == null
+        ? 0
+        : json['driverStintTotalTimeLeft'];
+    driverStintTimeLeft =
+        json['driverStintTimeLeft'] == null ? 0 : json['driverStintTimeLeft'];
   }
 
   Map<String, dynamic> toJson() {

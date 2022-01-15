@@ -43,14 +43,15 @@ class RESTSessions {
     var address = conf.serverIP + ":" + conf.serverPort;
     var uri = Uri.http('$address', "/importTeamLap", queryParameters);
     print('------< IMPORTING >-------');
-    print(json);
+    //print(json);
     try {
       return await http
           .put(uri, body: json, headers: headers)
-          .timeout(const Duration(seconds: 2))
+          .timeout(const Duration(seconds: 10))
           .toString();
     } on TimeoutException catch (e) {
       print('Timeout');
+      print('Error: $e');
       return 'Timeout';
     } on Error catch (e) {
       print('Error: $e');
