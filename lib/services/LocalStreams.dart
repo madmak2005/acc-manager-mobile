@@ -69,6 +69,7 @@ class LocalStreams {
     vteam = team;
     vpin = passwd;
     stat_sessions.clear();
+    NotificationController().reconnect();
     //var _streamController = new NotificationController().streamController;
     notContoller = new NotificationController().streamController.stream.listen(
       (data) {
@@ -84,6 +85,7 @@ class LocalStreams {
       List<StatMobile> lapsToRemove = [];
       lapsToSend.forEach((lap) {
         String content = json.encode(lap);
+        //var content = lap.toJson().toString();
         RESTSessions.importTeamLap(content);
         lapsToRemove.add(lap);
       });
@@ -194,13 +196,6 @@ class LocalStreams {
       stat_sessions.forEach((session) {
         if (session.internalSessionIndex == lap.internalSessionIndex) {
           haveSession = true;
-          /*
-          session.laps.forEach((lapElement) {
-            if (lapElement.internalLapIndex == lap.internalLapIndex) {
-              lapExists = true;
-            }
-          });
-          */
 
           if (lap.isValidLap) {
             avg3Laps.add(lap);
@@ -236,6 +231,7 @@ class LocalStreams {
           session.avgLapTime3 = avg3t.round();
           session.avgLapTime5 = avg5t.round();
           session.driverSet.add(lap.driverName);
+          session.session_TYPENAME = lap.session_TYPE;
           session.laps.add(lap);
         }
       });
@@ -287,6 +283,7 @@ class LocalStreams {
     controllerLocal.add(localStream);
     //_streamController.sink.close();
     //_streamController.close();
+    NotificationController().closeConnection();
     notContoller.cancel();
     if (googleSubscription != null) {
       googleSubscription!.cancel();

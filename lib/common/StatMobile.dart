@@ -228,6 +228,7 @@ class StatMobile {
     data['lapTime'] = this.lapTime;
     data['distanceTraveled'] = this.distanceTraveled;
     if (this.splitTimes != null) {
+      //data['splitTimes'] = this.splitTimes!.splits.map((v) => v).toList();
       data['splitTimes'] = this.splitTimes!.toJson();
     }
     data['internalLapIndex'] = this.internalLapIndex;
@@ -316,6 +317,12 @@ class SplitTimes {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    int i = 1;
+    splits.forEach((element) {
+      data.putIfAbsent(i.toString(), () => element);
+      i++;
+    });
+
     return data;
   }
 }

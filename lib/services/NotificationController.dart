@@ -16,6 +16,7 @@ class NotificationController {
 
   late WebSocket channel;
   late StreamSubscription<dynamic> subscription;
+  static bool firstTimeSubscription = true;
 
   factory NotificationController() {
     return _singleton;
@@ -26,9 +27,7 @@ class NotificationController {
   }
 
   closeConnection() async {
-    this.subscription.cancel();
-    //this.streamController.sink.close();
-    //this.channel.close();
+    this.subscription.pause();
   }
 
   initWebSocketConnection() async {
@@ -41,7 +40,7 @@ class NotificationController {
   }
 
   broadcastNotifications() {
-    subscription = this.channel.listen((streamData) {
+    subscription = this.channel.asBroadcastStream().listen((streamData) {
       streamController.add(streamData);
       LocalStreams.controllerLocal.add(true);
     }, onDone: () {
@@ -69,5 +68,15 @@ class NotificationController {
   void _onDisconnected() {
     LocalStreams.controllerLocal.add(false);
     initWebSocketConnection();
+  }
+
+  void reconnect() {
+    if (!firstTimeSubscription) {
+      print("reconecting...");
+      //broadcastNotifications();
+      subscription.resume();
+    }
+    firstTimeSubscription = false;
+    //broadcastNotifications();
   }
 }
