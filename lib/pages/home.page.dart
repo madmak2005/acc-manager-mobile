@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:acc_manager/cards/connectionCard.dart';
 import 'package:acc_manager/cards/controlCard.dart';
 import 'package:acc_manager/cards/enduranceCard.dart';
 import 'package:acc_manager/cards/enduranceSessionsCard.dart';
@@ -141,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
+              Expanded(flex: 1, child: ConnectionCard()),
               Expanded(
                 flex: 1,
                 child: Container(

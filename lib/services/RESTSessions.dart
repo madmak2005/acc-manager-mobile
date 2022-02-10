@@ -4,10 +4,26 @@ import 'dart:io';
 import 'package:acc_manager/common/StatMobile.dart';
 import 'package:acc_manager/common/StatSession.dart';
 import 'package:acc_manager/main.dart';
+import 'package:acc_manager/models/application_info.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show ascii, base64, base64Encode, json, jsonDecode, utf8;
 
 class RESTSessions {
+  static Future<ApplicationInfo> getApplicationInfo() async {
+    var headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptCharsetHeader: 'UTF-8',
+    };
+    var queryParameters = new Map<String, String>();
+    queryParameters = {};
+
+    var address = conf.serverIP + ":" + conf.serverPort;
+    var uri = Uri.http('$address', "/info", queryParameters);
+    var response = await http.get(uri, headers: headers);
+    var ai = ApplicationInfo.fromJson(json.decode(response.body));
+    return ai;
+  }
+
   static void getCurrentSession() async {
     var headers = {
       HttpHeaders.contentTypeHeader: 'application/json',

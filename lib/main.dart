@@ -13,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
@@ -24,6 +25,13 @@ Configuration conf = new Configuration();
 //late BuildContext ctx;
 
 List<String> sentLaps = [];
+PackageInfo packageInfo = PackageInfo(
+  appName: 'Unknown',
+  packageName: 'Unknown',
+  version: 'Unknown',
+  buildNumber: 'Unknown',
+  buildSignature: 'Unknown',
+);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
