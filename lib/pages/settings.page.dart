@@ -37,8 +37,8 @@ class MySettingsPage extends StatefulWidget {
 
 class _MySettingsPageState extends State<MySettingsPage> {
   Future<Map<String, KeySettings>>? _allKeys = conf.getAllKeys();
-  bool _isKeptOn = false;
-
+  var _isKeptOn = false;
+  var _autosave = false;
   @override
   initState() {
     super.initState();
@@ -46,9 +46,13 @@ class _MySettingsPageState extends State<MySettingsPage> {
   }
 
   initPlatformState() async {
-    bool keptOn = true;
     setState(() {
-      _isKeptOn = keptOn;
+      conf
+          .getValueFromStore("autosave")
+          .then((value) => _autosave = value == 'Y' ? true : false);
+      conf
+          .getValueFromStore("isKeptOn")
+          .then((value) => _isKeptOn = value == 'Y' ? true : false);
     });
   }
 
@@ -94,6 +98,7 @@ class _MySettingsPageState extends State<MySettingsPage> {
                             var keyBBP = all['BB+'];
                             var keyBBM = all['BB-'];
                             var keyIGN = all['IGNITION'];
+                            var keySaveReplay = all['SAVE RPLY'];
                             return Column(
                               children: [
                                 Container(
@@ -199,7 +204,7 @@ class _MySettingsPageState extends State<MySettingsPage> {
                                       ),
                                       Expanded(
                                         flex: 1,
-                                        child: Container(),
+                                        child: new KeyConfig(keySaveReplay!),
                                       ),
                                     ],
                                   ),
@@ -210,7 +215,7 @@ class _MySettingsPageState extends State<MySettingsPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
-                                        new Text("Screen is kept on? ",
+                                        new Text("Keep screen on",
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 backgroundColor:
@@ -221,14 +226,43 @@ class _MySettingsPageState extends State<MySettingsPage> {
                                               b!
                                                   ? Wakelock.enable()
                                                   : Wakelock.disable();
-                                              log('isKeptOn: ${jsonEncode(b)}');
+                                              log('isKeptOn: ${b ? 'Y' : 'N'}');
                                               conf.save(
-                                                  "isKeptOn", jsonEncode(b));
+                                                  "isKeptOn", b ? 'Y' : 'N');
                                               setState(() {
                                                 _isKeptOn = b;
                                               });
-                                            })
+                                            }),
                                       ]),
+                                  new Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        new Text(
+                                            "Activate autosave replay when \n the pit limiter turns on",
+                                            maxLines: 2,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                backgroundColor:
+                                                    Colors.black38)),
+                                        new Checkbox(
+                                            checkColor: Colors
+                                                .yellowAccent, // color of tick Mark
+
+                                            value: _autosave,
+                                            onChanged: (bool? b) {
+                                              b!
+                                                  ? Wakelock.enable()
+                                                  : Wakelock.disable();
+                                              log('autosave: ${b ? 'Y' : 'N'}');
+                                              conf.save(
+                                                  "autosave", b ? 'Y' : 'N');
+                                              setState(() {
+                                                _autosave = b;
+                                              });
+                                            })
+                                      ])
                                 ])),
                               ],
                             );

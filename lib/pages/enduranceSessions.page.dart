@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:acc_manager/common/StatMobile.dart';
 import 'package:acc_manager/common/StatSession.dart';
@@ -93,7 +94,7 @@ class SessionsList extends StatelessWidget {
                       style: GoogleFonts.comfortaa(
                           textStyle: TextStyle(
                               color: Colors.lightBlueAccent,
-                              fontSize: 12,
+                              fontSize: 11,
                               fontWeight: FontWeight.w900)),
                     ),
                     new Text(
@@ -103,128 +104,142 @@ class SessionsList extends StatelessWidget {
                               .replaceAll("_", " "),
                       style: GoogleFonts.comfortaa(
                           textStyle: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 12,
+                              color: Color.fromARGB(255, 91, 255, 140),
+                              fontSize: 11,
                               fontWeight: FontWeight.w900)),
                     ),
-                    new Text(" [",
-                        style: GoogleFonts.comfortaa(
-                            textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w900))),
-                    new Text(
-                        LocalStreams.stat_sessions[index].laps.length
-                            .toString(),
-                        style: GoogleFonts.comfortaa(
-                            textStyle: TextStyle(
-                                color: Colors.lightBlueAccent,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w900))),
-                    new Text("]",
-                        style: GoogleFonts.comfortaa(
-                            textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w900))),
                   ],
                 ),
-                subtitle: Column(
+                subtitle: Row(
                   children: [
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        new Text(
-                          "Fuel per lap: ",
-                          style: GoogleFonts.comfortaa(
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w900)),
-                        ),
-                        new Text(
-                          LocalStreams.stat_sessions[index].fuelAVG5Laps > 0
-                              ? LocalStreams.stat_sessions[index].fuelAVG5Laps
-                                  .toStringAsFixed(2)
-                              : LocalStreams.stat_sessions[index].fuelAVG3Laps >
-                                      0
+                        Row(
+                          children: [
+                            new Text(
+                              "Fuel per lap: ",
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w900)),
+                            ),
+                            new Text(
+                              LocalStreams.stat_sessions[index].fuelAVG5Laps > 0
                                   ? LocalStreams
-                                      .stat_sessions[index].fuelAVG3Laps
+                                      .stat_sessions[index].fuelAVG5Laps
                                       .toStringAsFixed(2)
-                                  : "?",
-                          style: GoogleFonts.comfortaa(
-                              textStyle: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w900)),
+                                  : LocalStreams.stat_sessions[index]
+                                              .fuelAVG3Laps >
+                                          0
+                                      ? LocalStreams
+                                          .stat_sessions[index].fuelAVG3Laps
+                                          .toStringAsFixed(2)
+                                      : "?",
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w900)),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        new Text(
-                          "Fuel per minute: ",
-                          style: GoogleFonts.comfortaa(
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w900)),
-                        ),
-                        new Text(
-                          LocalStreams.stat_sessions[index].avgLapTime5 != 0
-                              ? ((LocalStreams
-                                          .stat_sessions[index].fuelAVG5Laps) /
-                                      (LocalStreams.stat_sessions[index]
-                                              .avgLapTime5 /
-                                          1000 /
-                                          60))
-                                  .toStringAsFixed(3)
-                              : LocalStreams.stat_sessions[index].avgLapTime3 !=
-                                      0
+                        Row(
+                          children: [
+                            new Text(
+                              "Fuel per minute: ",
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w900)),
+                            ),
+                            new Text(
+                              LocalStreams.stat_sessions[index].avgLapTime5 != 0
                                   ? ((LocalStreams.stat_sessions[index]
-                                              .fuelAVG3Laps) /
+                                              .fuelAVG5Laps) /
                                           (LocalStreams.stat_sessions[index]
-                                                  .avgLapTime3 /
+                                                  .avgLapTime5 /
                                               1000 /
                                               60))
                                       .toStringAsFixed(3)
-                                  : "?",
-                          style: GoogleFonts.comfortaa(
-                              textStyle: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w900)),
+                                  : LocalStreams.stat_sessions[index]
+                                              .avgLapTime3 !=
+                                          0
+                                      ? ((LocalStreams.stat_sessions[index]
+                                                  .fuelAVG3Laps) /
+                                              (LocalStreams.stat_sessions[index]
+                                                      .avgLapTime3 /
+                                                  1000 /
+                                                  60))
+                                          .toStringAsFixed(3)
+                                      : "?",
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w900)),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            new Text(
+                              "FuelXLap [ACC]: ",
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w900)),
+                            ),
+                            new Text(
+                              LocalStreams.stat_sessions[index].fuelXLap
+                                  .toStringAsFixed(2),
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w900)),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        new Text(
-                          "FuelXLap [ACC]: ",
-                          style: GoogleFonts.comfortaa(
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w900)),
-                        ),
-                        new Text(
-                          LocalStreams.stat_sessions[index].fuelXLap
-                              .toStringAsFixed(2),
-                          style: GoogleFonts.comfortaa(
-                              textStyle: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w900)),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          new Text(" [laps: ",
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w900))),
+                          new Text(
+                              LocalStreams.stat_sessions[index].laps.length
+                                  .toString(),
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Colors.lightBlueAccent,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w900))),
+                          new Text("]",
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w900))),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-                onTap: () {
+                onTap: () async {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => EnduranceLapsPage(LocalStreams
-                              .stat_sessions[index].internalSessionIndex)));
+                          builder: (context) => _openEnduranceDetails(index)));
                 },
               ),
             ),
@@ -236,6 +251,12 @@ class SessionsList extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  _openEnduranceDetails(int index) {
+    log('index:' + index.toString());
+    return EnduranceLapsPage(
+        LocalStreams.stat_sessions[index].internalSessionIndex);
   }
 }
 
@@ -278,7 +299,7 @@ class DriverList extends StatelessWidget {
                           .toUpperCase(),
                       style: GoogleFonts.comfortaa(
                           textStyle: TextStyle(
-                              color: Colors.orange,
+                              color: Color.fromARGB(255, 255, 208, 0),
                               fontSize: 8,
                               fontWeight: FontWeight.w900)),
                     ),

@@ -1,4 +1,5 @@
 import 'package:acc_manager/pages/endurance.page.dart';
+import 'package:acc_manager/services/LocalStreams.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,8 +27,11 @@ class EnduranceCard extends StatelessWidget {
             ),
             dense: true,
             onTap: () {
+              LocalStreams.controllerBackToHomePage.add(false);
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => EndurancePage()));
+                      MaterialPageRoute(builder: (context) => EndurancePage()))
+                  .then((value) =>
+                      LocalStreams.controllerBackToHomePage.add(true));
             }),
       ),
     );

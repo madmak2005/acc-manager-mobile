@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:acc_manager/common/Configuration.dart';
 import 'package:acc_manager/pages/login.page.dart';
 import 'package:acc_manager/providers/auth_provider.dart';
@@ -16,9 +13,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web_socket_channel/io.dart';
-
-import 'common/StatMobile.dart';
 import 'firebase_options.dart';
 
 Configuration conf = new Configuration();
@@ -57,6 +51,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //prefs.remove('SAVE RPLY');
+    //prefs.remove('STARTER');
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<AuthProvider>(
@@ -91,6 +87,7 @@ class MyApp extends StatelessWidget {
           title: 'ACC Manager',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            unselectedWidgetColor: Colors.grey,
           ),
           home: LoginPage(),
         ));

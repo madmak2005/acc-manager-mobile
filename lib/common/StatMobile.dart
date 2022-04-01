@@ -69,6 +69,7 @@ class StatMobile {
   int position = 0;
   int driverStintTotalTimeLeft = 0;
   int driverStintTimeLeft = 0;
+  int docId = 0;
 
   StatMobile(
       {required this.teamCode,
@@ -139,7 +140,8 @@ class StatMobile {
       required this.track,
       required this.position,
       required this.driverStintTotalTimeLeft,
-      required this.driverStintTimeLeft});
+      required this.driverStintTimeLeft,
+      required this.docId});
 
   StatMobile.fromJson(Map<String, dynamic> json) {
     teamCode = json['teamCode'] == null ? '' : json['teamCode'];
@@ -168,8 +170,8 @@ class StatMobile {
     last = json['last'];
     sessionTimeLeft = json['sessionTimeLeft'];
     session_TYPE = json['session_TYPE'];
-    sessionIndex = json['sessionIndex'];
-    internalSessionIndex = json['internalSessionIndex'];
+    sessionIndex = json['sessionIndex'] ?? -1;
+    internalSessionIndex = json['internalSessionIndex'] ?? -1;
     avgpFL = json['avgpFL'];
     avgpFR = json['avgpFR'];
     avgpRL = json['avgpRL'];
@@ -216,6 +218,7 @@ class StatMobile {
         : json['driverStintTotalTimeLeft'];
     driverStintTimeLeft =
         json['driverStintTimeLeft'] == null ? 0 : json['driverStintTimeLeft'];
+    docId = json['docId'] == null ? 0 : json['docId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -248,6 +251,7 @@ class StatMobile {
     data['first'] = this.first;
     data['last'] = this.last;
     data['sessionTimeLeft'] = this.sessionTimeLeft;
+    data['session_TYPE'] = this.session_TYPE;
     data['avgpFL'] = this.avgpFL;
     data['avgpFR'] = this.avgpFR;
     data['avgpRL'] = this.avgpRL;
@@ -291,6 +295,7 @@ class StatMobile {
     data['position'] = this.position;
     data['driverStintTotalTimeLeft'] = this.driverStintTotalTimeLeft;
     data['driverStintTimeLeft'] = this.driverStintTimeLeft;
+    data['docId'] = this.docId;
     return data;
   }
 }

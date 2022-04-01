@@ -7,6 +7,7 @@ import 'package:acc_manager/cards/enduranceSessionsCard.dart';
 import 'package:acc_manager/cards/previousSessionCard.dart';
 import 'package:acc_manager/cards/sessionCard.dart';
 import 'package:acc_manager/cards/settingsCard.dart';
+import 'package:acc_manager/common/KeySettings.dart';
 
 import 'package:acc_manager/constants/constants.dart';
 import 'package:acc_manager/models/models.dart';
@@ -14,6 +15,7 @@ import 'package:acc_manager/pages/login_page.dart';
 import 'package:acc_manager/pages/widgets/BGImages.dart';
 import 'package:acc_manager/services/LocalStreams.dart';
 import 'package:acc_manager/services/RESTSessions.dart';
+import 'package:acc_manager/services/RESTVirtualKeyboard.dart';
 
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
@@ -92,7 +94,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _isKeptOn = false;
   double _brightness = 1.0;
-
+  Future<Map<String, KeySettings>>? _allKeys = conf.getAllKeys();
   @override
   initState() {
     super.initState();
@@ -100,16 +102,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   initPlatformState() async {
+    conf.getKey('SAVE RPLY').then((_kSave) => {sendKey(_kSave)});
+    conf
+        .getValueFromStore('autosave')
+        .then((value) => sendAutoSaveActivity(value));
+
+    conf.getValueFromStore('isKeptOn').then((value) => setWakelock(value));
+
     String _kOn = await conf.getServerSetting('isKeptOn');
+
     log('isKeptOn $_kOn');
-    bool keptOn = _kOn == 'true' ? true : false;
-    setState(() {
-      _isKeptOn = keptOn;
-      if (_isKeptOn)
-        Wakelock.enable();
-      else
-        Wakelock.disable();
-    });
+    bool keptOn = _kOn == 'Y' ? true : false;
+    setState(() {});
   }
 
   @override
@@ -144,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Expanded(flex: 1, child: ConnectionCard()),
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: Container(
                   width: 300.0,
                   child: ElevatedButton(
@@ -178,5 +182,31 @@ class _MyHomePageState extends State<MyHomePage> {
               content: Text(msg,
                   style: TextStyle(fontSize: 8, fontWeight: FontWeight.normal)),
             ));
+  }
+
+  sendKey(KeySettings _kSave) {
+    if (_kSave.key != '') {
+      log('_kSave ${_kSave.key}');
+      RESTSessions.setAutoSaveKey(_kSave.key);
+    }
+  }
+
+  sendAutoSaveActivity(String value) {
+    log('_autoSaveActivity');
+    if (value != '') {
+      RESTSessions.setAutoSaveActivity(value);
+    }
+  }
+
+  setWakelock(String value) {
+    if (value == 'Y')
+      _isKeptOn = true;
+    else
+      _isKeptOn = false;
+
+    if (_isKeptOn)
+      Wakelock.enable();
+    else
+      Wakelock.disable();
   }
 }

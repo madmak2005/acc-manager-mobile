@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
@@ -21,7 +22,8 @@ final Set<String> allowedKeys = {
   'BB+',
   'BB-',
   'IGNITION',
-  'STARTER'
+  'STARTER',
+  'SAVE RPLY'
 };
 
 class Configuration {
@@ -30,6 +32,9 @@ class Configuration {
 
   String team = "";
   String passwd = "";
+
+  var autosave = 'N';
+  var keptOn = 'N';
 
   late Future<Map<String, KeySettings>> _keys;
 
@@ -70,7 +75,7 @@ class Configuration {
     Map<String, KeySettings> allKeys = new Map();
     allowedKeys.forEach((key) async {
       KeySettings? _ks = await getKeyFromStore(key);
-      if (_ks.key != "") {
+      if (_ks.key != "" && _ks.key != null) {
         allKeys.putIfAbsent(_ks.name, () => _ks);
       } else {
         KeySettings _defaultKeySettings = new KeySettings("", "", "", "", "");
@@ -165,6 +170,12 @@ class Configuration {
                   MaterialCommunityIcons.car_key, 'STARTER', 's');
             }
             break;
+          case 'SAVE RPLY':
+            {
+              _defaultKeySettings = new KeySettings.fromIconData(
+                  MaterialCommunityIcons.content_save, 'SAVE RPLY', 'm');
+            }
+            break;
         }
         allKeys.putIfAbsent(
             _defaultKeySettings.name, () => _defaultKeySettings);
@@ -177,8 +188,9 @@ class Configuration {
     SharedPreferences prefs = await _prefs;
     var dbKey = prefs.getString(key);
     if (dbKey != null) {
-      Map<String, String> keyMap = jsonDecode(dbKey);
-      return new KeySettings.fromJson(keyMap);
+      Map<String, dynamic> keyMap = jsonDecode(dbKey);
+      KeySettings k = KeySettings.fromJson(keyMap);
+      return k;
     } else {
       return new KeySettings("", "", "", "", "");
     }
@@ -196,11 +208,26 @@ class Configuration {
     return _value != null ? _value : "";
   }
 
+  Future<String> getValueFromStore(String key) async {
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getString(key) ?? "";
+  }
+
   Future<void> save(String key, String value) async {
-    if (key == "IP") serverIP = value;
-    if (key == "PORT") serverPort = value;
-    if (key == "TEAM") team = value;
-    if (key == "PASSWD") passwd = value;
+    if (key == "IP")
+      serverIP = value;
+    else if (key == "PORT")
+      serverPort = value;
+    else if (key == "TEAM")
+      team = value;
+    else if (key == "PASSWD")
+      passwd = value;
+    else if (key == "keptOn")
+      keptOn = value;
+    else if (key == "autosave") {
+      log("autosave=" + value);
+      autosave = value;
+    }
     _prefs.then((store) {
       _keys.then((ks) {
         if (ks[key] != null) {
@@ -210,8 +237,9 @@ class Configuration {
           KeySettings newKey = new KeySettings.fromJson(newMap);
           storedKey.key = newKey.key;
           store.setString(storedKey.name, jsonEncode(storedKey.toJson()));
-          print('saving: key=$key value=$value');
+          log('saving: key=$key value=$value');
         } else {
+          log('inserting: key=$key value=$value');
           store.setString(key, value);
         }
       });

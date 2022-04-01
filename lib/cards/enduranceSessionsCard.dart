@@ -1,6 +1,7 @@
 import 'package:acc_manager/pages/enduranceSessions.page.dart';
 import 'package:acc_manager/pages/previousSessions.page.dart';
 import 'package:acc_manager/pages/session.page.dart';
+import 'package:acc_manager/services/LocalStreams.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,10 +29,12 @@ class EnduranceSessionsCard extends StatelessWidget {
             ),
             dense: true,
             onTap: () {
+              LocalStreams.controllerBackToHomePage.add(false);
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => EnduranceSessionsPage()));
+                      builder: (context) => EnduranceSessionsPage())).then(
+                  (value) => LocalStreams.controllerBackToHomePage.add(true));
             }),
       ),
     );

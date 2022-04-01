@@ -37,8 +37,15 @@ class _EnduranceState extends State<EndurancePage> {
 
   bool localStream = false;
   bool googleStream = false;
+
+  int importedLaps = 0;
+  int unsentLapsToGoogle = LocalStreams.allLapsToBeSendToGoogle.length;
+  //int unsentLapsToCloud = 0;
+
   StreamSubscription? subscriptionLocal;
   StreamSubscription? subscriptionGoogle;
+  StreamSubscription? subscriptionImportedLaps;
+  StreamSubscription? subscriptionUnsentLapsToGoogle;
 
   @override
   void initState() {
@@ -55,6 +62,21 @@ class _EnduranceState extends State<EndurancePage> {
           isAuth = true;
         });
       }
+    });
+
+    subscriptionImportedLaps = LocalStreams.streamImportedLaps.listen((value) {
+      setState(() {
+        importedLaps = value;
+      });
+    });
+
+    log("--------------< subscriptionUnsentLapsToGoogle >--------------");
+    subscriptionUnsentLapsToGoogle =
+        LocalStreams.streamUnsentLapsToGoogle.listen((value) {
+      setState(() {
+        log("------------streamUnsentLapsToGoogle: " + value.toString());
+        unsentLapsToGoogle = value;
+      });
     });
 
     subscriptionLocal = LocalStreams.streamLocal.listen((value) {
@@ -104,6 +126,23 @@ class _EnduranceState extends State<EndurancePage> {
       //LocalStreams.controller.close();
     } else {
       log("--------NO SUBSCRIBSION GOOGLE--------");
+    }
+
+    if (subscriptionUnsentLapsToGoogle != null) {
+      log("--------UNSUBSCRIBE subscriptionUnsentLapsToGoogle--------");
+      subscriptionUnsentLapsToGoogle!.cancel();
+      subscriptionUnsentLapsToGoogle = null;
+      //LocalStreams.controller.close();
+    } else {
+      log("--------NO SUBSCRIBSION subscriptionUnsentLapsToGoogle--------");
+    }
+
+    if (subscriptionImportedLaps != null) {
+      log("--------UNSUBSCRIBE subscriptionImportedLaps--------");
+      subscriptionImportedLaps!.cancel();
+      //LocalStreams.controller.close();
+    } else {
+      log("--------NO SUBSCRIBSION subscriptionImportedLaps--------");
     }
 
     super.dispose();
@@ -187,26 +226,100 @@ class _EnduranceState extends State<EndurancePage> {
               children: [
                 Expanded(
                   flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed:
+                          (isEnabled && isAuth) ? _importButtonPressed : null,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Import endu laps from the cloud",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Imported laps:\n" + importedLaps.toString(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: (isEnabled && isAuth)
+                          ? _sendUnsentButtonPressed
+                          : null,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Send laps to the cloud",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Unsent laps:\n" + unsentLapsToGoogle.toString(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
                   child: googleStream
-                      ? ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red[300],
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red[300],
+                            ),
+                            child: Text(
+                              "Stop",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            onPressed: (isEnabled && isAuth)
+                                ? _leaveButtonPressed
+                                : null,
                           ),
-                          child: Text(
-                            "Stop",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          onPressed: (isEnabled && isAuth)
-                              ? _leaveButtonPressed
-                              : null,
                         )
-                      : ElevatedButton(
-                          child: Text(
-                            "Join team",
-                            style: TextStyle(fontSize: 20),
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            child: Text(
+                              "Auto sending to the cloud",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            onPressed: (isEnabled && isAuth)
+                                ? _joinButtonPressed
+                                : null,
                           ),
-                          onPressed:
-                              (isEnabled && isAuth) ? _joinButtonPressed : null,
                         ),
                 ),
                 Expanded(
@@ -231,7 +344,7 @@ class _EnduranceState extends State<EndurancePage> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 1, child: Text("Local: ")),
+                            Expanded(flex: 1, child: Text("ACC: ")),
                             Expanded(
                               flex: 1,
                               child: IconButton(
@@ -297,11 +410,29 @@ class _EnduranceState extends State<EndurancePage> {
     );
   }
 
+  _sendUnsentButtonPressed() {
+    if (team.isNotEmpty && passwd.isNotEmpty) {
+      conf.save("TEAM", team);
+      conf.save("PASSWD", passwd);
+      LocalStreams.sendUnsentEnduranceLaps(team, passwd);
+    }
+  }
+
+  _importButtonPressed() {
+    if (team.isNotEmpty && passwd.isNotEmpty) {
+      conf.save("TEAM", team);
+      conf.save("PASSWD", passwd);
+      LocalStreams.downloadEnduranceLaps(team, passwd);
+    }
+  }
+
   _joinButtonPressed() {
     if (team.isNotEmpty && passwd.isNotEmpty) {
       conf.save("TEAM", team);
       conf.save("PASSWD", passwd);
-      LocalStreams.initStreams(team, passwd);
+      LocalStreams.initGoogleStreams(team, passwd);
+      LocalStreams.initChannels(team, passwd);
+      LocalStreams.sendUnsentEnduranceLaps(team, passwd);
     }
   }
 

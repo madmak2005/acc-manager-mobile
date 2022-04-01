@@ -42,6 +42,7 @@ class StatLap {
   int position = 0;
   int driverStintTotalTimeLeft = 0;
   int driverStintTimeLeft = 0;
+  int docId = 0;
 
   StatLap(
       {required this.teamCode,
@@ -86,7 +87,8 @@ class StatLap {
       required this.fuelEstForNextMiliseconds,
       required this.position,
       required this.driverStintTotalTimeLeft,
-      required this.driverStintTimeLeft});
+      required this.driverStintTimeLeft,
+      required this.docId});
 
   StatLap.fromJson(Map<String, dynamic> json) {
     teamCode = json['teamCode'] == null ? '' : json['teamCode'];
@@ -134,6 +136,7 @@ class StatLap {
     position = json['position'];
     driverStintTotalTimeLeft = json['driverStintTotalTimeLeft'];
     driverStintTimeLeft = json['driverStintTimeLeft'];
+    docId = json['docId'] == null ? 0 : json['docId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -185,6 +188,7 @@ class StatLap {
     data['position'] = this.position;
     data['driverStintTotalTimeLeft'] = this.driverStintTotalTimeLeft;
     data['driverStintTimeLeft'] = this.driverStintTimeLeft;
+    data['docId'] = this.docId;
     return data;
   }
 }

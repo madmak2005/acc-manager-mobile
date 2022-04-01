@@ -45,11 +45,10 @@ class Lights extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          } if (!snapshot.hasData){
-            return
-              CircularProgressIndicator();
           }
-          else {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          } else {
             Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(
               child: Container(
@@ -86,9 +85,9 @@ class MFD extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          }  if (!snapshot.hasData){
-            return
-              CircularProgressIndicator();
+          }
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
           } else {
             Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(
@@ -103,8 +102,10 @@ class MFD extends StatelessWidget {
                       onTap: () {
                         RESTVirtualKeyboard.sendkey(_allKeys!['MFD']!.key);
                       },
-                      child: Icon(_allKeys!['MFD']!.toIconData(),
-                          size: 70.0, color: Colors.white),
+                      child: Container(
+                        child: Icon(_allKeys!['MFD']!.toIconData(),
+                            size: 70.0, color: Colors.white),
+                      ),
                     ),
                   ],
                 ),
@@ -142,9 +143,9 @@ class Wipers extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          }  if (!snapshot.hasData){
-            return
-              CircularProgressIndicator();
+          }
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
           } else {
             Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(
@@ -152,18 +153,20 @@ class Wipers extends StatelessWidget {
               onTap: () {
                 RESTVirtualKeyboard.sendkey(_allKeys!['WIPERS']!.key);
               },
-              child: Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: Container(
-                  child: Column(
-                    children: [
-                      Text(
-                        "W I P E R S",
-                        style: TextStyle(color: Colors.white, fontSize: 20.0),
-                      ),
-                      Icon(_allKeys!['WIPERS']!.toIconData(),
-                          size: 70.0, color: getColor()),
-                    ],
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          "W I P E R S",
+                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                        ),
+                        Icon(_allKeys!['WIPERS']!.toIconData(),
+                            size: 70.0, color: getColor()),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -195,9 +198,9 @@ class Ignition extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          }  if (!snapshot.hasData){
-            return
-              CircularProgressIndicator();
+          }
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
           } else {
             Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(
@@ -246,9 +249,9 @@ class Starter extends StatelessWidget {
             AsyncSnapshot<Map<String, KeySettings>> snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          }  if (!snapshot.hasData){
-            return
-              CircularProgressIndicator();
+          }
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
           } else {
             Map<String, KeySettings>? _allKeys = snapshot.data;
             return Container(

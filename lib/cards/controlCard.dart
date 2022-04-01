@@ -1,5 +1,6 @@
 import 'package:acc_manager/common/KeySettings.dart';
 import 'package:acc_manager/pages/control.page.dart';
+import 'package:acc_manager/services/LocalStreams.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,10 +44,13 @@ class GraphicsCard extends StatelessWidget {
                         ),
                         dense: true,
                         onTap: () {
+                          LocalStreams.controllerBackToHomePage.add(false);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ControlPage(allKey)));
+                                  builder: (context) =>
+                                      ControlPage(allKey))).then((value) =>
+                              LocalStreams.controllerBackToHomePage.add(true));
                         }),
                   ),
                 );

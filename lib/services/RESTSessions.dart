@@ -19,9 +19,27 @@ class RESTSessions {
 
     var address = conf.serverIP + ":" + conf.serverPort;
     var uri = Uri.http('$address', "/info", queryParameters);
-    var response = await http.get(uri, headers: headers);
-    var ai = ApplicationInfo.fromJson(json.decode(response.body));
-    return ai;
+
+    try {
+      var response = await http
+          .get(uri, headers: headers)
+          .timeout(const Duration(seconds: 2));
+      var ai = ApplicationInfo.fromJson(json.decode(response.body));
+      return ai;
+    } on TimeoutException catch (e) {
+      print('Timeout');
+      print('Error: $e');
+      return ApplicationInfo(
+          applicationName: 'Unknown',
+          buildVersion: 'Timeout',
+          buildTimestamp: 'Unknown');
+    } on Error catch (e) {
+      print('Error: $e');
+      return ApplicationInfo(
+          applicationName: 'Unknown',
+          buildVersion: 'Error',
+          buildTimestamp: 'Unknown');
+    }
   }
 
   static void getCurrentSession() async {
@@ -50,6 +68,60 @@ class RESTSessions {
     return http.get(uri, headers: headers);
   }
 
+  static Future<String> setAutoSaveKey(String key) async {
+    var headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptCharsetHeader: 'UTF-8',
+    };
+    var queryParameters = new Map<String, String>();
+    queryParameters.putIfAbsent("key", () => key);
+    var address = conf.serverIP + ":" + conf.serverPort;
+    var uri = Uri.http('$address', "/setAutoSaveKey", queryParameters);
+    print('------< setAutoSaveKey >-------');
+    //print(json);
+    try {
+      return await http
+          .post(uri, headers: headers)
+          .timeout(const Duration(seconds: 10))
+          .toString();
+    } on TimeoutException catch (e) {
+      print('Timeout');
+      print('Error: $e');
+      return 'Timeout';
+    } on Error catch (e) {
+      print('Error: $e');
+      return '$e';
+    }
+  }
+
+  static Future<String> setAutoSaveActivity(String key) async {
+    var headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptCharsetHeader: 'UTF-8',
+    };
+    var queryParameters = new Map<String, String>();
+    queryParameters.putIfAbsent("key", () => key);
+    var address = conf.serverIP + ":" + conf.serverPort;
+    var uri = Uri.http('$address', "/setAutoSaveActivity", queryParameters);
+    print('------< setAutoSaveActivity >-------');
+    print('------< $key >-------');
+    print('---------------------');
+    //print(json);
+    try {
+      return await http
+          .post(uri, headers: headers)
+          .timeout(const Duration(seconds: 10))
+          .toString();
+    } on TimeoutException catch (e) {
+      print('Timeout');
+      print('Error: $e');
+      return 'Timeout';
+    } on Error catch (e) {
+      print('Error: $e');
+      return '$e';
+    }
+  }
+
   static Future<String> importTeamLap(String json) async {
     var headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -63,7 +135,7 @@ class RESTSessions {
     try {
       return await http
           .put(uri, body: json, headers: headers)
-          .timeout(const Duration(seconds: 10))
+          .timeout(const Duration(seconds: 5))
           .toString();
     } on TimeoutException catch (e) {
       print('Timeout');
