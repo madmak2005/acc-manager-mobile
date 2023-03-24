@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:acc_manager/pages/home.page.dart';
 import 'package:acc_manager/providers/providers.dart';
 import 'package:acc_manager/services/LocalStreams.dart';
+import 'package:acc_manager/services/NotificationController.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -313,7 +314,7 @@ class _EnduranceState extends State<EndurancePage> {
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
                             child: Text(
-                              "Auto sending to the cloud",
+                              "Turn sync on",
                               style: TextStyle(fontSize: 16),
                             ),
                             onPressed: (isEnabled && isAuth)
@@ -337,7 +338,9 @@ class _EnduranceState extends State<EndurancePage> {
                                 icon: FaIcon(FontAwesomeIcons.google),
                                 color:
                                     googleStream ? Colors.green : Colors.grey,
-                                onPressed: () {},
+                                onPressed: (googleStream)
+                                    ? _leaveGoogleStream
+                                    : _joinGoogleStream,
                               ),
                             ),
                           ],
@@ -350,7 +353,9 @@ class _EnduranceState extends State<EndurancePage> {
                               child: IconButton(
                                 icon: FaIcon(FontAwesomeIcons.wifi),
                                 color: localStream ? Colors.green : Colors.grey,
-                                onPressed: () {},
+                                onPressed: (localStream)
+                                    ? _leaveACCStream
+                                    : _joinACCStream,
                               ),
                             ),
                           ],
@@ -427,6 +432,18 @@ class _EnduranceState extends State<EndurancePage> {
   }
 
   _joinButtonPressed() {
+    NotificationController().autoReconnect = true;
+    _joinGoogleStream();
+    _joinACCStream();
+  }
+
+  _leaveGoogleStream() {
+    if (team.isNotEmpty && passwd.isNotEmpty) {
+      LocalStreams.stopGoogleStream();
+    }
+  }
+
+  _joinGoogleStream() {
     if (team.isNotEmpty && passwd.isNotEmpty) {
       conf.save("TEAM", team);
       conf.save("PASSWD", passwd);
@@ -438,7 +455,15 @@ class _EnduranceState extends State<EndurancePage> {
 
   _leaveButtonPressed() {
     if (team.isNotEmpty && passwd.isNotEmpty) {
-      LocalStreams.stopStreams();
+      LocalStreams.stopGoogleStream();
     }
+  }
+
+  _leaveACCStream() {
+    LocalStreams.stopACCStream();
+  }
+
+  _joinACCStream() {
+    LocalStreams.startACCStream();
   }
 }

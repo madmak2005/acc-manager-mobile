@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Utilities {
   static bool isKeyboardShowing() {
     if (WidgetsBinding.instance != null) {
-      return WidgetsBinding.instance!.window.viewInsets.bottom > 0;
+      return WidgetsBinding.instance.window.viewInsets.bottom > 0;
     } else {
       return false;
     }

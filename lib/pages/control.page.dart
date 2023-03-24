@@ -16,6 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -79,13 +80,17 @@ class MyControlPage extends StatefulWidget {
 }
 
 class _MyControlPageState extends State<MyControlPage> {
-  _MyControlPageState(this.keySetting);
+  _MyControlPageState(this.keySetting) {
+    setVibrations();
+
+  }
 
   String groupChatId = "";
 
   bool firstTimeGraphics = true;
   bool firstTimePhysics = true;
   bool firstTimeStatic = true;
+  bool _absVib = false;
 
   var maxSpeed = 0.0;
   var minSpeed = 500.0;
@@ -107,13 +112,18 @@ class _MyControlPageState extends State<MyControlPage> {
               builder: (context, snapshotPhysics) {
                 if (snapshotPhysics.hasData) {
                   if (firstTimePhysics) {
-                    widget.channelPhysics.sink.add('fuel,brakeBias,speedKmh');
+                    widget.channelPhysics.sink.add('fuel,brakeBias,speedKmh,abs');
                     firstTimePhysics = false;
                   }
                   PageFilePhysics pp = PageFilePhysics.fromJson(
                       json.decode(snapshotPhysics.data as String));
                   maxSpeed = pp.speedKmh > maxSpeed ? pp.speedKmh : maxSpeed;
                   minSpeed = pp.speedKmh < minSpeed ? pp.speedKmh : minSpeed;
+                  if (pp.abs != null && pp.abs! > 0 && _absVib){
+                    Vibration.vibrate();
+                  } else {
+                    Vibration.cancel();
+                  }
                   return StreamBuilder(
                       stream: widget.channelGraphics.stream,
                       builder: (context, snapshot) {
@@ -404,5 +414,12 @@ class _MyControlPageState extends State<MyControlPage> {
     widget.channelGraphics.sink.close();
     widget.channelPhysics.sink.close();
     super.dispose();
+  }
+
+  setVibrations() async {
+    await conf
+        .getValueFromStore("absVib")
+        .then((value) => _absVib = value == 'Y' ? true : false );
+    log('_absVib = $_absVib');
   }
 }

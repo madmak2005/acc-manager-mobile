@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:acc_manager/models/application_info.dart';
-import 'package:acc_manager/pages/settings.page.dart';
 import 'package:acc_manager/services/LocalStreams.dart';
 import 'package:acc_manager/services/RESTSessions.dart';
 import 'package:flutter/material.dart';

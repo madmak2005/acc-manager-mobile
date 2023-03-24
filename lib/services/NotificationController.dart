@@ -17,6 +17,7 @@ class NotificationController {
   late WebSocket channel;
   late StreamSubscription<dynamic> subscription;
   static bool firstTimeSubscription = true;
+  bool autoReconnect = true;
 
   factory NotificationController() {
     return _singleton;
@@ -27,7 +28,9 @@ class NotificationController {
   }
 
   closeConnection() async {
-    this.subscription.pause();
+    this.subscription.cancel();
+    this.channel.close();
+    autoReconnect = false;
   }
 
   initWebSocketConnection() async {
@@ -37,6 +40,7 @@ class NotificationController {
     LocalStreams.controllerLocal.add(true);
     this.channel.done.then((dynamic _) => _onDisconnected());
     broadcastNotifications();
+    autoReconnect = true;
   }
 
   broadcastNotifications() {
@@ -44,7 +48,7 @@ class NotificationController {
       streamController.add(streamData);
       LocalStreams.controllerLocal.add(true);
     }, onDone: () {
-      print("conecting aborted");
+      print("connecting aborted");
       LocalStreams.controllerLocal.add(false);
       initWebSocketConnection();
     }, onError: (e) {
@@ -56,10 +60,11 @@ class NotificationController {
 
   connectWs() async {
     try {
+      print("Connect WS connectWs " + wsUrl);
       return await WebSocket.connect(wsUrl);
     } catch (e) {
       print("Error! can not connect WS connectWs " + e.toString());
-      await Future.delayed(Duration(milliseconds: 10000));
+      await Future.delayed(Duration(milliseconds: 3000));
       LocalStreams.controllerLocal.add(false);
       return await connectWs();
     }
@@ -67,7 +72,7 @@ class NotificationController {
 
   void _onDisconnected() {
     LocalStreams.controllerLocal.add(false);
-    initWebSocketConnection();
+    if (autoReconnect) initWebSocketConnection();
   }
 
   void reconnect() {

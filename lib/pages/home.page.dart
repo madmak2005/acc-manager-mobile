@@ -12,6 +12,7 @@ import 'package:acc_manager/common/KeySettings.dart';
 import 'package:acc_manager/constants/constants.dart';
 import 'package:acc_manager/models/models.dart';
 import 'package:acc_manager/pages/login_page.dart';
+import 'package:acc_manager/pages/voiceTestPage.dart';
 import 'package:acc_manager/pages/widgets/BGImages.dart';
 import 'package:acc_manager/services/LocalStreams.dart';
 import 'package:acc_manager/services/RESTSessions.dart';
@@ -34,6 +35,7 @@ class HomePage extends StatelessWidget {
   List<PopupChoices> choices = <PopupChoices>[
     PopupChoices(title: 'Settings', icon: Icons.settings),
     PopupChoices(title: 'Log out', icon: Icons.exit_to_app),
+    PopupChoices(title: 'Speech test', icon: Icons.voice_chat),
   ];
 
   @override
@@ -52,6 +54,9 @@ class HomePage extends StatelessWidget {
   void onItemMenuPress(PopupChoices choice) {
     if (choice.title == 'Log out') {
       //handleSignOut();
+    } else if (choice.title == 'Speech test') {
+      Navigator.push(this.context,
+          MaterialPageRoute(builder: (context) => SpeechSampleApp()));
     } else {
       Navigator.push(
           this.context, MaterialPageRoute(builder: (context) => LoginPage()));

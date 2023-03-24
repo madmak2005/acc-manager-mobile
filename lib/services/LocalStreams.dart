@@ -187,8 +187,17 @@ class LocalStreams {
           new NotificationController().streamController.stream.listen(
         (data) {
           var statM = StatMobile.fromJson(json.decode(data as String));
-          allLapsFromACCManagerServer.add(statM);
-          allLapsToBeSendToGoogle.add(statM);
+          var index = allLapsFromACCManagerServer.indexWhere((element) =>
+              (element.clockAtStart == statM.clockAtStart &&
+                  element.lapNo == statM.lapNo &&
+                  element.lapTime == statM.lapTime));
+          if (index == -1) allLapsFromACCManagerServer.add(statM);
+
+          index = allLapsToBeSendToGoogle.indexWhere((element) =>
+              (element.clockAtStart == statM.clockAtStart &&
+                  element.lapNo == statM.lapNo &&
+                  element.lapTime == statM.lapTime));
+          if (index == -1) allLapsToBeSendToGoogle.add(statM);
           localStream = true;
           controllerLocal.add(localStream);
           if (googleStream) sendUnsendLapsToGoogle();
@@ -196,7 +205,10 @@ class LocalStreams {
         },
       );
     }
+    localStreamLapsToSend();
+  }
 
+  static localStreamLapsToSend() {
     if (!streamLapsToSendActive) {
       log("initLocalStreamLapsToSend");
       streamLapsToSend.listen((event) {
@@ -357,20 +369,29 @@ class LocalStreams {
     return success;
   }
 
-  static void stopStreams() {
-    //channelMobileStats.sink.close();
-    //localStream = false;
-    //controllerLocal.add(localStream);
-    //_streamController.sink.close();
-    //_streamController.close();
-    //NotificationController().closeConnection();
-    //notContoller.cancel();
+  static void stopGoogleStream() {
     if (googleSubscription != null) {
       googleSubscription!.cancel();
       channelReadFirebase = null;
       googleStream = false;
       controllerGoogle.add(googleStream);
     }
+  }
+
+  static void stopACCStream() {
+    //channelMobileStats.sink.close();
+    localStream = false;
+    controllerLocal.add(localStream);
+    //_streamController.sink.close();
+    //_streamController.close();
+    NotificationController().closeConnection();
+    notContoller.cancel();
+    log('ACC Stream disconnected');
+  }
+
+  static void startACCStream() {
+    NotificationController().initWebSocketConnection();
+    initLocalStreamLapsToSend();
   }
 
   static void sendUnsentEnduranceLaps(String team, String passwd) {
